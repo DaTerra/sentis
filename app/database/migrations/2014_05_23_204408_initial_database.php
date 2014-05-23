@@ -14,26 +14,26 @@ class InitialDatabase extends Migration {
 	{
 		// privacies domain table
 		Schema::create('privacies', function($table){
-			$table->increments('id');
+			$table->increments('id')->unsigned();
 			$table->string('name');
 		});
 
 		// feelings domain table
 		Schema::create('feelings', function($table){
-			$table->increments('id');
+			$table->increments('id')->unsigned();
 			$table->string('name');
 			$table->binary('icon');
 		});
 		
 		// categories domain table
 		Schema::create('categories', function($table){
-			$table->increments('id');
+			$table->increments('id')->unsigned();
 			$table->string('name');
 		});
 		
 		// users table
 		Schema::create('users', function($table){
-			$table->increments('id');
+			$table->increments('id')->unsigned();
 			$table->string('username');
 			$table->string('password');
 			$table->boolean('is_admin');
@@ -42,11 +42,14 @@ class InitialDatabase extends Migration {
 		
 		// posts table
 		Schema::create('posts', function($table){
-			$table->increments('id');
-			$table->integer('user_id')->references('id')->on('users');			
-			$table->integer('privacy_id')->references('id')->on('privacies');
+			$table->increments('id')->unsigned();
+			$table->integer('user_id')->unsigned();
+			$table->foreign('user_id')->references('id')->on('users');			
+			$table->integer('privacy_id')->unsigned();
+			$table->foreign('privacy_id')->references('id')->on('privacies');
 			$table->string('content');
-			$table->integer('category')->references('id')->on('categories');
+			$table->integer('category_id')->unsigned();
+			$table->foreign('category_id')->references('id')->on('categories');
 			$table->string('tags');
 			$table->integer('version');
 			$table->boolean('anonymous');
@@ -56,8 +59,10 @@ class InitialDatabase extends Migration {
 		// sentis table 	
 		Schema::create('sentis', function($table){
 			$table->increments('id');
-			$table->integer('user_id')->references('id')->on('users');
-			$table->integer('post_id')->references('id')->on('posts');
+			$table->integer('user_id')->unsigned();
+			$table->foreign('user_id')->references('id')->on('users');
+			$table->integer('post_id')->unsigned();	
+			$table->foreign('post_id')->references('id')->on('posts');
 			$table->string('geolocation');
 			$table->timestamps();
 		});
@@ -65,8 +70,10 @@ class InitialDatabase extends Migration {
 		// sentis table 	
 		Schema::create('sentimeters', function($table){
 			$table->increments('id');
-			$table->integer('sentis_id')->references('id')->on('sentis');
-			$table->integer('feeling_id')->references('id')->on('feelings');
+			$table->integer('sentis_id')->unsigned();
+			$table->foreign('sentis_id')->references('id')->on('sentis');
+			$table->integer('feeling_id')->unsigned();
+			$table->foreign('feeling_id')->references('id')->on('feelings');
 			$table->integer('value');
 			$table->timestamps();
 		});
@@ -79,13 +86,14 @@ class InitialDatabase extends Migration {
 	 */
 	public function down()
 	{
-
-		//TODO EH VALIDO FAZER?
-		// Schema::table('cats', function($table){
-		// 	$table->dropForeign('cats_user_id_foreign');
-		// 	$table->dropColumn('user_id');
-		// });
 		
+		Schema::drop('feelings');
+		Schema::drop('posts');
+		Schema::drop('privacies');
+		Schema::drop('sentimeters');
+		Schema::drop('sentis');
+		Schema::drop('users');
+		Schema::drop('privacies');
 	}
 
 }
