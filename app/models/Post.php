@@ -1,6 +1,6 @@
 <?php
 class Post extends Eloquent {
-	protected $fillable = array('content', 'category', 'tags', 'version', 
+	protected $fillable = array('content', 'category_id', 'tags', 'version', 
 								'anonymous', 'user_id', 'privacy_id');
 	
 	public function user(){
@@ -8,6 +8,10 @@ class Post extends Eloquent {
 	}
 
 	public function privacy(){
-		return this->belongsTo('Privacy')
+		return this->belongsTo('Privacy');
+	}
+
+	public function category(){
+		return this->belongsTo('Category');
 	}
 }
