@@ -8,10 +8,10 @@ class Post extends Eloquent {
 	}
 
 	public function privacy(){
-		return this->belongsTo('Privacy');
+		return $this->belongsTo('Privacy');
 	}
 
 	public function category(){
-		return this->belongsTo('Category');
+		return $this->belongsTo('Category');
 	}
 }
