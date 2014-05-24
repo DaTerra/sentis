@@ -13,6 +13,10 @@
 
 Route::model('post', 'Post');
 
+Route::get('/', function(){
+	return "All cats";
+});
+
 
 Route::get('posts', function()
 {
