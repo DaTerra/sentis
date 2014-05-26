@@ -40,6 +40,7 @@ Route::group(array('before'=>'auth'), function(){
 			->with('post', $post)
 			->with('method', 'post');
 	});
+	
 	Route::post('posts', function(){
 		$post = Post::create(Input::all());
 		if($post->save()){
