@@ -15,6 +15,11 @@
 @section('content')
 	{{Form::model($post, array('method' => $method, 'url'=>'posts/'.$post->id))}}
 		@unless($method == 'delete')
+			@if($method == 'put')
+				{{ Form::hidden('version', $post->version + 1) }}	
+			@else
+				{{ Form::hidden('version', 1) }}	
+			@endif
 			{{ Form::hidden('user_id', Auth::user()->id) }}
 			<div class="form-group">
 				{{Form::label('Privacy')}}

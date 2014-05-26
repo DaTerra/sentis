@@ -42,7 +42,6 @@ Route::group(array('before'=>'auth'), function(){
 	});
 	Route::post('posts', function(){
 		$post = Post::create(Input::all());
-		$post->user_id = Auth::user()->id;
 		if($post->save()){
 			return Redirect::to('posts/' . $post->id)
 				->with('message', 'Successfully created profile!');
@@ -74,6 +73,28 @@ Route::group(array('before'=>'auth'), function(){
 		}
 	});
 
+	Route::put('posts/{post}', function(Post $post) {
+		if(Auth::user()->canEdit($post)){
+			$post = Post::create(Input::all());
+			if($post->save()){
+				return Redirect::to('posts/' . $post->id)
+					->with('message', 'Successfully created profile!');
+			} else {
+				return Redirect::back()
+					->with('error', 'Could not create profile');
+			}
+		} else {
+			return Redirect::to('posts/' . $post->id)
+				->with('error', "Unauthorized operation");
+		}
+	});
+
+	Route::delete('posts/{post}', function(Post $post) {
+		$post->delete();
+		return Redirect::to('posts')
+		->with('message', 'Successfully deleted page!');
+	});
+
 });
 
 
@@ -89,25 +110,6 @@ Route::get('posts', function()
 Route::get('posts/{post}', function(Post $post) {
 	return View::make('posts.single')
 		->with('post', $post);
-});
-
-
-
-Route::put('posts/{post}', function(Post $post) {
-	if(Auth::user()->canEdit($post)){
-		$post->update(Input::all());
-		return Redirect::to('posts/' . $post->id)
-		->with('message', 'Successfully updated page!');
-	} else {
-		return Redirect::to('posts/' . $post->id)
-			->with('error', "Unauthorized operation");
-	}
-});
-
-Route::delete('posts/{post}', function(Post $post) {
-	$post->delete();
-	return Redirect::to('posts')
-	->with('message', 'Successfully deleted page!');
 });
 
 View::composer('posts.edit', function($view){
