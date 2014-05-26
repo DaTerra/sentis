@@ -15,10 +15,7 @@
 @section('content')
 	{{Form::model($post, array('method' => $method, 'url'=>'posts/'.$post->id))}}
 		@unless($method == 'delete')
-			<div class="form-group">
-				{{Form::label('User')}}
-				{{Form::select('user_id', $user_options)}}
-			</div>
+			{{ Form::hidden('user_id', Auth::user()->id) }}
 			<div class="form-group">
 				{{Form::label('Privacy')}}
 				{{Form::select('privacy_id', $privacy_options)}}

@@ -88,4 +88,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function sentis(){
 		return $this->hasMany('Sentis');
 	}
+
+	public function owns(Post $post){
+		return $this->id == $post->user_id;
+	}
+	
+	public function canEdit(Post $post){
+		return $this->owns($post);
+	}
 }

@@ -37,6 +37,7 @@ class InitialDatabase extends Migration {
 			$table->string('username');
 			$table->string('password');
 			$table->boolean('is_admin');
+			$table->text('remember_token')->nullable();
 			$table->timestamps();
 		});
 		

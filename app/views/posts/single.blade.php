@@ -2,12 +2,15 @@
 
 @section('header')
 	<a href="{{url('/posts')}}">Back to overview</a>
-	<a href="{{url('posts/'.$post->id.'/edit')}}">
+	@if (Auth::user() && Auth::user()->canEdit($post))
+		<a href="{{url('posts/'.$post->id.'/edit')}}">
 		<span class="glyphicon glyphicon-edit"></span> Edit
-	</a>
-	<a href="{{url('posts/'.$post->id.'/delete')}}">
-		<span class="glyphicon glyphicon-trash"></span> Delete
-	</a>
+		</a>
+		<a href="{{url('posts/'.$post->id.'/delete')}}">
+			<span class="glyphicon glyphicon-trash"></span> Delete
+		</a>
+	@endif
+	
 @stop
 
 @section('content')

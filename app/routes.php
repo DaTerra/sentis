@@ -13,8 +13,67 @@
 
 Route::model('post', 'Post');
 
-Route::get('/', function(){
-	return "All cats";
+Route::get('login', function(){
+	return View::make('login');
+});	
+
+Route::post('login', function(){
+	if(Auth::attempt(Input::only('username', 'password'))) {
+		return Redirect::intended('/posts');
+	} else {
+		return Redirect::back()
+			->withInput()
+			->with('error', "Invalid credentials");
+	}
+});
+
+Route::get('logout', function(){
+	Auth::logout();
+	return Redirect::to('/posts')
+		->with('message', 'You are now logged out');
+});	
+
+Route::group(array('before'=>'auth'), function(){
+	Route::get('posts/create', function() {
+		$post = new Post;
+		return View::make('posts.edit')
+			->with('post', $post)
+			->with('method', 'post');
+	});
+	Route::post('posts', function(){
+		$post = Post::create(Input::all());
+		$post->user_id = Auth::user()->id;
+		if($post->save()){
+			return Redirect::to('posts/' . $post->id)
+				->with('message', 'Successfully created profile!');
+		} else {
+			return Redirect::back()
+				->with('error', 'Could not create profile');
+		}
+	});
+
+	Route::get('posts/{post}/edit', function(Post $post) {
+		if(Auth::user()->canEdit($post)){
+			return View::make('posts.edit')
+				->with('post', $post)
+				->with('method', 'put');
+		} else {
+			return Redirect::to('posts/' . $post->id)
+				->with('error', "Unauthorized operation");
+		}
+	});
+
+	Route::get('posts/{post}/delete', function(Post $post) {
+		if(Auth::user()->canEdit($post)){
+			return View::make('posts.edit')
+				->with('post', $post)
+				->with('method', 'delete');
+		} else {
+			return Redirect::to('posts/' . $post->id)
+				->with('error', "Unauthorized operation");
+		}
+	});
+
 });
 
 
@@ -25,40 +84,24 @@ Route::get('posts', function()
 			->with('posts', $posts);
 });
 
-Route::get('posts/create', function() {
-	$post = new Post;
-	return View::make('posts.edit')
-		->with('post', $post)
-		->with('method', 'post');
-});
+
 
 Route::get('posts/{post}', function(Post $post) {
 	return View::make('posts.single')
 		->with('post', $post);
 });
 
-Route::get('posts/{post}/edit', function(Post $post) {
-	return View::make('posts.edit')
-		->with('post', $post)
-		->with('method', 'put');
-});
 
-Route::get('posts/{post}/delete', function(Post $post) {
-	return View::make('posts.edit')
-		->with('post', $post)
-		->with('method', 'delete');
-});
-
-Route::post('posts', function(){
-	$post = Post::create(Input::all());
-	return Redirect::to('posts/' . $post->id)
-	->with('message', 'Successfully created page!');
-});
 
 Route::put('posts/{post}', function(Post $post) {
-	$post->update(Input::all());
-	return Redirect::to('posts/' . $post->id)
-	->with('message', 'Successfully updated page!');
+	if(Auth::user()->canEdit($post)){
+		$post->update(Input::all());
+		return Redirect::to('posts/' . $post->id)
+		->with('message', 'Successfully updated page!');
+	} else {
+		return Redirect::to('posts/' . $post->id)
+			->with('error', "Unauthorized operation");
+	}
 });
 
 Route::delete('posts/{post}', function(Post $post) {
@@ -68,17 +111,9 @@ Route::delete('posts/{post}', function(Post $post) {
 });
 
 View::composer('posts.edit', function($view){
-	$users = User::all();
 	$privacies = Privacy::all();
 	$categories = Category::all();
 	
-	if(count($users) > 0){
-		$user_options = array_combine($users->lists('id'),
-		$users->lists('username'));
-	} else {
-		$user_options = array(null, 'Unspecified');
-	}
-
 	if(count($privacies) > 0){
 		$privacy_options = array_combine($privacies->lists('id'),
 		$privacies->lists('name'));
@@ -93,7 +128,6 @@ View::composer('posts.edit', function($view){
 		$category_options = array(null, 'Unspecified');
 	}
 
-	$view->with('user_options', $user_options);
 	$view->with('privacy_options', $privacy_options);
 	$view->with('category_options', $category_options);
 });
