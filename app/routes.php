@@ -45,11 +45,12 @@ Route::group(array('before'=>'auth'), function(){
 		$post = Post::create(Input::all());
 		if($post->save()){
 			return Redirect::to('posts/' . $post->id)
-				->with('message', 'Successfully created profile!');
+				->with('message', 'Successfully created post!');
 		} else {
 			return Redirect::back()
-				->with('error', 'Could not create profile');
+				->with('error', 'Error creating post!');
 		}
+		
 	});
 
 	Route::get('posts/{post}/edit', function(Post $post) {
