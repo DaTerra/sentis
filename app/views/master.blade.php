@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>Sentis</title>
 		<link rel="stylesheet" href="{{asset('bootstrap.min.css')}}">
+		
 	</head>
 	<body>
 		<div class="container">
@@ -14,7 +15,9 @@
 						<strong>{{{Auth::user()->username}}}</strong>
 						{{link_to('logout', 'Log Out')}}
 					@else
-						{{link_to('login', 'Log In')}}
+						
+							{{link_to('login', 'Log In')}}
+						
 					@endif
 				</div>
 				@yield('header')

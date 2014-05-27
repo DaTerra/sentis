@@ -39,7 +39,7 @@
 			</div>
 			<div class="form-group">
 				{{Form::label('Anonymous')}}
-				{{ Form::checkbox('anonymous') }}
+				{{Form::checkbox('anonymous')}}
 			</div>
 
 			{{Form::submit("Save", array("class"=>"btn btn-default"))}}
