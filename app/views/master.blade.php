@@ -10,14 +10,15 @@
 		<div class="container">
 			<div class="page-header">
 				<div class="text-right">
-					@if(Auth::check())
+
+					@if(!Auth::check())
+						@if(Request::path() !== 'login')
+							{{link_to('login', 'Log In')}}
+						@endif
+					@else
 						Logged in as
 						<strong>{{{Auth::user()->username}}}</strong>
-						{{link_to('logout', 'Log Out')}}
-					@else
-						
-							{{link_to('login', 'Log In')}}
-						
+						{{link_to('logout', 'Log Out')}}		
 					@endif
 				</div>
 				@yield('header')
