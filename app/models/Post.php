@@ -5,7 +5,7 @@ class Post extends Eloquent {
 	protected $fillable = array('content', 'category_id', 'tags', 'version', 
 								'anonymous', 'user_id', 'privacy_id');
 	
-  	
+	
 	public function user(){
 		return $this->belongsTo('User');
 	}

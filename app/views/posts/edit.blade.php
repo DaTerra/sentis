@@ -10,6 +10,15 @@
 			Edit {{$post->content}}
 		@endif
 	</h2>
+	@if ( $errors->count() > 0 )
+    	<div class="alert alert-danger">
+	      	<ul>
+	        	@foreach( $errors->all() as $message )
+	         	 <li>{{ $message }}</li>
+	        	@endforeach
+	      	</ul>	
+      	</div>
+    @endif
 @stop
 
 @section('content')
