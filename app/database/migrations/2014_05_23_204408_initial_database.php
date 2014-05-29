@@ -34,9 +34,9 @@ class InitialDatabase extends Migration {
 		// users table
 		Schema::create('users', function($table){
 			$table->increments('id')->unsigned();
+			$table->string('email');
 			$table->string('username');
 			$table->string('password');
-			$table->boolean('is_admin');
 			$table->text('remember_token')->nullable();
 			$table->timestamps();
 		});

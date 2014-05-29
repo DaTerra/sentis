@@ -37,10 +37,20 @@
 
     </style>
 	{{Form::open(array('class'=>'form-signin'))}}
-		<h2 class="form-signin-heading">Please sign in</h2>
+		<h2 class="form-signin-heading">Please sign up</h2>
+		@if ( $errors->count() > 0 )
+	    	<div class="alert alert-danger">
+		      	<ul>
+		        	@foreach( $errors->all() as $message )
+		         	 <li>{{ $message }}</li>
+		        	@endforeach
+		      	</ul>	
+	      	</div>
+    	@endif
+		{{Form::text('email', null,  ['placeholder'=>'Email', 'class' => 'input-block-level'])}}
 		{{Form::text('username', null,  ['placeholder'=>'Username', 'class' => 'input-block-level'])}}
 		{{ Form::password('password',   ['placeholder'=>'Password', 'class' => 'input-block-level']) }}
-		{{Form::submit('Sign in', array('class' => 'btn btn-large btn-primary'))}}
+		{{Form::submit('Sign up', array('class' => 'btn btn-large btn-primary'))}}
 	{{Form::close()}}
 	
 @stop

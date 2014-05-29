@@ -4,14 +4,14 @@ class UsersTableSeeder extends Seeder {
 		DB::table('users')->insert(
             array(
                     array(
+                            'email'    => 'max@gmail.com',
                             'username' => 'max',
-                            'password' => Hash::make('test'),
-                            'is_admin'  => true
+                            'password' => Hash::make('test')
                     ),
                     array(
+                            'email'    => 'john@gmail.com',
                             'username' => 'john',
-                            'password' => Hash::make('test'),
-                            'is_admin'  => false
+                            'password' => Hash::make('test')
                     ),
             ));
 	}

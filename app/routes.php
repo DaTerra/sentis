@@ -17,6 +17,35 @@ Route::get('login', function(){
 	return View::make('login');
 });	
 
+Route::get('signup', function(){
+	return View::make('signup');
+});
+
+Route::post('signup', function(){
+		
+	$rules = array(
+		'email' 	=> 'required|email|unique:users',
+		'username'	=> 'required|min:5',
+		'password'  => 'required|min:8'
+	);
+
+	$validator = Validator::make(Input::all(), $rules);
+	if ($validator->fails())
+    {
+        return Redirect::back()->withErrors($validator);
+    } else {
+		$user = User::create(Input::all());
+		$user->password = Hash::make(Input::get('password'));
+		if($user->save()){
+			return Redirect::to('login/')
+				->with('message', 'Successfully created user!');
+		} else {
+			return Redirect::back()
+				->with('error', 'Error creating user!');
+		}	
+    }
+});
+
 Route::post('login', function(){
 	if(Auth::attempt(Input::only('username', 'password'))) {
 		return Redirect::intended('/posts');
@@ -27,10 +56,10 @@ Route::post('login', function(){
 	}
 });
 
-Route::get('logout', function(){
+Route::get('signout', function(){
 	Auth::logout();
 	return Redirect::to('/posts')
-		->with('message', 'You are now logged out');
+		->with('message', 'You are now signed out');
 });	
 
 Route::group(array('before'=>'auth'), function(){

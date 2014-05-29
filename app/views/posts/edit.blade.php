@@ -36,7 +36,7 @@
 			</div>
 			<div class="form-group">
 				{{Form::label('Content')}}
-				{{Form::text('content')}}
+				{{ Form::textarea('content', null, ['size' => '30x5']) }}
 			</div>
 			<div class="form-group">
 				{{Form::label('Category')}}

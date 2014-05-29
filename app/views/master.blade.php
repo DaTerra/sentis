@@ -13,12 +13,13 @@
 
 					@if(!Auth::check())
 						@if(Request::path() !== 'login')
-							{{link_to('login', 'Log In')}}
+							{{link_to('login', 'Sign In')}} | 
 						@endif
+						{{link_to('signup', 'Sign Up')}}
 					@else
-						Logged in as
+						Signed in as
 						<strong>{{{Auth::user()->username}}}</strong>
-						{{link_to('logout', 'Log Out')}}		
+						{{link_to('signout', 'Sign Out')}}		
 					@endif
 				</div>
 				@yield('header')
