@@ -9,7 +9,7 @@
 		    }
 
 	      	.form-signin {
-		        max-width: 300px;
+		        max-width: 450px;
 		        padding: 19px 29px 29px;
 		        margin: 0 auto 20px;
 		        background-color: #fff;
@@ -50,7 +50,8 @@
 		{{Form::text('email', null,  ['placeholder'=>'Email', 'class' => 'input-block-level'])}}
 		{{Form::text('username', null,  ['placeholder'=>'Username', 'class' => 'input-block-level'])}}
 		{{ Form::password('password',   ['placeholder'=>'Password', 'class' => 'input-block-level']) }}
-		{{Form::submit('Sign up', array('class' => 'btn btn-large btn-primary'))}}
+		{{ Form::password('password_confirmation', ['placeholder'=>'Password Confirmation', 'class' => 'input-block-level']) }}
+		{{ Form::submit('Sign up', array('class' => 'btn btn-large btn-primary'))}}
 	{{Form::close()}}
 	
 @stop

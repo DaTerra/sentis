@@ -13,54 +13,29 @@
 
 Route::model('post', 'Post');
 
+//****************************************************//
+//***********************User routes******************//
+//****************************************************//
+
 Route::get('login', function(){
 	return View::make('login');
 });	
+
+Route::post('login', 'UserController@login');
 
 Route::get('signup', function(){
 	return View::make('signup');
 });
 
-Route::post('signup', function(){
-		
-	$rules = array(
-		'email' 	=> 'required|email|unique:users',
-		'username'	=> 'required|min:5',
-		'password'  => 'required|min:8'
-	);
-
-	$validator = Validator::make(Input::all(), $rules);
-	if ($validator->fails())
-    {
-        return Redirect::back()->withErrors($validator);
-    } else {
-		$user = User::create(Input::all());
-		$user->password = Hash::make(Input::get('password'));
-		if($user->save()){
-			return Redirect::to('login/')
-				->with('message', 'Successfully created user!');
-		} else {
-			return Redirect::back()
-				->with('error', 'Error creating user!');
-		}	
-    }
-});
-
-Route::post('login', function(){
-	if(Auth::attempt(Input::only('username', 'password'))) {
-		return Redirect::intended('/posts');
-	} else {
-		return Redirect::back()
-			->withInput()
-			->with('error', "Invalid credentials");
-	}
-});
+Route::post('signup', 'UserController@signup');
 
 Route::get('signout', function(){
 	Auth::logout();
 	return Redirect::to('/posts')
 		->with('message', 'You are now signed out');
 });	
+//***********************Finish User routes******************//
+//***********************************************************//
 
 Route::group(array('before'=>'auth'), function(){
 	Route::get('posts/create', function() {
@@ -69,7 +44,7 @@ Route::group(array('before'=>'auth'), function(){
 			->with('post', $post)
 			->with('method', 'post');
 	});
-	
+
 	Route::post('posts', function(){
 		
 		$rules = array(
