@@ -5,6 +5,8 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 
 class User extends Eloquent implements UserInterface, RemindableInterface {
 
+	protected $fillable = array('email', 'username', 'password', 'password_temp', 'code', 'active');
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -12,7 +14,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $table = 'users';
 	
-	protected $fillable = array('email', 'username', 'password');
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -97,5 +98,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	
 	public function canEdit(Post $post){
 		return $this->owns($post);
+	}
+
+	public function canChangePassword(User $user){
+		return $this->id == $user->id;
 	}
 }

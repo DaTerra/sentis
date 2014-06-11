@@ -13,114 +13,144 @@
 
 Route::model('post', 'Post');
 
-//****************************************************//
-//***********************User routes******************//
-//****************************************************//
 
-Route::get('login', function(){
-	return View::make('login');
-});	
+Route::get('/', array(
+	'as'   => 'home',
+	'uses' => 'HomeController@home'
+));
 
-Route::post('login', 'UserController@login');
+Route::get('/user/{username}', array(
+	'as'   => 'profile-user',
+	'uses' => 'ProfileController@user'
+));
 
-Route::get('signup', function(){
-	return View::make('signup');
-});
-
-Route::post('signup', 'UserController@signup');
-
-Route::get('signout', function(){
-	Auth::logout();
-	return Redirect::to('/posts')
-		->with('message', 'You are now signed out');
-});	
-//***********************Finish User routes******************//
-//***********************************************************//
-
+/*
+| Authenticated group
+*/
 Route::group(array('before'=>'auth'), function(){
-	Route::get('posts/create', function() {
-		$post = new Post;
-		return View::make('posts.edit')
-			->with('post', $post)
-			->with('method', 'post');
+	/* 
+	|CSRF Protection
+	*/
+	Route::group(array('before' =>'csrf'), function(){
+		/* 
+		| Change password (POST)
+		*/
+		Route::post('/account/change-password', array(
+			'as' 	=> 'account-change-password-post',
+			'uses' 	=> 'AccountController@postChangePassword'
+		));
+
+		Route::post('/posts/create', array(
+			'as' 	=> 'posts-create-post',
+			'uses' 	=> 'PostController@postCreate'
+		));
 	});
 
-	Route::post('posts', function(){
+	/* 
+	| Signout (GET)
+	*/
+	Route::get('/account/logout', array(
+		'as'   => 'account-logout',
+		'uses' => 'AccountController@getLogout'
+	));
+	
+	/* 
+	| Change Password (GET)
+	*/
+	Route::get('/account/change-password', array(
+		'as'   => 'account-change-password',
+		'uses' => 'AccountController@getChangePassword'
+	));
+
+	/*
+	| Create post (GET)
+	*/
+	Route::get('posts/create', array(
+		'as' 	=> 'posts-create',
+		'uses' 	=> 'PostController@getCreate'
+	));
+
+});
+
+/*
+| Unauthenticated group
+*/
+
+Route::group(array('before'=>'guest'), function(){
+	/* 
+	|CSRF Protection
+	*/
+	Route::group(array('before' =>'csrf'), function(){
+		/* 
+		| Create account (POST)
+		*/
+		Route::post('/account/create', array(
+			'as' => 'account-create-post',
+			'uses' => 'AccountController@postCreate'
+		));
+
+		/* 
+		| Login (POST)
+		*/
+		Route::post('/account/login', array(
+			'as' => 'account-login-post',
+			'uses' => 'AccountController@postLogin'
+		));
+
+		/*
+		| Forgot Password (POST)
+		*/
+		Route::post('/account/forgot-password', array(
+			'as' => 'account-forgot-password-post',
+			'uses' => 'AccountController@postForgotPassword'
+		));
 		
-		$rules = array(
-			'content' 	=> 'required|min:10',
-			'tags' 		=> 'required|min:3'
-		);
-
-		$validator = Validator::make(Input::all(), $rules);
-		if ($validator->fails())
-	    {
-	        return Redirect::back()->withErrors($validator);
-	    } else {
-			$post = Post::create(Input::all());
-			if($post->save()){
-				return Redirect::to('posts/' . $post->id)
-					->with('message', 'Successfully created post!');
-			} else {
-				return Redirect::back()
-					->with('error', 'Error creating post!');
-			}	
-	    }
 	});
+	
+	/* 
+	| Login (GET)
+	*/
+	Route::get('/account/login', array(
+		'as' => 'account-login',
+		'uses' => 'AccountController@getLogin'
+	));
 
-	Route::get('posts/{post}/edit', function(Post $post) {
-		if(Auth::user()->canEdit($post)){
-			return View::make('posts.edit')
-				->with('post', $post)
-				->with('method', 'put');
-		} else {
-			return Redirect::to('posts/' . $post->id)
-				->with('error', "Unauthorized operation");
-		}
-	});
+	/* 
+	| Create account (GET)
+	*/
+	Route::get('/account/create', array(
+		'as' => 'account-create',
+		'uses' => 'AccountController@getCreate'
+	));
+	
+	/* 
+	| Activate account (GET)
+	*/
+	Route::get('/account/activate/{code}', array(
+		'as' => 'account-activate',
+		'uses' => 'AccountController@getActivate'
+	));
+	
+	/*
+	| Forgot Password (GET)
+	*/
+	Route::get('/account/forgot-password', array(
+		'as' => 'account-forgot-password',
+		'uses' => 'AccountController@getForgotPassword'
+	));
 
-	Route::get('posts/{post}/delete', function(Post $post) {
-		if(Auth::user()->canEdit($post)){
-			return View::make('posts.edit')
-				->with('post', $post)
-				->with('method', 'delete');
-		} else {
-			return Redirect::to('posts/' . $post->id)
-				->with('error', "Unauthorized operation");
-		}
-	});
-
-	Route::put('posts/{post}', function(Post $post) {
-		if(Auth::user()->canEdit($post)){
-			$post = Post::create(Input::all());
-			if($post->save()){
-				return Redirect::to('posts/' . $post->id)
-					->with('message', 'Successfully created profile!');
-			} else {
-				return Redirect::back()
-					->with('error', 'Could not create profile');
-			}
-		} else {
-			return Redirect::to('posts/' . $post->id)
-				->with('error', "Unauthorized operation");
-		}
-	});
-
-	Route::delete('posts/{post}', function(Post $post) {
-		$post->delete();
-		return Redirect::to('posts')
-		->with('message', 'Successfully deleted page!');
-	});
-
-});
+	/*
+	| Recover account (GET)
+	*/
+	Route::get('/account/recover/{code}', array(
+		'as' => 'account-recover',
+		'uses' => 'AccountController@getRecover'
+	));
+	
+});	
 
 
-Route::get('posts', function()
-{
-	$posts = Post::all();
-		return View::make('posts.index')
-			->with('posts', $posts);
-});
+
 
 
 

@@ -5,11 +5,10 @@
       		body {
 		        padding-top: 40px;
 		        padding-bottom: 40px;
-		        background-color: #f5f5f5;
 		    }
 
 	      	.form-signin {
-		        max-width: 450px;
+		        max-width: 350px;
 		        padding: 19px 29px 29px;
 		        margin: 0 auto 20px;
 		        background-color: #fff;
@@ -33,25 +32,21 @@
 		     	height: auto;
 		     	margin-bottom: 15px;
 		     	padding: 7px 9px;
+		     	width: 300px;
       		}
+      		.checkbox {
+	  			font-weight: normal;
+			}
 
     </style>
 	{{Form::open(array('class'=>'form-signin'))}}
-		<h2 class="form-signin-heading">Please sign up</h2>
-		@if ( $errors->count() > 0 )
-	    	<div class="alert alert-danger">
-		      	<ul>
-		        	@foreach( $errors->all() as $message )
-		         	 <li>{{ $message }}</li>
-		        	@endforeach
-		      	</ul>	
-	      	</div>
-    	@endif
+		<h2 class="form-signin-heading">Password Recovery</h2>
 		{{Form::text('email', null,  ['placeholder'=>'Email', 'class' => 'input-block-level'])}}
-		{{Form::text('username', null,  ['placeholder'=>'Username', 'class' => 'input-block-level'])}}
-		{{ Form::password('password',   ['placeholder'=>'Password', 'class' => 'input-block-level']) }}
-		{{ Form::password('password_confirmation', ['placeholder'=>'Password Confirmation', 'class' => 'input-block-level']) }}
-		{{ Form::submit('Sign up', array('class' => 'btn btn-large btn-primary'))}}
+		@if($errors->has('email'))
+			<div class="alert alert-danger">{{$errors->first('email')}}</div>
+		@endif
+		
+		{{Form::submit('Recover', array('class' => 'btn btn-large btn-primary'))}}
 	{{Form::close()}}
 	
 @stop

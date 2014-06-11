@@ -10,19 +10,22 @@
 		<div class="container">
 			<div class="page-header">
 				<div class="text-right">
-
+					{{link_to_route('home', 'Home')}} | 
 					@if(!Auth::check())
-						@if(Request::path() !== 'login')
-							{{link_to('login', 'Sign In')}} | 
+						@if(Request::path() !== 'account/login')
+							{{link_to_route('account-login', 'Sign In')}} |   
 						@endif
-						{{link_to('signup', 'Sign Up')}}
+						@if(Request::path() !== 'account/create')
+							{{link_to_route('account-create', 'Sign Up')}} 
+						@endif
 					@else
-						Signed in as
-						<strong>{{{Auth::user()->username}}}</strong>
-						{{link_to('signout', 'Sign Out')}}		
+						{{link_to_route('account-logout', 'Sign out')}} | 
+						Signed in as <strong>{{ link_to_route('profile-user', Auth::user()->username , Auth::user()->username)}} </strong>
 					@endif
 				</div>
+				
 				@yield('header')
+
 			</div>
 			
 			@if(Session::has('message'))

@@ -5,11 +5,10 @@
       		body {
 		        padding-top: 40px;
 		        padding-bottom: 40px;
-		        background-color: #f5f5f5;
 		    }
 
 	      	.form-signin {
-		        max-width: 300px;
+		        max-width: 310px;
 		        padding: 19px 29px 29px;
 		        margin: 0 auto 20px;
 		        background-color: #fff;
@@ -34,13 +33,26 @@
 		     	margin-bottom: 15px;
 		     	padding: 7px 9px;
       		}
+      		.checkbox {
+	  			font-weight: normal;
+			}
 
     </style>
 	{{Form::open(array('class'=>'form-signin'))}}
-		<h2 class="form-signin-heading">Please sign in</h2>
-		{{Form::text('username', null,  ['placeholder'=>'Username', 'class' => 'input-block-level'])}}
-		{{ Form::password('password',   ['placeholder'=>'Password', 'class' => 'input-block-level']) }}
-		{{Form::submit('Sign in', array('class' => 'btn btn-large btn-primary'))}}
+		<h2 class="form-signin-heading">Change Password</h2>
+		{{ Form::password('old_password',   ['placeholder'=>'Old Password', 'class' => 'input-block-level']) }}
+		@if($errors->has('old_password'))
+			<div class="alert alert-danger">{{$errors->first('old_password')}}</div>
+		@endif
+		{{ Form::password('password',   ['placeholder'=>'New Password', 'class' => 'input-block-level']) }}
+		@if($errors->has('password'))
+			<div class="alert alert-danger">{{$errors->first('password')}}</div>
+		@endif
+		{{ Form::password('password_confirmation',   ['placeholder'=>'Password Confirmation', 'class' => 'input-block-level']) }}
+		@if($errors->has('password_confirmation'))
+			<div class="alert alert-danger">{{$errors->first('password_confirmation')}}</div>
+		@endif
+		{{Form::submit('Save', array('class' => 'btn btn-large btn-primary'))}}
 	{{Form::close()}}
 	
 @stop
