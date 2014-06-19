@@ -27,31 +27,40 @@ class AccountController extends BaseController {
 			$username = Input::get('username');
 			$password = Input::get('password');
 			
-			$user = User::where('email', '=', $email)->where('facebook_id', '!=', '');
+			$user = User::where('email', '=', $email);
 
 			if($user->count()){
 				//user already signed up by fb account
 				$user = $user->first();
-				$user->username = $username;
-				$user->password = Hash::make($password);
-				$user->save();
-				if($user){
-					return Redirect::route('home')
-						->with('message', 'Your account has been created!');
-				}
-			} else { //new user
 				
+				if($user->signed_up_by_form == 1){
+					return Redirect::route('account-create')
+						->with('error', 'Email already in use!');
+				} else { 
+					if($user->facebook_id != '') {
+						$user->username = $username;
+						$user->password = Hash::make($password);
+						$user->signed_up_by_form  = 1;
+						$user->save();
+						if($user){
+							return Redirect::route('home')
+								->with('message', 'Your account has been created!');
+						}		
+					} 
+				}
+			} else {
 				$default_avatar_url = URL::to('uploads/default-avatar.png');
 				//activation code
 				$code = str_random(60);
 				
 				$user = User::create(array(
-					'email' 	 => $email,
-					'username'   => $username,
-					'password'   => Hash::make($password),
-					'code'       => $code,
-					'active'     => 0,
-					'avatar_url' => $default_avatar_url
+					'email' 	 		=> $email,
+					'username'   		=> $username,
+					'password'   		=> Hash::make($password),
+					'code'       		=> $code,
+					'active'     		=> 0,
+					'avatar_url' 		=> $default_avatar_url,
+					'signed_up_by_form' => 1
 				));
 				$user->makeRoles('sus');	
 				
@@ -61,7 +70,7 @@ class AccountController extends BaseController {
 					});
 					return Redirect::route('home')
 						->with('message', 'Your account has been created! We have sent you an email to activate your account.');
-				}
+				}		
 			}
 		}
 	}
