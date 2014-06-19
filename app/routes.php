@@ -40,9 +40,20 @@ Route::group(array('before'=>'auth'), function(){
 			'uses' 	=> 'AccountController@postChangePassword'
 		));
 
+		/* 
+		| Post create (POST)
+		*/
 		Route::post('/posts/create', array(
 			'as' 	=> 'posts-create-post',
 			'uses' 	=> 'PostController@postCreate'
+		));
+
+		/* 
+		| Upload Avatar (POST)
+		*/
+		Route::post('/account/upload-avatar', array(
+			'as'   => 'account-upload-avatar-post',
+			'uses' => 'AccountController@postUploadAvatar'
 		));
 	});
 
@@ -69,7 +80,15 @@ Route::group(array('before'=>'auth'), function(){
 		'as' 	=> 'posts-create',
 		'uses' 	=> 'PostController@getCreate'
 	));
+	
 
+	/* 
+	| Upload Avatar (GET)
+	*/
+	Route::get('/account/upload-avatar', array(
+		'as'   => 'account-upload-avatar',
+		'uses' => 'AccountController@getUploadAvatar'
+	));		
 });
 
 /*
@@ -104,15 +123,30 @@ Route::group(array('before'=>'guest'), function(){
 			'as' => 'account-forgot-password-post',
 			'uses' => 'AccountController@postForgotPassword'
 		));
-		
+
+		/*
+		| Recover account (POST)
+		*/
+		Route::post('/account/recover/{code}', array(
+			'as' => 'account-recover-post',
+			'uses' => 'AccountController@postRecover'
+		));
 	});
 	
 	/* 
 	| Login (GET)
 	*/
 	Route::get('/account/login', array(
-		'as' => 'account-login',
+		'as'   => 'account-login',
 		'uses' => 'AccountController@getLogin'
+	));
+
+	/*
+	| Facebook Login (GET)
+	*/
+	Route::get('/account/loginfb', array(
+		'as'   => 'account-login-fb',
+		'uses' =>  'AccountController@getLoginFB'
 	));
 
 	/* 
@@ -122,6 +156,7 @@ Route::group(array('before'=>'guest'), function(){
 		'as' => 'account-create',
 		'uses' => 'AccountController@getCreate'
 	));
+
 	
 	/* 
 	| Activate account (GET)

@@ -120,6 +120,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
+		'Codesleeve\Social\SocialServiceProvider',
 
 	),
 
@@ -186,7 +187,8 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
-		'Debugbar' => 'Barryvdh\Debugbar\Facade',
+		'Debugbar' 		  => 'Barryvdh\Debugbar\Facade',
+		'Social' 		  => 'Codesleeve\Social\Social',
 
 	),
 

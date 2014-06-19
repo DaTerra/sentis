@@ -8,7 +8,7 @@ class AccountController extends BaseController {
 	
 	public function postCreate (){
 		$rules = array(
-			'email' 	=> 'required|max:50|email|unique:users',
+			'email' 	=> 'required|max:50|email',
 			'username'	=> 'required|max:20|min:3|unique:users',
 			'password'  => 'required|min:6',
         	'password_confirmation'=> 'required|same:password'
@@ -27,24 +27,41 @@ class AccountController extends BaseController {
 			$username = Input::get('username');
 			$password = Input::get('password');
 			
-			//activation code
-			$code = str_random(60);
+			$user = User::where('email', '=', $email)->where('facebook_id', '!=', '');
 
-			$user = User::create(array(
-				'email' 	=> $email,
-				'username'  => $username,
-				'password'  => Hash::make($password),
-				'code'      => $code,
-				'active'    => 0
-			));
-
-			if($user){
-				Mail::send('emails.auth.activate', array('link' => URL::route('account-activate', $code), 'username' => $username), function($message) use ($user) {
-					$message->to($user->email, $user->username)->subject('Sentis - Activate your account');
-				});
+			if($user->count()){
+				//user already signed up by fb account
+				$user = $user->first();
+				$user->username = $username;
+				$user->password = Hash::make($password);
+				$user->save();
+				if($user){
+					return Redirect::route('home')
+						->with('message', 'Your account has been created!');
+				}
+			} else { //new user
 				
-				return Redirect::route('home')
-					->with('message', 'Your account has been created! We have sent you an email to activate your account.');
+				$default_avatar_url = URL::to('uploads/default-avatar.png');
+				//activation code
+				$code = str_random(60);
+				
+				$user = User::create(array(
+					'email' 	 => $email,
+					'username'   => $username,
+					'password'   => Hash::make($password),
+					'code'       => $code,
+					'active'     => 0,
+					'avatar_url' => $default_avatar_url
+				));
+				$user->makeRoles('sus');	
+				
+				if($user){
+					Mail::send('emails.auth.activate', array('link' => URL::route('account-activate', $code), 'username' => $username), function($message) use ($user) {
+						$message->to($user->email, $user->username)->subject('Sentis - Activate your account');
+					});
+					return Redirect::route('home')
+						->with('message', 'Your account has been created! We have sent you an email to activate your account.');
+				}
 			}
 		}
 	}
@@ -67,6 +84,57 @@ class AccountController extends BaseController {
 
 		return Redirect::route('account-login')
 			->with('error', 'We could not activate your account. Try again later.');
+	}
+	
+	public function getLoginFB(){
+		$userFB = Social::facebook('user');
+		$user = null;
+		if($userFB) {
+			
+			$user = User::where('email', '=', $userFB->email);
+			
+			//verifies if users is already signed up by his fb email
+			if($user->count()){
+				
+				//if its already signed up update field fb id and create user session
+				$user = $user->first();
+				
+				if((!isset($user->facebook_id) || trim($user->facebook_id)==='')) {
+					Debugbar::info('FBID null... Updating FBID');
+					$user->facebook_id = $userFB->id;
+					$user->active = 1;	
+					$user->code   = '';
+					if($user->save()){
+						Debugbar::info('FBID updated... Authorizing user');
+					}
+				}	
+				
+				
+			} else { //not signed up
+				$email    = $userFB->email;
+				$facebook_id = $userFB->id;
+				$username = $userFB->email;
+				$default_avatar_url = URL::to('uploads/default-avatar.png');
+				
+				$user = User::create(array(
+					'email' 	  => $email,
+					'username'	  => $username,
+					'facebook_id' => $facebook_id,
+					'avatar_url'  => $default_avatar_url,
+					'active'      => 1
+				));
+
+				$user->makeRoles('sus');
+
+				if($user){
+					Debugbar::info('User successfully created!');
+				}
+			}
+			
+			Auth::login($user);
+			Debugbar::info('Done!');
+			return Redirect::intended('/');	
+		}
 	}
 
 	public function getLogin() {
@@ -105,8 +173,7 @@ class AccountController extends BaseController {
 			}
 		}
 
-		return Redirect::route('account-login')
-			->with('error', 'There was a problem with your login.');
+		return Redirect::route('account-login');
 	}
 
 	public function getLogout() {
@@ -176,15 +243,12 @@ class AccountController extends BaseController {
 				
 				//Generate new code and password
 				$code 				 = str_random(60);
-				$password 			 = str_random(10);
 				$user->code 		 = $code;
-				$user->password_temp = Hash::make($password);
-
+				
 				if($user->save()) {
-					Mail::send('emails.auth.forgot', array('link' => URL::route('account-recover', $code), 'username' => $user->username, 'password' => $password), function($message) use ($user) {
-						$message->to($user->email, $user->username)->subject('Sentis - Your new password.');
+					Mail::send('emails.auth.forgot', array('link' => URL::route('account-recover', $code), 'username' => $user->username), function($message) use ($user) {
+						$message->to($user->email, $user->username)->subject('Sentis - Account Recovery.');
 					});
-
 					return Redirect::route('home')
 						->with('message', 'We have sent you a new password by email.');
 				}
@@ -194,25 +258,93 @@ class AccountController extends BaseController {
 		return Redirect::route('account-forgot-password')
 			->with('error', 'Could not request new password. Please try again.');
 	}
+	
+	public function postRecover($code) {
+		$rules = array(
+			'password'  => 'required|min:6',
+			'password_confirmation' => 'required|same:password'
+		);
 
-	public function getRecover($code) {
-		$user = User::where('code', '=', $code)
-					->where('password_temp', '!=', '');
+		$validator = Validator::make(Input::all(), $rules);		
 
-		if($user->count()) {
-			$user = $user->first();
-			$user->password = $user->password_temp;
-			$user->password_temp = '';
-			$user->code = '';
+		if($validator->fails()) {
+			return Redirect::route('account-recover', $code)
+				->withErrors($validator);
+		} else {
 			
-			if($user->save()) {
-				return Redirect::route('home')
-						->with('message', 'Your account has been recovered and you can sign in with you new password.');
-			}			  
+			$user = User::where('code', '=', $code);
+			if($user->count()) {
+				
+				$user = $user->first();
+				$password 		= Input::get('password');
+				$user->password = Hash::make($password);
+				
+				if($user->save()){
+					return Redirect::route('account-login')
+						->with('message', 'Your account was successfully recovered.');
+				}
+
+			} else {
+				return Redirect::route('account-recover', $code)
+					->with('error', 'We could not recover your account. Please try again.');
+			}
+
 		}
 
-		return Redirect::route('home')
-						->with('error', 'Could not recover your account. Please try again.');
+		return Redirect::route('account-recover', $code)
+			->with('error', 'We could not recover your account. Please try again.');
+	}
+
+	public function getRecover($code) {
+		$user = User::where('code', '=', $code);
+		if($user->count()) {
+			return View::make('account.recover_form')
+				->with('code', $code);
+		} else {
+			return Redirect::route('home')
+				->with('error', 'We could not recover your account.');
+		}
+	}
+
+	public function getUploadAvatar() {
+		return View::make('account.avatar');
 	}	
+
+	public function postUploadAvatar() {
+		
+		$rules = array(
+			'avatar' => 'required|image|mimes:jpeg,bmp,png|max:500'
+		);
+
+		$validator = Validator::make(Input::all() , $rules);
+		Debugbar::info("Validation:" .$validator->fails());
+		if($validator->fails()) {
+			return Redirect::route('account-upload-avatar')
+				->withErrors($validator)
+				->withInput();
+		} else {
+			$file = Input::file('avatar');
+ 			$destinationPath = 'public/uploads/'.sha1(Auth::user()->id);
+			$filename  = $file->getClientOriginalName();
+			
+		 	$upload_success = Input::file('avatar')->move($destinationPath, $filename);
+			 
+		 	if($upload_success) {
+		 		$user = User::find(Auth::user()->id);
+		 	   	//update user avatar url
+		 	   	$avatar_url = URL::to('uploads/'.sha1(Auth::user()->id).'/'.$filename);
+		 	   	$user->avatar_url = $avatar_url;
+
+			   	if($user->save()){
+			  		return Redirect::route('home')
+			 			->with('message', 'You have successfully uploaded your avatar!');
+				}
+			} else {
+				return Redirect::route('home')
+					->with('error', 'An error occured while uploading your avatar. Please try again later.');
+			}
+		}	
+	}	
+	
 }
 

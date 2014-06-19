@@ -3,9 +3,10 @@
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
+
 class User extends Eloquent implements UserInterface, RemindableInterface {
 
-	protected $fillable = array('email', 'username', 'password', 'password_temp', 'code', 'active');
+	protected $fillable = array('email', 'username', 'password', 'password_temp', 'code', 'active', 'avatar_url', 'facebook_id');
 
 	/**
 	 * The database table used by the model.
@@ -81,7 +82,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function getReminderEmail()
 	{
 		return $this->email;
-	}
+	} 
 	
 	
 	public function posts(){
@@ -103,4 +104,55 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function canChangePassword(User $user){
 		return $this->id == $user->id;
 	}
+
+	public function roles()
+    {
+        return $this->belongsToMany('Role', 'users_roles');
+    }
+
+    public function hasRole($check)
+    {
+        return in_array($check, array_fetch($this->roles->toArray(), 'name'));
+    }
+
+    /**
+     * Add roles to user depending on each system
+     */
+    public function makeRoles($title)
+    {
+    	$assigned_roles = array();
+ 
+        $roles_id = array_fetch(Role::all()->toArray(), 'id');
+        $roles_name = array_fetch(Role::all()->toArray(), 'name');
+ 		$roles = array_combine($roles_id , $roles_name);
+		switch ($title) {
+            case 'admin':
+                $assigned_roles[] = $this->getIdInArray($roles, 'ADM');
+                $assigned_roles[] = $this->getIdInArray($roles, 'SME');
+                $assigned_roles[] = $this->getIdInArray($roles, 'SUS');
+                break;
+            case 'sus':
+                $assigned_roles[] = $this->getIdInArray($roles, 'SUS');
+                break;
+            case 'sme':
+                $assigned_roles[] = $this->getIdInArray($roles, 'SME');
+                $assigned_roles[] = $this->getIdInArray($roles, 'SUS');
+                break;
+            default:
+                throw new Exception("The employee status entered does not exist");
+        }
+ 		
+        $this->roles()->attach($assigned_roles);
+    }
+
+    private function getIdInArray($array, $term)
+    {
+    	foreach ($array as $key => $value) {
+            if ($value == $term) {
+                return $key;
+            }
+        }
+ 
+        throw new UnexpectedValueException;
+    }
 }
