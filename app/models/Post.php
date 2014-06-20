@@ -2,9 +2,14 @@
 
 class Post extends Eloquent {
 
-	protected $fillable = array('content', 'category_id', 'tags', 'version', 
-								'anonymous', 'user_id', 'privacy_id');
-	
+	protected $fillable = array('user_id', 
+								'anonymous', 
+								'post_geolocation', 
+								'user_geolocation', 
+								'user_ip_address', 
+								'privacy_id',
+								'media_id',
+								'media_url');
 	
 	public function user(){
 		return $this->belongsTo('User');
@@ -14,7 +19,8 @@ class Post extends Eloquent {
 		return $this->belongsTo('Privacy');
 	}
 
-	public function category(){
-		return $this->belongsTo('Category');
-	}
+	public function media()
+    {
+        return $this->belongsTo('Media');
+    }
 }
