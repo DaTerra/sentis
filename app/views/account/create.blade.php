@@ -59,6 +59,9 @@
 			<div class="alert alert-danger">{{$errors->first('password_confirmation')}}</div>
 		@endif
 		{{ Form::submit('Sign up', array('class' => 'btn btn-large btn-primary'))}}
+		<a href="<?= Social::login('facebook') ?>">
+		 	<img style="width:14%;" src="http://ottopilotmedia.com/wp-content/uploads/2012/07/facebook-icon.jpg">
+		 </a>
 	{{Form::close()}}
 	
 @stop
