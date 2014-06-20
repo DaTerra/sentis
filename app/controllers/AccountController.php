@@ -245,7 +245,8 @@ class AccountController extends BaseController {
 				->withInput();
 		} else {
 
-			$user = User::where('email', '=', Input::get('email'));
+			$user = User::where('email', '=', Input::get('email'))
+						->where('signed_up_by_form', '=', 1);
 			
 			if($user->count()) {
 				$user = $user->first();
@@ -265,7 +266,7 @@ class AccountController extends BaseController {
 		}
 
 		return Redirect::route('account-forgot-password')
-			->with('error', 'Could not request new password. Please try again.');
+			->with('error', 'Could not request new password. Please verify the email and try again.');
 	}
 	
 	public function postRecover($code) {
