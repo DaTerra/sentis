@@ -2,9 +2,6 @@
 
 class HomeController extends BaseController {
 
-	
-
-
 	public function home()
 	{
 		$posts = Post::all();

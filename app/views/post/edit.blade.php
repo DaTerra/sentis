@@ -39,10 +39,6 @@
 				{{ Form::textarea('content', null, ['size' => '30x5']) }}
 			</div>
 			<div class="form-group">
-				{{Form::label('Category')}}
-				{{Form::select('category_id', $category_options)}}
-			</div>
-			<div class="form-group">
 				{{Form::label('Tags (separated by commas)')}}
 				{{Form::text('tags')}}
 			</div>

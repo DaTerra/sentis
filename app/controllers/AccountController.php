@@ -327,7 +327,7 @@ class AccountController extends BaseController {
 		);
 
 		$validator = Validator::make(Input::all() , $rules);
-		Debugbar::info("Validation:" .$validator->fails());
+		
 		if($validator->fails()) {
 			return Redirect::route('account-upload-avatar')
 				->withErrors($validator)

@@ -11,18 +11,23 @@
 |
 */
 
-Route::model('post', 'Post');
-
-
 Route::get('/', array(
-	'as'   => 'home',
-	'uses' => 'HomeController@home'
+	'as'   	=> 'home',
+	'uses' 	=> 'HomeController@home'
 ));
 
 Route::get('/user/{username}', array(
-	'as'   => 'profile-user',
-	'uses' => 'ProfileController@user'
+	'as'  	=> 'profile-user',
+	'uses' 	=> 'ProfileController@user'
 ));
+
+/*
+| Post Page
+*/
+Route::get('/posts/{post}', array(
+	'as' 	=> 'post-page',
+	'uses' 	=> 'PostController@getPostPage'
+));	
 
 /*
 | Authenticated group
@@ -52,8 +57,8 @@ Route::group(array('before'=>'auth'), function(){
 		| Upload Avatar (POST)
 		*/
 		Route::post('/account/upload-avatar', array(
-			'as'   => 'account-upload-avatar-post',
-			'uses' => 'AccountController@postUploadAvatar'
+			'as'	=> 'account-upload-avatar-post',
+			'uses'	=> 'AccountController@postUploadAvatar'
 		));
 	});
 
@@ -61,16 +66,16 @@ Route::group(array('before'=>'auth'), function(){
 	| Signout (GET)
 	*/
 	Route::get('/account/logout', array(
-		'as'   => 'account-logout',
-		'uses' => 'AccountController@getLogout'
+		'as'   	=> 'account-logout',
+		'uses' 	=> 'AccountController@getLogout'
 	));
 	
 	/* 
 	| Change Password (GET)
 	*/
 	Route::get('/account/change-password', array(
-		'as'   => 'account-change-password',
-		'uses' => 'AccountController@getChangePassword'
+		'as'   	=> 'account-change-password',
+		'uses' 	=> 'AccountController@getChangePassword'
 	));
 
 	/*
@@ -86,8 +91,8 @@ Route::group(array('before'=>'auth'), function(){
 	| Upload Avatar (GET)
 	*/
 	Route::get('/account/upload-avatar', array(
-		'as'   => 'account-upload-avatar',
-		'uses' => 'AccountController@getUploadAvatar'
+		'as'   	=> 'account-upload-avatar',
+		'uses' 	=> 'AccountController@getUploadAvatar'
 	));		
 });
 
@@ -104,32 +109,32 @@ Route::group(array('before'=>'guest'), function(){
 		| Create account (POST)
 		*/
 		Route::post('/account/create', array(
-			'as' => 'account-create-post',
-			'uses' => 'AccountController@postCreate'
+			'as' 	=> 'account-create-post',
+			'uses' 	=> 'AccountController@postCreate'
 		));
 
 		/* 
 		| Login (POST)
 		*/
 		Route::post('/account/login', array(
-			'as' => 'account-login-post',
-			'uses' => 'AccountController@postLogin'
+			'as' 	=> 'account-login-post',
+			'uses' 	=> 'AccountController@postLogin'
 		));
 
 		/*
 		| Forgot Password (POST)
 		*/
 		Route::post('/account/forgot-password', array(
-			'as' => 'account-forgot-password-post',
-			'uses' => 'AccountController@postForgotPassword'
+			'as' 	=> 'account-forgot-password-post',
+			'uses' 	=> 'AccountController@postForgotPassword'
 		));
 
 		/*
 		| Recover account (POST)
 		*/
 		Route::post('/account/recover/{code}', array(
-			'as' => 'account-recover-post',
-			'uses' => 'AccountController@postRecover'
+			'as' 	=> 'account-recover-post',
+			'uses' 	=> 'AccountController@postRecover'
 		));
 	});
 	
@@ -137,24 +142,24 @@ Route::group(array('before'=>'guest'), function(){
 	| Login (GET)
 	*/
 	Route::get('/account/login', array(
-		'as'   => 'account-login',
-		'uses' => 'AccountController@getLogin'
+		'as'   	=> 'account-login',
+		'uses' 	=> 'AccountController@getLogin'
 	));
 
 	/*
 	| Facebook Login (GET)
 	*/
 	Route::get('/account/loginfb', array(
-		'as'   => 'account-login-fb',
-		'uses' =>  'AccountController@getLoginFB'
+		'as'   	=> 'account-login-fb',
+		'uses' 	=>  'AccountController@getLoginFB'
 	));
 
 	/* 
 	| Create account (GET)
 	*/
 	Route::get('/account/create', array(
-		'as' => 'account-create',
-		'uses' => 'AccountController@getCreate'
+		'as' 	=> 'account-create',
+		'uses' 	=> 'AccountController@getCreate'
 	));
 
 	
@@ -162,26 +167,25 @@ Route::group(array('before'=>'guest'), function(){
 	| Activate account (GET)
 	*/
 	Route::get('/account/activate/{code}', array(
-		'as' => 'account-activate',
-		'uses' => 'AccountController@getActivate'
+		'as' 	=> 'account-activate',
+		'uses'	=> 'AccountController@getActivate'
 	));
 	
 	/*
 	| Forgot Password (GET)
 	*/
 	Route::get('/account/forgot-password', array(
-		'as' => 'account-forgot-password',
-		'uses' => 'AccountController@getForgotPassword'
+		'as' 	=> 'account-forgot-password',
+		'uses' 	=> 'AccountController@getForgotPassword'
 	));
 
 	/*
 	| Recover account (GET)
 	*/
 	Route::get('/account/recover/{code}', array(
-		'as' => 'account-recover',
-		'uses' => 'AccountController@getRecover'
+		'as' 	=> 'account-recover',
+		'uses' 	=> 'AccountController@getRecover'
 	));
-	
 });	
 
 
@@ -189,14 +193,10 @@ Route::group(array('before'=>'guest'), function(){
 
 
 
-Route::get('posts/{post}', function(Post $post) {
-	return View::make('posts.single')
-		->with('post', $post);
-});
+
 
 View::composer('posts.edit', function($view){
 	$privacies = Privacy::all();
-	$categories = Category::all();
 	
 	if(count($privacies) > 0){
 		$privacy_options = array_combine($privacies->lists('id'),
@@ -205,14 +205,6 @@ View::composer('posts.edit', function($view){
 		$user_options = array(null, 'Unspecified');
 	}
 
-	if(count($categories) > 0){
-		$category_options = array_combine($categories->lists('id'),
-		$categories->lists('name'));
-	} else {
-		$category_options = array(null, 'Unspecified');
-	}
-
 	$view->with('privacy_options', $privacy_options);
-	$view->with('category_options', $category_options);
 });
 

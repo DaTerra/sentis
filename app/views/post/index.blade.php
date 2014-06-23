@@ -13,7 +13,6 @@
 	          	<th>User</th>
 			    <th>Privacy</th>
 			    <th>Content</th>
-			    <th>Category</th>
 			    <th>Tags</th>
 			    <th>Version</th>
 			    <th>Anonymous</th>
@@ -26,8 +25,7 @@
 		          	<td>{{{$post->user->username}}}</td>
 		          	<td>{{{$post->privacy->name}}}</td>
 		          	<td>{{{$post->content}}}</td>
-		          	<td>{{{$post->category->name}}}</td>
-		         	<td>{{{$post->tags}}}</td>
+		          	<td>{{{$post->tags}}}</td>
 		          	<td>{{{$post->version}}}</td>
 		          	<td>{{{$post->anonymous}}}</td>
 	        	</tr>

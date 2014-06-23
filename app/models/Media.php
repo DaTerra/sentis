@@ -8,8 +8,8 @@ class Media extends Eloquent {
      */
     public $timestamps = false;
 
-    public function posts()
+    public function postContents()
     {
-        return $this->hasMany('Post');
+        return $this->hasMany('PostContent');
     }
 }

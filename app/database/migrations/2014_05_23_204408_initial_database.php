@@ -25,11 +25,6 @@ class InitialDatabase extends Migration {
 			$table->binary('icon');
 		});
 		
-		// categories domain table
-		Schema::create('categories', function($table){
-			$table->increments('id')->unsigned();
-			$table->string('name');
-		});
 		
 		// users table
 		Schema::create('users', function($table){

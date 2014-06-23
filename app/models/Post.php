@@ -7,11 +7,10 @@ class Post extends Eloquent {
 								'post_geolocation', 
 								'user_geolocation', 
 								'user_ip_address', 
-								'privacy_id',
-								'media_id',
-								'media_url');
+								'privacy_id');
+								
 	
-	public function user(){
+	public function user() {
 		return $this->belongsTo('User');
 	}
 
@@ -19,8 +18,12 @@ class Post extends Eloquent {
 		return $this->belongsTo('Privacy');
 	}
 
-	public function media()
+	public function tags()
     {
-        return $this->belongsTo('Media');
+        return $this->belongsToMany('Tag', 'posts_tags');
     }
+
+	public function postContent(){
+		return $this->hasOne('PostContent');
+	}
 }

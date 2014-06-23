@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('header')
-	<a href="{{url('/posts')}}">Back to overview</a>
+	<a href="{{url('/')}}">Back to overview</a>
 	@if (Auth::user() && Auth::user()->canEdit($post))
 		<a href="{{url('posts/'.$post->id.'/edit')}}">
 		<span class="glyphicon glyphicon-edit"></span> Edit
@@ -17,8 +17,5 @@
 	User: {{{$post->user->username}}} </br>
 	Privacy: {{{$post->privacy->name}}} </br>
 	Content: {{{$post->content}}} </br>
-	Category: {{{$post->category->name}}} </br>
-	Tags: {{{$post->tags}}} </br>
-	Version: {{{$post->version}}} </br>
 	Anonyomus: {{{$post->anonymous}}} </br>
 @stop
