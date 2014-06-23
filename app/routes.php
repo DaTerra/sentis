@@ -10,6 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+Route::model('post', 'Post');
 
 Route::get('/', array(
 	'as'   	=> 'home',
@@ -24,10 +25,10 @@ Route::get('/user/{username}', array(
 /*
 | Post Page
 */
-Route::get('/posts/{post}', array(
-	'as' 	=> 'post-page',
+Route::get('/posts/page/{id}', array(
+	'as' 	=> 'posts-page',
 	'uses' 	=> 'PostController@getPostPage'
-));	
+));
 
 /*
 | Authenticated group
@@ -46,7 +47,7 @@ Route::group(array('before'=>'auth'), function(){
 		));
 
 		/* 
-		| Post create (POST)
+		| Post Create (POST)
 		*/
 		Route::post('/posts/create', array(
 			'as' 	=> 'posts-create-post',
@@ -81,7 +82,7 @@ Route::group(array('before'=>'auth'), function(){
 	/*
 	| Create post (GET)
 	*/
-	Route::get('posts/create', array(
+	Route::get('/posts/create', array(
 		'as' 	=> 'posts-create',
 		'uses' 	=> 'PostController@getCreate'
 	));
@@ -93,7 +94,7 @@ Route::group(array('before'=>'auth'), function(){
 	Route::get('/account/upload-avatar', array(
 		'as'   	=> 'account-upload-avatar',
 		'uses' 	=> 'AccountController@getUploadAvatar'
-	));		
+	));
 });
 
 /*

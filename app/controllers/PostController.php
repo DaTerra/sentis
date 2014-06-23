@@ -99,8 +99,9 @@ class PostController extends BaseController {
 		}
 	}
 
-	public function getPostPage($post){
-		$post = Post::find($post);
+	public function getPostPage($id){
+		Debugbar::info($id);
+		$post = Post::find($id);
 		return View::make('post.single')
 			->with('post', $post);
 	}

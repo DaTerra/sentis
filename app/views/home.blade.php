@@ -25,7 +25,7 @@
 	    <tbody>
 	        @foreach($posts as $post)
 		        <tr>
-		        	<td>{{ link_to_route('post-page', $post->id, $post->id)}}</td>
+		        	<td>{{ link_to_route('posts-page', $post->id, $post->id)}}</td>
 		          	<td>{{{$post->postContent['title']}}}</td>
 		          	<td>{{{$post->postContent['content']}}}</td>
 		          	<td>{{{$post->postContent['source_url']}}}</td>
@@ -42,7 +42,8 @@
 	    </tbody>
 	</table>
 	
-	<a href="{{url('posts/create')}}" class="btn btn-primary pull-right">
-		Add a new Post
-	</a>
+	<td>
+		{{ link_to_route('posts-create', 'Add a new Post', null, ['class' => 'btn btn-primary pull-right'] )}}
+	</td>
+	
 @stop
