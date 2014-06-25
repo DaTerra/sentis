@@ -3,16 +3,9 @@
 @section('content')
 	<link rel="stylesheet" href="{{ URL::asset('select2/select2.css') }}">
 	<script type="text/javascript" src="{{ URL::asset('select2/select2.js') }}"></script>
-	<script>
-        $(document).ready(function() { $("#e1").select2(); });
-    </script>
 
 	{{Form::open(array('class'=>'form-signin', 'enctype' => 'multipart/form-data'))}}
 		<h2 class="form-signin-heading">Create a Post</h2>
-		 <select id="e1">
-	        <option value="AL">Alabama</option>
-	        <option value="WY">Wyoming</option>
-    	</select>
 		{{Form::label('title', 'Title')}}
 		{{Form::text('title', null,  ['placeholder'=>'Title', 'class' => 'input-block-level'])}}
 		@if($errors->has('title'))
