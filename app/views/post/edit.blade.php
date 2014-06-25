@@ -1,55 +1,47 @@
 @extends('master')
-@section('header')
-	<a href="{{('/posts/'.$post->id.'')}}">&larr; Cancel </a>
-	<h2>
-		@if($method == 'post')
-			Add a new post
-		@elseif($method == 'delete')
-			Delete {{$post->content}}?
-		@else
-			Edit {{$post->content}}
-		@endif
-	</h2>
-	@if ( $errors->count() > 0 )
-    	<div class="alert alert-danger">
-	      	<ul>
-	        	@foreach( $errors->all() as $message )
-	         	 <li>{{ $message }}</li>
-	        	@endforeach
-	      	</ul>	
-      	</div>
-    @endif
-@stop
 
 @section('content')
-	{{Form::model($post, array('method' => $method, 'url'=>'posts/'.$post->id))}}
-		@unless($method == 'delete')
-			@if($method == 'put')
-				{{ Form::hidden('version', $post->version + 1) }}	
-			@else
-				{{ Form::hidden('version', 1) }}	
-			@endif
-			{{ Form::hidden('user_id', Auth::user()->id) }}
-			<div class="form-group">
-				{{Form::label('Privacy')}}
-				{{Form::select('privacy_id', $privacy_options)}}
-			</div>
-			<div class="form-group">
-				{{Form::label('Content')}}
-				{{ Form::textarea('content', null, ['size' => '30x5']) }}
-			</div>
-			<div class="form-group">
-				{{Form::label('Tags (separated by commas)')}}
-				{{Form::text('tags')}}
-			</div>
-			<div class="form-group">
-				{{Form::label('Anonymous')}}
-				{{Form::checkbox('anonymous')}}
-			</div>
-
-			{{Form::submit("Save", array("class"=>"btn btn-default"))}}
-		@else
-			{{Form::submit("Delete", array("class"=>"btn btn-default"))}}
+	
+	{{Form::open(array('method' => 'put', 'class'=>'form-signin', 'enctype' => 'multipart/form-data'))}}
+		<h2 class="form-signin-heading">Edit a Post</h2>
+		
+		{{Form::label('title', 'Title')}}
+		{{Form::text('title', $post->postContent['title'],  ['placeholder'=>'Title', 'class' => 'input-block-level'])}}
+		@if($errors->has('title'))
+			<div class="alert alert-danger">{{$errors->first('title')}}</div>
 		@endif
+		
+		{{Form::label('content', 'Content')}}
+		{{ Form::textarea('content', $post->postContent['content'], ['placeholder'=>'Content', 'size' => '48x10', 'class' => 'input-block-level']) }}
+		@if($errors->has('content'))
+			<div class="alert alert-danger">{{$errors->first('content')}}</div>
+		@endif
+		
+		{{Form::label('source_url', 'Source')}}
+		{{Form::text('source_url', $post->postContent['source_url'],  ['placeholder'=>'Source', 'class' => 'input-block-level'])}}
+		@if($errors->has('source_url'))
+			<div class="alert alert-danger">{{$errors->first('source_url')}}</div>
+		@endif
+		
+		{{Form::label('media', 'Media')}}
+		@if($post->postContent['media_url'])
+			<img style="width:80%" src="{{{$post->postContent['media_url']}}}"/>
+		@endif
+		
+		</br></br>
+
+		{{Form::file('media')}}
+		@if($errors->has('media'))
+			<div class="alert alert-danger">{{$errors->first('media')}}</div>
+		@endif
+		
+		</br>
+		
+		{{ Form::submit('Save', array('class' => 'btn btn-large btn-primary'))}}
+		<input type="checkbox" name="anonymous", id="anonymous" value="1" 
+			@if($post->anonymous == 1)checked @endif />
+		{{Form::label('anonymous', 'Post Anonymously?')}}
+
 	{{Form::close()}}
+	
 @stop

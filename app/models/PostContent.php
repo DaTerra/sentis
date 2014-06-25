@@ -9,6 +9,9 @@ class PostContent extends Eloquent {
 								'source_url',
 								'media_id',
 								'media_url');
+	
+	protected $primaryKey = 'post_id';
+
 
 	public $timestamps = false;
 	

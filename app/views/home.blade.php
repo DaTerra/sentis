@@ -33,7 +33,9 @@
 		          	<td>
 		          	<img style="width:30%;" src="{{{$post->postContent['media_url']}}}"/>
 		          	</td>
-		          	<td>{{{$post->user->username}}}</td>
+		          	<td>
+						{{link_to_route('profile-user',$post->user->username,  $post->user->username)}}
+		          	</td>
 		          	<td>{{{$post->privacy->name}}}</td>
 		          	<td>{{{$post->anonymous}}}</td>
 		          	<td>{{{$post->user_ip_address}}}</td>

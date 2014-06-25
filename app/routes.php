@@ -12,23 +12,6 @@
 */
 Route::model('post', 'Post');
 
-Route::get('/', array(
-	'as'   	=> 'home',
-	'uses' 	=> 'HomeController@home'
-));
-
-Route::get('/user/{username}', array(
-	'as'  	=> 'profile-user',
-	'uses' 	=> 'ProfileController@user'
-));
-
-/*
-| Post Page
-*/
-Route::get('/posts/page/{id}', array(
-	'as' 	=> 'posts-page',
-	'uses' 	=> 'PostController@getPostPage'
-));
 
 /*
 | Authenticated group
@@ -61,6 +44,22 @@ Route::group(array('before'=>'auth'), function(){
 			'as'	=> 'account-upload-avatar-post',
 			'uses'	=> 'AccountController@postUploadAvatar'
 		));
+		
+		/*
+		| Post Delete
+		*/
+		Route::delete('posts/{id}/delete', array(
+			'as' 	=> 'posts-delete',
+			'uses' 	=> 'PostController@postDelete'
+		));
+
+		/*
+		| Post Update
+		*/
+		Route::put('posts/{id}/edit', array(
+			'as'	=> 'posts-edit',
+			'uses'	=> 'PostController@postEdit'
+		));
 	});
 
 	/* 
@@ -87,13 +86,28 @@ Route::group(array('before'=>'auth'), function(){
 		'uses' 	=> 'PostController@getCreate'
 	));
 	
-
 	/* 
 	| Upload Avatar (GET)
 	*/
 	Route::get('/account/upload-avatar', array(
 		'as'   	=> 'account-upload-avatar',
 		'uses' 	=> 'AccountController@getUploadAvatar'
+	));
+
+	/* 
+	| Delete Post (GET)
+	*/
+	Route::get('/posts/{id}/delete', array(
+		'as'  	=> 'posts-delete',
+		'uses'	=> 'PostController@getDelete'
+	));
+
+	/*
+	| Edit Post (GET)
+	*/
+	Route::get('/posts/{id}/edit', array(
+		'as'	=> 'posts-edit',
+		'uses'	=> 'PostController@getEdit'
 	));
 });
 
@@ -186,6 +200,35 @@ Route::group(array('before'=>'guest'), function(){
 	Route::get('/account/recover/{code}', array(
 		'as' 	=> 'account-recover',
 		'uses' 	=> 'AccountController@getRecover'
+	));
+
+	Route::get('/user/{username}', array(
+		'as'  	=> 'profile-user',
+		'uses' 	=> 'ProfileController@user'
+	));
+
+	/*
+	| HOME (GET)
+	*/
+	Route::get('/', array(
+		'as'   	=> 'home',
+		'uses' 	=> 'HomeController@home'
+	));
+
+	/*
+	| Post Page (GET)
+	*/
+	Route::get('/posts/{id}/page/', array(
+		'as' 	=> 'posts-page',
+		'uses' 	=> 'PostController@getPostPage'
+	));
+
+	/*
+	| Post Test (GET)
+	*/
+	Route::get('/posts/test/', array(
+		'as' 	=> 'posts-test',
+		'uses' 	=> 'PostController@getTest'
 	));
 });	
 

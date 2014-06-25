@@ -7,7 +7,8 @@ class Post extends Eloquent {
 								'post_geolocation', 
 								'user_geolocation', 
 								'user_ip_address', 
-								'privacy_id');
+								'privacy_id',
+								'status');
 								
 	
 	public function user() {

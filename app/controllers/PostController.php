@@ -100,9 +100,148 @@ class PostController extends BaseController {
 	}
 
 	public function getPostPage($id){
-		Debugbar::info($id);
 		$post = Post::find($id);
 		return View::make('post.single')
 			->with('post', $post);
+	}
+
+	public function getDelete($id) {
+		$post = Post::find($id);
+		if(Auth::user()->canEdit($post)){
+			return View::make('post.delete')
+				->with('post', $post);
+		} else {
+			return Redirect::to('/')
+				->with('error', "Unauthorized operation");
+		}
+	}
+
+	public function postDelete($id){
+		$post = Post::find($id);
+		$post->status = 0;
+		if($post->save()){
+			return Redirect::to('/')
+				->with('message', 'Successfully deleted post!');	
+		} else{
+			return Redirect::to('/')
+				->with('message', 'We could not delete your post. Please try again later.');	
+		}
+	}
+
+	public function getEdit($id) {
+		$post = Post::find($id);
+		if(Auth::user()->canEdit($post)){
+			return View::make('post.edit')
+				->with('post', $post);
+		} else {
+			return Redirect::to('/')
+				->with('error', "Unauthorized operation");
+		}
+	}
+
+	public function postEdit($id) {
+		
+		$post = Post::find($id);
+		$post_content = $post->post_content;
+
+		if(Auth::user()->canEdit($post)){
+			$rules = array(
+				'title' 			=> 'max:80',
+				'content' 			=> 'max:500',
+				'source_url' 		=> 'max:250|url',
+				'media' => 'image|mimes:jpeg,bmp,png|max:500'
+			);
+
+			$validator = Validator::make(Input::all(), $rules);
+			
+			if ($validator->fails())
+	   	 	{
+	        	return Redirect::route('posts-edit', $id)
+	        		->withErrors($validator)
+	        		->withInput();
+	    	} else {
+
+				$anonymous 		 = Input::get('anonymous', 0);
+				$user_ip_address = Request::getClientIp();
+				
+				//PostContent Data
+				$title 	 		 = Input::get('title');
+				$content 		 = Input::get('content');
+				$source_url 	 = Input::get('source_url');
+				$media 			 = Input::file('media');
+
+				$media_type 	 = Media::where('type', '=', 'image');
+
+				if($media_type->count()){
+					$media_type = $media_type->first();
+				}
+
+				//AT LEAST ONE FIELD MUST BE FILLED
+				$custom_validator = !((empty($title)) 		&& 
+									  (empty($content)) 	&& 
+									  (empty($source_url)) 	&& 
+									  (empty($media)) 		&&
+									  (empty($post_content->media_url)));
+		
+				if($custom_validator) {
+					$post->anonymous 			= $anonymous;
+					$post->user_ip_address 		= $user_ip_address;
+					$post_content->title		= $title;
+					$post_content->content 		= $content;
+					$post_content->source_url 	= $source_url;
+					
+					//MEDIA URL
+					$upload_success = true;
+
+					if($media){
+						$destinationPath = 'public/uploads/'.sha1(Auth::user()->id) .'/post/' .sha1($post->id);
+						$filename  		 = $media->getClientOriginalName();
+						$media_url 		 = URL::to('uploads/'.sha1(Auth::user()->id) .'/post/' .sha1($post->id) .'/'.$filename);
+						$post_content->media_url = $media_url;	
+						$post_content->media_id  = $media_type->id;
+						
+						//MEDIA UPLOAD
+						$upload_success = $media->move($destinationPath, $filename);
+						
+						//REMOVE LAST MEDIA IF EXISTS
+					} 
+					
+					if( ($post->save()) && ($post_content->save()) && ($upload_success))	{
+						return Redirect::route('home')
+							->with('message', 'Your post was successfully edited!');
+					} else { 
+						return Redirect::route('posts-edit')
+							->with('error', 'An error occured creating yout post or uploading your post media. Please try again later.')
+							->withInput();
+					}
+					
+				} else {
+					return Redirect::route('posts-edit')
+		        		->with('error', 'At least one field needs to be filled')
+		        		->withInput();
+				}
+			}	
+		}
+		
+		//Pegar os inputs da tela
+		//Criar um novo post com o anonymous value e user ip novo
+		//Criar novo post content com main_post da versao anterior
+		//e campos alterados na tela
+		//se imagem for vazia copia a antiga para o novo post
+
+		
+		// if(Auth::user()->canEdit($post)){
+			// 	$post = Post::create(Input::all());
+			// 	if($post->save()){
+			// 		return Redirect::to('posts/' . $post->id)
+			// 			->with('message', 'Successfully created profile!');
+			// 	} else {
+			// 		return Redirect::back()
+			// 			->with('error', 'Could not create profile');
+			// 	}
+			// } else {
+			// 	return Redirect::to('posts/' . $post->id)
+			// 		->with('error', "Unauthorized operation");
+			// }
 	}
 }

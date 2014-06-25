@@ -1,47 +1,18 @@
 @extends('master')
 
 @section('content')
-	<style type="text/css">
-      		body {
-		        padding-bottom: 40px;
-		    }
+	<link rel="stylesheet" href="{{ URL::asset('select2/select2.css') }}">
+	<script type="text/javascript" src="{{ URL::asset('select2/select2.js') }}"></script>
+	<script>
+        $(document).ready(function() { $("#e1").select2(); });
+    </script>
 
-	      	.form-signin {
-		        max-width: 370px;
-		        padding: 19px 29px 29px;
-		        margin: 0 auto 20px;
-		        background-color: #fff;
-		        border: 1px solid #e5e5e5;
-		        -webkit-border-radius: 5px;
-		           -moz-border-radius: 5px;
-		                border-radius: 5px;
-		        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-		           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-		                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-	      	}
-	      
-	      	.form-signin .form-signin-heading,
-	      	.form-signin .checkbox {
-	        	margin-bottom: 10px;
-	      	}
-		    
-		    .form-signin input[type="text"],
-		    .form-signin input[type="password"] {
-		    	font-size: 16px;
-		     	height: auto;
-		     	width: 310px;
-		     	margin-bottom: 15px;
-		     	padding: 7px 9px;
-      		}
-
-      		.checkbox {
-	  			font-weight: normal;
-			}
-
-    </style>
 	{{Form::open(array('class'=>'form-signin', 'enctype' => 'multipart/form-data'))}}
 		<h2 class="form-signin-heading">Create a Post</h2>
-		
+		 <select id="e1">
+	        <option value="AL">Alabama</option>
+	        <option value="WY">Wyoming</option>
+    	</select>
 		{{Form::label('title', 'Title')}}
 		{{Form::text('title', null,  ['placeholder'=>'Title', 'class' => 'input-block-level'])}}
 		@if($errors->has('title'))
@@ -65,7 +36,15 @@
 		@if($errors->has('media'))
 			<div class="alert alert-danger">{{$errors->first('media')}}</div>
 		@endif
+				
+		</br>
 		
+		{{Form::label('tags', 'Tags')}}
+		{{Form::text('tags', null,  ['placeholder'=>'Tags', 'class' => 'input-block-level'])}}
+		@if($errors->has('tags'))
+			<div class="alert alert-danger">{{$errors->first('tags')}}</div>
+		@endif
+
 		</br>
 		
 		{{ Form::submit('Create', array('class' => 'btn btn-large btn-primary'))}}
@@ -73,5 +52,5 @@
 		{{Form::label('anonymous', 'Post Anonymously?')}}
 
 	{{Form::close()}}
-	
+
 @stop
