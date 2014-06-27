@@ -16,6 +16,7 @@
 	        	<th>Source</th>
 				<th>Media Type</th>
 				<th>Media URL</th>
+				<th>Tags</th>
 	        	<th>User</th>
 			    <th>Privacy</th>
 			    <th>Anonymous</th>
@@ -32,6 +33,11 @@
 		          	<td>{{{$post->postContent['media']['type']}}}</td>
 		          	<td>
 		          	<img style="width:30%;" src="{{{$post->postContent['media_url']}}}"/>
+		          	</td>
+		          	<td>
+		          		@foreach ($post->tags as $tag)
+	    					<p>{{ $tag->name }}</p>
+						@endforeach
 		          	</td>
 		          	<td>
 						{{link_to_route('profile-user',$post->user->username,  $post->user->username)}}

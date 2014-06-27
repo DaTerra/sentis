@@ -27,6 +27,7 @@
 		        	<th>Source</th>
 					<th>Media Type</th>
 					<th>Media URL</th>
+					<th>Tags</th>
 		        	<th>User</th>
 				    <th>Privacy</th>
 				    <th>Anonymous</th>
@@ -44,6 +45,11 @@
 			          	<td>
 			          	<img style="width:30%;" src="{{{$post->postContent['media_url']}}}"/>
 			          	</td>
+			          	<td>
+			          		@foreach ($post->tags as $tag)
+		    					<p>{{ $tag->name }}</p>
+							@endforeach
+		          		</td>
 			          	<td>{{{$post->user->username}}}</td>
 			          	<td>{{{$post->privacy->name}}}</td>
 			          	<td>{{{$post->anonymous}}}</td>

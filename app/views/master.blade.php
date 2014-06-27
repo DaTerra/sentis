@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Sentis</title>
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 		<link rel="stylesheet" href="{{asset('bootstrap.min.css')}}">
 		<style type="text/css">
       		body {
@@ -48,7 +48,7 @@
 		<div class="container">
 			<div class="page-header">
 				<div class="text-right">
-					{{link_to_route('home', 'Home')}} | 
+                    {{link_to_route('home', 'Home')}} |
 					@if(!Auth::check())
 						@if(Request::path() !== 'account/login')
 							{{link_to_route('account-login', 'Sign In')}} |   
@@ -65,7 +65,6 @@
 				@yield('header')
 
 			</div>
-			
 			@if(Session::has('message'))
 				<div class="alert alert-success">
 					{{Session::get('message')}}

@@ -8,22 +8,35 @@ class PostController extends BaseController {
 	}
 
 	public function postCreate() {
+		
 		$rules = array(
 			'title' 			=> 'max:80',
 			'content' 			=> 'max:500',
 			'source_url' 		=> 'max:250|url',
-			'media' => 'image|mimes:jpeg,bmp,png|max:500'
+			'media' 			=> 'image|mimes:jpeg,bmp,png|max:500',
+			'tags'  			=> 'required'
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
+		$tagsAsArray = json_decode(Input::get('tagsJSON'), true);
 		
+		$tag_validator = count($tagsAsArray) >= 1;
+
 		if ($validator->fails())
    	 	{
+        
         	return Redirect::route('posts-create')
         		->withErrors($validator)
         		->withInput();
+    	
+    	} elseif (!$tag_validator){
+    	
+    		return Redirect::route('posts-create')
+        		->with('error', 'At least ONE tag must be informed.')
+        		->withInput();
+    	
     	} else {
-
+			
 			//Post user data
 			$user 			 = Auth::user();
 			$anonymous 		 = Input::get('anonymous', 0);
@@ -57,6 +70,20 @@ class PostController extends BaseController {
 				$post->privacy_id 			= $privacy->id;
 				
 				if($post->save()){
+					$post_tags_ids = [];
+					foreach ($tagsAsArray as $tag) {
+						if(Tag::find($tag['id'])){
+							array_push($post_tags_ids, $tag['id']);
+						} else {
+							$new_tag = new Tag;
+							$new_tag->name = $tag['text'];
+							$new_tag->save();
+							array_push($post_tags_ids, $new_tag->id);
+						}
+					}
+
+					//saving post tags
+					$post->tags()->sync($post_tags_ids);	
 					$post_content 				= new PostContent;
 					$post_content->title 		= $title;
 					$post_content->content 		= $content;
@@ -206,6 +233,8 @@ class PostController extends BaseController {
 						//REMOVE LAST MEDIA IF EXISTS
 					} 
 					
+					//BEFORE UPDATE, SAVE THE OLD VALUES TO HISTORY TABLE
+
 					if( ($post->save()) && ($post_content->save()) && ($upload_success))	{
 						return Redirect::route('home')
 							->with('message', 'Your post was successfully edited!');
@@ -222,26 +251,5 @@ class PostController extends BaseController {
 				}
 			}	
 		}
-		
-		//Pegar os inputs da tela
-		//Criar um novo post com o anonymous value e user ip novo
-		//Criar novo post content com main_post da versao anterior
-		//e campos alterados na tela
-		//se imagem for vazia copia a antiga para o novo post
-
-		
-		// if(Auth::user()->canEdit($post)){
-			// 	$post = Post::create(Input::all());
-			// 	if($post->save()){
-			// 		return Redirect::to('posts/' . $post->id)
-			// 			->with('message', 'Successfully created profile!');
-			// 	} else {
-			// 		return Redirect::back()
-			// 			->with('error', 'Could not create profile');
-			// 	}
-			// } else {
-			// 	return Redirect::to('posts/' . $post->id)
-			// 		->with('error', "Unauthorized operation");
-			// }
 	}
 }

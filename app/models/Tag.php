@@ -1,5 +1,5 @@
 <?php
-class Role extends Eloquent {
+class Tag extends Eloquent {
 	protected $fillable = array('name', 'description');
 	
  	/**

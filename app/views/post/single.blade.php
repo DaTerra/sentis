@@ -51,6 +51,13 @@
 	      	</div>
       	@endif
       	
+		<div>
+      		<label>Tags:</label>
+      			@foreach ($post->tags as $tag)
+	    			<p>{{ $tag->name }} </p>
+				@endforeach
+      	</div>
+
       	<div>
       		<label>Author:</label>
       		{{link_to_route('profile-user',$post->user->username,  $post->user->username)}}

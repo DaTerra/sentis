@@ -12,7 +12,6 @@
 */
 Route::model('post', 'Post');
 
-
 /*
 | Authenticated group
 */
@@ -224,31 +223,11 @@ Route::group(array('before'=>'guest'), function(){
 	));
 
 	/*
-	| Post Test (GET)
+	| Search Tag By Name (GET)
 	*/
-	Route::get('/posts/test/', array(
-		'as' 	=> 'posts-test',
-		'uses' 	=> 'PostController@getTest'
+	Route::get('/tags/get-tags-by-name/', array(
+		'as' 	=> 'tags-by-name',
+		'uses' 	=> 'TagController@getTagsByName'
 	));
 });	
-
-
-
-
-
-
-
-
-View::composer('posts.edit', function($view){
-	$privacies = Privacy::all();
-	
-	if(count($privacies) > 0){
-		$privacy_options = array_combine($privacies->lists('id'),
-		$privacies->lists('name'));
-	} else {
-		$user_options = array(null, 'Unspecified');
-	}
-
-	$view->with('privacy_options', $privacy_options);
-});
 
