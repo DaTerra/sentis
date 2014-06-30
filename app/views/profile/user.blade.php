@@ -32,6 +32,7 @@
 				    <th>Privacy</th>
 				    <th>Anonymous</th>
 				    <th>IP Address</th>
+                    <th>Status</th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -47,13 +48,14 @@
 			          	</td>
 			          	<td>
 			          		@foreach ($post->tags as $tag)
-		    					<p>{{ $tag->name }}</p>
+                                <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
 							@endforeach
 		          		</td>
 			          	<td>{{{$post->user->username}}}</td>
 			          	<td>{{{$post->privacy->name}}}</td>
 			          	<td>{{{$post->anonymous}}}</td>
 			          	<td>{{{$post->user_ip_address}}}</td>
+                        <td>{{{$post->status}}}</td>
 		        	</tr>
 		        @endforeach
 		    </tbody>

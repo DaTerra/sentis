@@ -229,5 +229,15 @@ Route::group(array('before'=>'guest'), function(){
 		'as' 	=> 'tags-by-name',
 		'uses' 	=> 'TagController@getTagsByName'
 	));
+
+    Route::get('/tags/{id}/page/', array(
+        'as' 	=> 'tags-page',
+        'uses' 	=> 'TagController@getTagPage'
+    ));
+
+    Route::get('/tags/', array(
+        'as' 	=> 'tags',
+        'uses' 	=> 'TagController@getTags'
+    ));
 });	
 

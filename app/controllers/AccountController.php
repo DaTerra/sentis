@@ -62,7 +62,8 @@ class AccountController extends BaseController {
 					'avatar_url' 		=> $default_avatar_url,
 					'signed_up_by_form' => 1
 				));
-				$user->makeRoles('sus');	
+
+                $user->makeRoles('sus');
 				
 				if($user){
 					Mail::send('emails.auth.activate', array('link' => URL::route('account-activate', $code), 'username' => $username), function($message) use ($user) {

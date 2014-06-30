@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+@if (count($posts) > 0)
 	<table class="table table-striped">
 		<thead>
 	    	<tr>
@@ -21,6 +22,7 @@
 			    <th>Privacy</th>
 			    <th>Anonymous</th>
 			    <th>IP Address</th>
+                <th>Status</th>
 	        </tr>
 	    </thead>
 	    <tbody>
@@ -36,7 +38,7 @@
 		          	</td>
 		          	<td>
 		          		@foreach ($post->tags as $tag)
-	    					<p>{{ $tag->name }}</p>
+                        <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
 						@endforeach
 		          	</td>
 		          	<td>
@@ -45,13 +47,16 @@
 		          	<td>{{{$post->privacy->name}}}</td>
 		          	<td>{{{$post->anonymous}}}</td>
 		          	<td>{{{$post->user_ip_address}}}</td>
+                    <td>{{{$post->status}}}</td>
 	        	</tr>
 	        @endforeach
 	    </tbody>
 	</table>
-	
-	<td>
-		{{ link_to_route('posts-create', 'Add a new Post', null, ['class' => 'btn btn-primary pull-right'] )}}
-	</td>
+@else
+    <p>There are no posts created.</p>
+@endif
+<td>
+    {{ link_to_route('posts-create', 'Add a new Post', null, ['class' => 'btn btn-primary pull-right'] )}}
+</td>
 	
 @stop

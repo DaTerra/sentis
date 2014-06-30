@@ -96,6 +96,6 @@
 		$('#tags').change(function() {
 		    var selections = ( JSON.stringify($('#tags').select2('data')) );
 		    $('.tagsJSON').val(selections);
-		});	
+		});
 	</script>
 @stop

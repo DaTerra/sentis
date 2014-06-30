@@ -54,7 +54,7 @@
 		<div>
       		<label>Tags:</label>
       			@foreach ($post->tags as $tag)
-	    			<p>{{ $tag->name }} </p>
+                    <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
 				@endforeach
       	</div>
 

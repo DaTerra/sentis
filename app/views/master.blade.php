@@ -49,6 +49,7 @@
 			<div class="page-header">
 				<div class="text-right">
                     {{link_to_route('home', 'Home')}} |
+                    {{link_to_route('tags', 'Tags')}} |
 					@if(!Auth::check())
 						@if(Request::path() !== 'account/login')
 							{{link_to_route('account-login', 'Sign In')}} |   

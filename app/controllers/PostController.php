@@ -157,7 +157,8 @@ class PostController extends BaseController {
 
 	public function getEdit($id) {
 		$post = Post::find($id);
-		if(Auth::user()->canEdit($post)){
+
+        if(Auth::user()->canEdit($post)){
 			return View::make('post.edit')
 				->with('post', $post);
 		} else {
@@ -167,7 +168,7 @@ class PostController extends BaseController {
 	}
 
 	public function postEdit($id) {
-		
+
 		$post = Post::find($id);
 		$post_content = $post->post_content;
 
@@ -176,17 +177,28 @@ class PostController extends BaseController {
 				'title' 			=> 'max:80',
 				'content' 			=> 'max:500',
 				'source_url' 		=> 'max:250|url',
-				'media' => 'image|mimes:jpeg,bmp,png|max:500'
+				'media'             => 'image|mimes:jpeg,bmp,png|max:500',
+                'tags'  			=> 'required'
 			);
 
 			$validator = Validator::make(Input::all(), $rules);
-			
+
+            $tagsAsArray = json_decode(Input::get('tagsJSON'), true);
+
+            $tag_validator = count($tagsAsArray) >= 1;
+
 			if ($validator->fails())
 	   	 	{
-	        	return Redirect::route('posts-edit', $id)
+	        	return Redirect::route('posts-edit', $post->id)
 	        		->withErrors($validator)
 	        		->withInput();
-	    	} else {
+            } elseif (!$tag_validator){
+
+                return Redirect::route('posts-edit', $post->id)
+                    ->with('error', 'At least ONE tag must be informed.')
+                    ->withInput();
+
+            } else {
 
 				$anonymous 		 = Input::get('anonymous', 0);
 				$user_ip_address = Request::getClientIp();
@@ -216,8 +228,20 @@ class PostController extends BaseController {
 					$post_content->title		= $title;
 					$post_content->content 		= $content;
 					$post_content->source_url 	= $source_url;
-					
-					//MEDIA URL
+
+                    $post_tags_ids = [];
+                    foreach ($tagsAsArray as $tag) {
+                        if(Tag::find($tag['id'])){
+                            array_push($post_tags_ids, $tag['id']);
+                        } else {
+                            $new_tag = new Tag;
+                            $new_tag->name = $tag['text'];
+                            $new_tag->save();
+                            array_push($post_tags_ids, $new_tag->id);
+                        }
+                    }
+
+                    //MEDIA URL
 					$upload_success = true;
 
 					if($media){
@@ -235,17 +259,17 @@ class PostController extends BaseController {
 					
 					//BEFORE UPDATE, SAVE THE OLD VALUES TO HISTORY TABLE
 
-					if( ($post->save()) && ($post_content->save()) && ($upload_success))	{
+					if( ($post->save()) && ($post_content->save()) && ($post->tags()->sync($post_tags_ids)) && ($upload_success))	{
 						return Redirect::route('home')
 							->with('message', 'Your post was successfully edited!');
 					} else { 
-						return Redirect::route('posts-edit')
+						return Redirect::route('posts-edit', $post->id)
 							->with('error', 'An error occured creating yout post or uploading your post media. Please try again later.')
 							->withInput();
 					}
 					
 				} else {
-					return Redirect::route('posts-edit')
+					return Redirect::route('posts-edit', $post->id)
 		        		->with('error', 'At least one field needs to be filled')
 		        		->withInput();
 				}
