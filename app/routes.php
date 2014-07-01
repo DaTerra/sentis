@@ -150,6 +150,14 @@ Route::group(array('before'=>'guest'), function(){
 			'as' 	=> 'account-recover-post',
 			'uses' 	=> 'AccountController@postRecover'
 		));
+
+        /*
+		| Create Sentis (POST)
+		*/
+        Route::post('/sentis/{post_id}/create/', array(
+            'as' 	=> 'sentis-create-post',
+            'uses' 	=> 'SentisController@postCreate'
+        ));
 	});
 	
 	/* 
@@ -230,14 +238,28 @@ Route::group(array('before'=>'guest'), function(){
 		'uses' 	=> 'TagController@getTagsByName'
 	));
 
+    /*
+	| Single Tag Page (GET)
+	*/
     Route::get('/tags/{id}/page/', array(
         'as' 	=> 'tags-page',
         'uses' 	=> 'TagController@getTagPage'
     ));
 
+    /*
+	| Tags Page (GET)
+	*/
     Route::get('/tags/', array(
         'as' 	=> 'tags',
         'uses' 	=> 'TagController@getTags'
+    ));
+
+    /*
+	| Create Sentis (GET)
+	*/
+    Route::get('/sentis/{post_id}/create/', array(
+        'as' 	=> 'sentis-create',
+        'uses' 	=> 'SentisController@getCreate'
     ));
 });	
 

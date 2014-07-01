@@ -18,7 +18,8 @@ class ProfileController extends BaseController {
 				->with('user', $user);	
 		}
 
-		return App::abort(404);
+        return Redirect::route('home')
+            ->with('error', 'We could not load the profile page. Please try again later.');
 
 	}
 

@@ -38,7 +38,11 @@
 		    <tbody>
 		        @foreach($user->posts as $post)
 			        <tr>
-			        	<td>{{ link_to_route('posts-page', $post->id, $post->id)}}</td>
+			        	<td>
+                            {{ link_to_route('posts-page', $post->id, $post->id)}}
+                            <a href="{{url('sentis/'.$post->id.'/create')}}">
+                                <span class="glyphicon glyphicon-heart"></span></a>
+                        </td>
 			          	<td>{{{$post->postContent['title']}}}</td>
 			          	<td>{{{$post->postContent['content']}}}</td>
 			          	<td>{{{$post->postContent['source_url']}}}</td>

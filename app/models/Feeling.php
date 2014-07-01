@@ -3,7 +3,8 @@ class Feeling extends Eloquent {
 	protected $fillable = array('name', 'icon');
 	public $timestamps = false;
 	
-	public function sentimeters(){
-		return $this->hasMany('Sentimeter');
+	public function sentis(){
+		return $this->belongsToMany('Sentis', 'sentis_feelings')
+            ->withPivot('value');
 	}
 }

@@ -10,6 +10,9 @@
 			<span class="glyphicon glyphicon-trash"></span> Delete
 		</a>
 	@endif
+    <a href="{{url('sentis/'.$post->id.'/create')}}">
+        <span class="glyphicon glyphicon-heart"></span> Sentis
+    </a>
 	
 @stop
 

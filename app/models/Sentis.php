@@ -7,10 +7,11 @@ class Sentis extends Eloquent {
 	}
 
 	public function post(){
-		return this->belongsTo('Post')
+		return $this->belongsTo('Post');
 	}
 
-	public function sentimeters(){
-		return $this->hasMany('Sentimeter');
-	}
+    public function feelings(){
+        return $this->belongsToMany('Feeling', 'sentis_feelings')
+            ->withPivot('value');
+    }
 }
