@@ -1,6 +1,6 @@
-<?php
+\<?php
 class Sentis extends Eloquent {
-	protected $fillable = array('user_id', 'post_id',  'geolocation');
+	protected $fillable = array('user_id', 'post_id',  'user_ip_address');
 	
 	public function user(){
 		return $this->belongsTo('User');

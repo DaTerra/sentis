@@ -78,4 +78,31 @@
       		{{{$post->user_ip_address}}}
       	</div>
 	</div>	
+	<div class="form-signin">
+		<h1>Sentis Report:</h1>
+		@if (count($postFeelings) > 0)
+			<table class="table table-striped">
+				<thead>
+			    	<tr>
+			        	<th>Feeling</th>
+			        	<th>Quantity</th>
+			        	<th>Average</th>
+			        	<th>Total</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        @foreach($postFeelings as $feeling)
+				        <tr>
+				        	<td>{{{$feeling->feeling}}}</td>
+				          	<td>{{{$feeling->feelings_left}}}</td>
+				          	<td>{{{$feeling->feeling_avg}}}</td>
+				          	<td>{{{$feeling->feeling_total}}}</td>
+			        	</tr>
+			        @endforeach
+			    </tbody>
+			</table>
+		@else 
+			<p>There are no sentis on this post.</p>
+		@endif
+	</div>
 @stop

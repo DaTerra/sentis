@@ -27,4 +27,8 @@ class Post extends Eloquent {
 	public function postContent(){
 		return $this->hasOne('PostContent');
 	}
+
+	public function sentis() {
+		return $this->hasMany('Sentis');
+	}
 }

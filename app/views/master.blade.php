@@ -41,6 +41,15 @@
       		.checkbox {
 	  			font-weight: normal;
 			}
+			#search_list li{
+				list-style: none;
+			}
+			#search_list {
+				padding-left: 0px;
+				max-height: 300px;
+				overflow-y: scroll;
+				width: 340px;
+			}
 
     	</style>
 	</head>
