@@ -253,6 +253,22 @@ Route::group(array('before'=>'guest'), function(){
         'as' 	=> 'tags',
         'uses' 	=> 'TagController@getTags'
     ));
+	
+	/*
+	| Single Feeling Page (GET)
+	*/
+    Route::get('/feelings/{id}/page/', array(
+        'as' 	=> 'feelings-page',
+        'uses' 	=> 'FeelingController@getFeelingPage'
+    ));
+
+	/*
+	| Feelings Page (GET)
+	*/
+    Route::get('/feelings/', array(
+        'as' 	=> 'feelings',
+        'uses' 	=> 'FeelingController@getFeelings'
+    ));
 
     /*
 	| Create Sentis (GET)

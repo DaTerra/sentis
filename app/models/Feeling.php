@@ -1,6 +1,6 @@
 <?php
 class Feeling extends Eloquent {
-	protected $fillable = array('name', 'icon');
+	protected $fillable = array('name', 'description', 'order', 'icon');
 	public $timestamps = false;
 	
 	public function sentis(){

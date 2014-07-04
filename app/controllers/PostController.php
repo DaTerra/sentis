@@ -128,10 +128,10 @@ class PostController extends BaseController {
 
 	public function getPostPage($id){
 		$post = Post::find($id);
-		$feelings_avg = DB::table('sentis_feelings')->avg('value');
 		$feelingsByPost = 
 	    DB::select(
-			DB::raw('SELECT f.name feeling, 
+			DB::raw('SELECT f.id id,
+							f.name feeling, 
 							count(*) feelings_left, 
 				            avg(sf.value) feeling_avg, 
 				            sum(sf.value) feeling_total

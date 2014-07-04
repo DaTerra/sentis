@@ -1,12 +1,13 @@
 @extends('master')
 @section('header')
 <h2>
-    Tags
+    Feelings
 </h2>
 @stop
 
 @section('content')
-@if (count($tags) > 0)
+
+@if (count($feelings) > 0)
     <table class="table table-striped">
         <thead>
         <tr>
@@ -15,12 +16,12 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($tags as $tag)
+        @foreach($feelings as $feeling)
         <tr>
-            <td>{{ link_to_route('tags-page', $tag->name, $tag->id)}}</td>
+            <td>{{ link_to_route('feelings-page', $feeling->name, $feeling->id)}}</td>
             <td>
-                @if(isset($tag->description))
-                    {{{$tag->description}}}
+                @if(isset($feeling->description))
+                    {{{$feeling->description}}}
                 @else
                     -
                 @endif
@@ -30,7 +31,7 @@
         </tbody>
     </table>
 @else
-<p>There are no tags created.</p>
+<p>There are no feelings created.</p>
 @endif
 
 @stop

@@ -1,11 +1,16 @@
 @extends('master')
 @section('header')
 <h2>
-    Posts with the Tag: {{$tag->name}}
+    {{$feeling->name}}
+    @if(isset($feeling->description))
+        <p>{{{$feeling->description}}}</p>
+    @endif
 </h2>
+
 @stop
 
 @section('content')
+
 @if (count($posts) > 0)
 
     <table class="table table-striped">
@@ -57,7 +62,7 @@
         </tbody>
     </table>
 @else
-    <p>There are no posts created with this tag.</p>
+    <p>There are no posts created with this feeling.</p>
 @endif
 
 @stop

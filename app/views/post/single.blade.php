@@ -93,7 +93,8 @@
 			    <tbody>
 			        @foreach($postFeelings as $feeling)
 				        <tr>
-				        	<td>{{{$feeling->feeling}}}</td>
+				        	<td>
+				        	{{ link_to_route('feelings-page', $feeling->feeling, $feeling->id)}}</td>
 				          	<td>{{{$feeling->feelings_left}}}</td>
 				          	<td>{{{$feeling->feeling_avg}}}</td>
 				          	<td>{{{$feeling->feeling_total}}}</td>
