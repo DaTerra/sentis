@@ -1,17 +1,15 @@
 @extends('master')
-@section('header')
-<h2>
-    {{$feeling->name}}
-    @if(isset($feeling->description))
-        <p>{{{$feeling->description}}}</p>
-    @endif
-</h2>
-
-@stop
 
 @section('content')
-
-@if (count($posts) > 0)
+<div class="page-header">
+    <h2>
+        {{$feeling->name}}
+        @if(isset($feeling->description))
+            <p>{{{$feeling->description}}}</p>
+        @endif
+    </h2>
+</div>
+@if (count($feeling->posts()) > 0)
 
     <table class="table table-striped">
         <thead>
@@ -23,6 +21,7 @@
             <th>Media Type</th>
             <th>Media URL</th>
             <th>Tags</th>
+            <th>Public Tags</th>
             <th>User</th>
             <th>Privacy</th>
             <th>Anonymous</th>
@@ -31,7 +30,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($posts as $post)
+        @foreach($feeling->posts() as $post)
         <tr>
             <td>
                 {{ link_to_route('posts-page', $post->id, $post->id)}}
@@ -48,6 +47,11 @@
             <td>
                 @foreach ($post->tags as $tag)
                     <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
+                @endforeach
+            </td>
+            <td>
+                @foreach ($post->publicTags() as $tag)
+                    <p>{{link_to_route('tags-page', $tag->name .' (' .$tag->qtd .') ',  $tag->id)}}</p>
                 @endforeach
             </td>
             <td>

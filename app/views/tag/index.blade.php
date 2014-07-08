@@ -1,11 +1,9 @@
 @extends('master')
-@section('header')
-<h2>
-    Tags
-</h2>
-@stop
 
 @section('content')
+<div class="page-header">
+    <h2>Tags</h2>
+</div>
 @if (count($tags) > 0)
     <table class="table table-striped">
         <thead>
@@ -17,7 +15,10 @@
         <tbody>
         @foreach($tags as $tag)
         <tr>
-            <td>{{ link_to_route('tags-page', $tag->name, $tag->id)}}</td>
+            <td>
+                {{ link_to_route('tags-page', $tag->name, $tag->id)}} 
+                {{$tag->postSentisTagsCount()}}
+            </td>
             <td>
                 @if(isset($tag->description))
                     {{{$tag->description}}}

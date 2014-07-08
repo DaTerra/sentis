@@ -128,24 +128,9 @@ class PostController extends BaseController {
 
 	public function getPostPage($id){
 		$post = Post::find($id);
-		$feelingsByPost = 
-	    DB::select(
-			DB::raw('SELECT f.id id,
-							f.name feeling, 
-							count(*) feelings_left, 
-				            avg(sf.value) feeling_avg, 
-				            sum(sf.value) feeling_total
-				     FROM sentis_feelings sf, feelings f, sentis s, posts p 
-				     WHERE p.id = s.post_id
-					 AND   s.id = sf.sentis_id
-					 AND   f.id = sf.feeling_id
-					 AND   p.id =' .$id
-					 .' GROUP BY sf.feeling_id')
-		);
 		
 		return View::make('post.single')
-			->with('post', $post)
-			->with('postFeelings', $feelingsByPost);
+			->with('post', $post);
 	}
 
 	public function getDelete($id) {

@@ -55,27 +55,45 @@
 	</head>
 	<body>
 		<div class="container">
-			<div class="page-header">
-				<div class="text-right">
-                    {{link_to_route('home', 'Home')}} |
-                    {{link_to_route('feelings', 'Feelings')}} |
-                    {{link_to_route('tags', 'Tags')}} |
-					@if(!Auth::check())
+			<nav class="navbar navbar-default" role="navigation">
+			  <div class="container-fluid">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			    	{{link_to_route('home', 'Sentis', null, array('class' => 'navbar-brand'))}}
+			    </div>
+
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			      <ul class="nav navbar-nav">
+			        <li>{{link_to_route('feelings', 'Feelings')}}</li>
+                    <li>{{link_to_route('tags', 'Tags')}}</li>
+			      </ul>
+			      <form class="navbar-form navbar-left" role="search">
+			        <div class="form-group">
+			          <input type="text" class="form-control" placeholder="Search">
+			        </div>
+			        <button type="submit" class="btn btn-default">Submit</button>
+			      </form>
+			      <ul class="nav navbar-nav navbar-right">
+			        @if(!Auth::check())
 						@if(Request::path() !== 'account/login')
-							{{link_to_route('account-login', 'Sign In')}} |   
+							<li>{{link_to_route('account-login', 'Sign In')}}</li>
 						@endif
 						@if(Request::path() !== 'account/create')
-							{{link_to_route('account-create', 'Sign Up')}} 
+							<li>{{link_to_route('account-create', 'Sign Up')}}</li>
 						@endif
 					@else
-						{{link_to_route('account-logout', 'Sign out')}} | 
-						Signed in as <strong>{{ link_to_route('profile-user', Auth::user()->username , Auth::user()->username)}} </strong>
+						<li style="text-align: right;">
+							<a href="/user/{{Auth::user()->username}}">
+								<img style="width:4%;" src="{{{Auth::user()->avatar_url}}}">
+								<strong>{{{Auth::user()->username}}}</strong>
+							</a>
+						<li>{{link_to_route('account-logout', 'Sign out')}}</li>
 					@endif
-				</div>
-				
-				@yield('header')
-
-			</div>
+			      </ul>
+			    </div><!-- /.navbar-collapse -->
+			  </div><!-- /.container-fluid -->
+			</nav>
 			@if(Session::has('message'))
 				<div class="alert alert-success">
 					{{Session::get('message')}}

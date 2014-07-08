@@ -1,22 +1,21 @@
 @extends('master')
 
-@section('header')
-	<a href="{{url('/')}}">Back to overview</a>
-	@if (Auth::user() && Auth::user()->canEdit($post))
-		<a href="{{url('posts/'.$post->id.'/edit')}}">
-		<span class="glyphicon glyphicon-edit"></span> Edit
-		</a>
-		<a href="{{url('posts/'.$post->id.'/delete')}}">
-			<span class="glyphicon glyphicon-trash"></span> Delete
-		</a>
-	@endif
-    <a href="{{url('sentis/'.$post->id.'/create')}}">
-        <span class="glyphicon glyphicon-heart"></span> Sentis
-    </a>
-	
-@stop
-
 @section('content')
+	<div class="page-header">
+    	<a href="{{url('/')}}">Back to overview</a>
+		@if (Auth::user() && Auth::user()->canEdit($post))
+			<a href="{{url('posts/'.$post->id.'/edit')}}">
+			<span class="glyphicon glyphicon-edit"></span> Edit
+			</a>
+			<a href="{{url('posts/'.$post->id.'/delete')}}">
+				<span class="glyphicon glyphicon-trash"></span> Delete
+			</a>
+		@endif
+	    <a href="{{url('sentis/'.$post->id.'/create')}}">
+	        <span class="glyphicon glyphicon-heart"></span> Sentis
+	    </a>
+	</div>
+
 	<div class="form-signin">
     	
 		@if($post->postContent['title'])
@@ -62,6 +61,13 @@
       	</div>
 
       	<div>
+      		<label>Public Tags:</label>
+      			@foreach ($post->publicTags() as $tag)
+                    <p>{{link_to_route('tags-page', $tag->name .' (' .$tag->qtd .') ',  $tag->id)}}</p>
+				@endforeach
+      	</div>
+
+      	<div>
       		<label>Author:</label>
       		{{link_to_route('profile-user',$post->user->username,  $post->user->username)}}
       	</div>
@@ -80,7 +86,7 @@
 	</div>	
 	<div class="form-signin">
 		<h1>Sentis Report:</h1>
-		@if (count($postFeelings) > 0)
+		@if (count($post->feelings()) > 0)
 			<table class="table table-striped">
 				<thead>
 			    	<tr>
@@ -91,7 +97,7 @@
 			        </tr>
 			    </thead>
 			    <tbody>
-			        @foreach($postFeelings as $feeling)
+			        @foreach($post->feelings() as $feeling)
 				        <tr>
 				        	<td>
 				        	{{ link_to_route('feelings-page', $feeling->feeling, $feeling->id)}}</td>

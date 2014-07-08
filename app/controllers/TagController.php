@@ -5,15 +5,9 @@ class TagController extends BaseController {
     public function getTagPage($id){
 
         $tag = Tag::find($id);
-        $posts = Post::whereHas('tags', function($q) use ($id)
-        {
-            $q->where('id', '=', $id);
-
-        })->where('status', '=', '1')->get();
-
+        
         return View::make('tag.single')
-            ->with('tag', $tag)
-            ->with('posts', $posts);
+            ->with('tag', $tag);
     }
 
     public function getTags(){
@@ -24,7 +18,6 @@ class TagController extends BaseController {
 
     public function getTagsByName(){
 		$name = Input::get('tags');
-		Debugbar::info($name);
 		return Tag::where('name','like','%' .$name .'%')->get();
 	}
 }

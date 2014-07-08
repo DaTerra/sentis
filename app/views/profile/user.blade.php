@@ -1,15 +1,13 @@
 @extends('master')
 
-@section('header')
-	<h1>
-		<img style="width:10%;" src="{{$user->avatar_url}}"/>
-		{{$user->username }} ({{$user->email}})
-	</h1>
-@stop
 
 @section('content')
-	
-	
+	<div class="page-header">	
+		<h1>
+			<img style="width:10%;" src="{{$user->avatar_url}}"/>
+			{{$user->username }} ({{$user->email}})
+		</h1>
+	</div>	
 	
 	<h2>User Roles:</h2>
 	@foreach ($user->roles as $role)
@@ -28,6 +26,7 @@
 					<th>Media Type</th>
 					<th>Media URL</th>
 					<th>Tags</th>
+					<th>Public Tags</th>
 		        	<th>User</th>
 				    <th>Privacy</th>
 				    <th>Anonymous</th>
@@ -55,7 +54,14 @@
                                 <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
 							@endforeach
 		          		</td>
-			          	<td>{{{$post->user->username}}}</td>
+		          		<td>
+			          		@foreach ($post->publicTags() as $tag)
+		                    	<p>{{link_to_route('tags-page', $tag->name .' (' .$tag->qtd .') ',  $tag->id)}}</p>
+							@endforeach
+			          	</td>
+			          	<td>
+							{{link_to_route('profile-user',$post->user->username,  $post->user->username)}}
+			          	</td>
 			          	<td>{{{$post->privacy->name}}}</td>
 			          	<td>{{{$post->anonymous}}}</td>
 			          	<td>{{{$post->user_ip_address}}}</td>

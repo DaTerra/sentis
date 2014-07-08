@@ -1,4 +1,4 @@
-\<?php
+<?php
 class Sentis extends Eloquent {
 	protected $fillable = array('user_id', 'post_id',  'user_ip_address');
 	
@@ -11,7 +11,12 @@ class Sentis extends Eloquent {
 	}
 
     public function feelings(){
-        return $this->belongsToMany('Feeling', 'sentis_feelings')
+        return $this->belongsToMany('Feeling', 'sentis_feelings', 'sentis_id', 'feeling_id')
             ->withPivot('value');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('Tag', 'sentis_tags');
     }
 }

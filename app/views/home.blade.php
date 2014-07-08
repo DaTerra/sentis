@@ -1,12 +1,9 @@
 @extends('master')
 
-@section('header')
-	<h2>
-		Posts
-	</h2>
-@stop
-
 @section('content')
+<div class="page-header">
+	<h2>Posts</h2>
+</div>
 @if (count($posts) > 0)
 	<table class="table table-striped">
 		<thead>
@@ -18,6 +15,7 @@
 				<th>Media Type</th>
 				<th>Media URL</th>
 				<th>Tags</th>
+				<th>Public Tags</th>
 	        	<th>User</th>
 			    <th>Privacy</th>
 			    <th>Anonymous</th>
@@ -43,6 +41,11 @@
 		          	<td>
 		          		@foreach ($post->tags as $tag)
                         <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
+						@endforeach
+		          	</td>
+		          	<td>
+		          		@foreach ($post->publicTags() as $tag)
+	                    	<p>{{link_to_route('tags-page', $tag->name .' (' .$tag->qtd .') ',  $tag->id)}}</p>
 						@endforeach
 		          	</td>
 		          	<td>

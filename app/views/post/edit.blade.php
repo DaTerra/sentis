@@ -1,6 +1,7 @@
 @extends('master')
 
 @section('content')
+    
     <link rel="stylesheet" href="{{ URL::asset('select2/select2.css') }}">
     <script type="text/javascript" src="{{ URL::asset('select2/select2.js') }}"></script>
 	{{Form::open(array('posts-edit', $post->id, 'method' => 'put', 'class'=>'form-signin', 'enctype' => 'multipart/form-data'))}}
