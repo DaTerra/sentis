@@ -36,20 +36,22 @@ class SentisController extends BaseController {
         $sentis->post_id = $postId;
         $sentis->user_ip_address = Request::getClientIp();
         
-        //creating tags
-        $sentis_tags_ids = [];
-        foreach ($tagsAsArray as $tag) {
-            if(Tag::find($tag['id'])){
-                array_push($sentis_tags_ids, $tag['id']);
-            } else {
-                $new_tag = new Tag;
-                $new_tag->name = $tag['text'];
-                $new_tag->save();
-                array_push($sentis_tags_ids, $new_tag->id);
+        if($tagsAsArray){
+            //creating tags
+            $sentis_tags_ids = [];
+            foreach ($tagsAsArray as $tag) {
+                if(Tag::find($tag['id'])){
+                    array_push($sentis_tags_ids, $tag['id']);
+                } else {
+                    $new_tag = new Tag;
+                    $new_tag->name = $tag['text'];
+                    $new_tag->save();
+                    array_push($sentis_tags_ids, $new_tag->id);
+                }
             }
         }
         //save sentis, sentis_feelings and sentis_tags
-        if(($sentis->save()) && ($sentis->feelings()->sync($feelings) ) && ($sentis->tags()->sync($sentis_tags_ids)) ) {
+        if(($sentis->save()) && ($sentis->feelings()->sync($feelings) ) && (!$tagsAsArray || $sentis->tags()->sync($sentis_tags_ids)) ) {
             return Redirect::route('posts-page', $postId)
                             ->with('message', 'Your post was successfully created!')
                             ->withCookie(Cookie::make('sentis_cookie', $postId, 60));;
