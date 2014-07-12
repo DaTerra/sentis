@@ -45,7 +45,7 @@
 				list-style: none;
 			}
 			#search_list {
-				padding-left: 0px;
+	{orderby}			padding-left: 0px;
 				max-height: 300px;
 				overflow-y: scroll;
 				width: 340px;
@@ -68,11 +68,26 @@
 			        <li>{{link_to_route('feelings', 'Feelings')}}</li>
                     <li>{{link_to_route('tags', 'Tags')}}</li>
 			      </ul>
-			      <form class="navbar-form navbar-left" role="search">
-			        <div class="form-group">
-			          <input type="text" class="form-control" placeholder="Search">
+			      <form  id="searchForm" style="width:30%" action="/search/" class="navbar-form navbar-left" role="search">
+			        <div class="input-group">
+			        	@if(isset($order))
+			        		<input type="hidden" name="order" id="order" value="{{$order}}" />
+			        	@else
+							<input type="hidden" name="order" id="order"/>
+						@endif
+
+			        	
+			            @if(isset($search))
+							{{Form::text('search', $search,  ['placeholder'=>'Search', 'class' => 'form-control'])}}
+						@else
+							{{Form::text('search', null,  ['placeholder'=>'Search', 'class' => 'form-control'])}}
+						@endif
+			            
+			            <div class="input-group-btn">
+			                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+			            </div>
+			            
 			        </div>
-			        <button type="submit" class="btn btn-default">Submit</button>
 			      </form>
 			      <ul class="nav navbar-nav navbar-right">
 			        @if(!Auth::check())

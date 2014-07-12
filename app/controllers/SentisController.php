@@ -53,7 +53,7 @@ class SentisController extends BaseController {
         //save sentis, sentis_feelings and sentis_tags
         if(($sentis->save()) && ($sentis->feelings()->sync($feelings) ) && (!$tagsAsArray || $sentis->tags()->sync($sentis_tags_ids)) ) {
             return Redirect::route('posts-page', $postId)
-                            ->with('message', 'Your post was successfully created!')
+                            ->with('message', 'Your sentis was successfully recorded!')
                             ->withCookie(Cookie::make('sentis_cookie', $postId, 60));;
         } else {
             return Redirect::route('sentis-create', $postId)

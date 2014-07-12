@@ -277,5 +277,13 @@ Route::group(array('before'=>'guest'), function(){
         'as' 	=> 'sentis-create',
         'uses' 	=> 'SentisController@getCreate'
     ));
+
+    /*
+	| Search (GET)
+	*/
+    Route::get('/search/', array(
+        'as' 	=> 'search',
+        'uses' 	=> 'SearchController@search'
+    ));
 });	
 
