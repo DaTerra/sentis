@@ -7,13 +7,13 @@
 	<p style="float:right;">Order by
 		@if(isset($order))
 			{{ Form::select('orderOpts', [
-								   'recently' => 'Recently',
+								   'newest' => 'Newest',
 								   'activity' => 'Activity',
 								   'popular' => 'Popular'], 
 							$order, ['id' => 'orderOpts']) }}
 		@else
 			{{ Form::select('orderOpts', [
-								   'recently' => 'Recently',
+								   'newest' => 'Newest',
 								   'activity' => 'Activity',
 								   'popular' => 'Popular'], 
 							null, ['id' => 'orderOpts']) }}

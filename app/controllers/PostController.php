@@ -225,6 +225,7 @@ class PostController extends BaseController {
 		
 				if($custom_validator) {
 					$post->anonymous 			= $anonymous;
+					$post->updated_at       	= date("Y-m-d H:i:s");
 					$post->user_ip_address 		= $user_ip_address;
 					$post_content->title		= $title;
 					$post_content->content 		= $content;
