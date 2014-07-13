@@ -75,7 +75,6 @@
 			        	@else
 							<input type="hidden" name="order" id="order"/>
 						@endif
-
 			        	
 			            @if(isset($search))
 							{{Form::text('search', $search,  ['placeholder'=>'Search', 'class' => 'form-control'])}}
