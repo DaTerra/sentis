@@ -44,7 +44,7 @@ class SearchController extends BaseController {
 	}
 
   	private function getSearchQuery($terms, $order) {
-  		$finalQuery = 'SELECT id FROM (';
+  		$finalQuery = 'SELECT DISTINCT id FROM (';
   		
   		foreach ($terms as $term) {
 			$finalQuery = $finalQuery
@@ -52,13 +52,11 @@ class SearchController extends BaseController {
 					   					  p.created_at as created, 
 					   					  p.updated_at as updated,
 					   					  count(s.post_id) as qtd
-					 	  FROM posts p, 
+					   	  FROM posts p LEFT JOIN sentis s ON p.id = s.post_id, 
 					 	  	   post_contents pc, 
 					 	  	   tags t, 
-					 	  	   posts_tags pt,
-					 	  	   sentis s
+					 	  	   posts_tags pt
 						  WHERE p.id = pc.post_id
-						  AND   p.id = s.post_id
 						  AND   pt.post_id = p.id
 						  AND   pt.tag_id = t.id
 						  AND   p.status = 1
@@ -104,9 +102,9 @@ class SearchController extends BaseController {
 					   					  p.created_at as created, 
 					   					  p.updated_at as updated,
 					   					  count(s.post_id) as qtd
-						  FROM   posts p, users u, sentis s
+						  FROM  posts p LEFT JOIN sentis s ON p.id = s.post_id, 
+								users u
 						  WHERE p.user_id = u.id
-						  AND   p.id = s.post_id
 						  AND   p.status = 1
 						  AND   u.username like "%' .$term .'%"
 						  GROUP BY s.post_id';
