@@ -334,7 +334,7 @@ class AccountController extends BaseController {
 				->withErrors($validator)
 				->withInput();
 		} else {
-			$file = Input::file('avatar');
+			$file = Input::file('avatar'); 
  			$destinationPath = './public/uploads/'.sha1(Auth::user()->id);
 			$filename  = $file->getClientOriginalName();
 			
