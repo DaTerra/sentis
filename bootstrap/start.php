@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('sallo-Satellite-A305'),
+	'local' => array('sallo-Satellite-A305', 'ubuntu'),
 
 ));
 

@@ -335,8 +335,8 @@ class AccountController extends BaseController {
 				->withInput();
 		} else {
 			$file = Input::file('avatar');
- 			$destinationPath = 'public/uploads/'.sha1(Auth::user()->id);
-			$filename  = $file->getClientOriginalName();
+ 			$destinationPath = public_path() .'/uploads/'.sha1(Auth::user()->id);
+ 			$filename  = $file->getClientOriginalName();
 			
 		 	$upload_success = Input::file('avatar')->move($destinationPath, $filename);
 			
