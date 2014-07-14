@@ -92,7 +92,7 @@ class PostController extends BaseController {
 					//MEDIA URL
 					$upload_success = true;
 					if($media){
-						$destinationPath = 'public/uploads/'.sha1(Auth::user()->id) .'/post/' .sha1($post->id);
+						$destinationPath = public_path() .'/uploads/' .sha1(Auth::user()->id) .'/post/' .sha1($post->id);
 						$filename  		 = $media->getClientOriginalName();
 						$media_url 		 = URL::to('uploads/'.sha1(Auth::user()->id) .'/post/' .sha1($post->id) .'/'.$filename);
 						$post_content->media_url = $media_url;	
@@ -247,7 +247,7 @@ class PostController extends BaseController {
 					$upload_success = true;
 
 					if($media){
-						$destinationPath = 'public/uploads/'.sha1(Auth::user()->id) .'/post/' .sha1($post->id);
+						$destinationPath = public_path() .'/uploads/' .sha1(Auth::user()->id) .'/post/' .sha1($post->id);
 						$filename  		 = $media->getClientOriginalName();
 						$media_url 		 = URL::to('uploads/'.sha1(Auth::user()->id) .'/post/' .sha1($post->id) .'/'.$filename);
 						$post_content->media_url = $media_url;	
