@@ -28,6 +28,7 @@
 					<th>Tags</th>
 					<th>Public Tags</th>
 		        	<th>User</th>
+		        	<th>Last update</th>
 				    <th>Privacy</th>
 				    <th>Anonymous</th>
 				    <th>IP Address</th>
@@ -62,6 +63,9 @@
 			          	<td>
 							{{link_to_route('profile-user',$post->user->username,  $post->user->username)}}
 			          	</td>
+			          	<td>
+		          			{{ date('d M Y H:i a',strtotime($post->updated_at)) }}
+		          		</td>
 			          	<td>{{{$post->privacy->name}}}</td>
 			          	<td>{{{$post->anonymous}}}</td>
 			          	<td>{{{$post->user_ip_address}}}</td>
