@@ -3,7 +3,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class SearchController extends BaseController {
 	public function search(){
-		
 		$rules = array(
 			'search' => 'required|min:3'
 		);
