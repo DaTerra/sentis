@@ -373,7 +373,7 @@ class AccountController extends BaseController {
 						->where('active', 0);
 			if($user->count()) {
 				$user = $user->first();
-				return Mail::send('emails.auth.activate', array('link' => URL::route('account-activate', $user->code), 'username' => $user->username), function($message) use ($user) {
+				Mail::send('emails.auth.activate', array('link' => URL::route('account-activate', $user->code), 'username' => $user->username), function($message) use ($user) {
 					$message->to($user->email, $user->username)->subject('Sentis - Activate your account');
 				});
 				return Redirect::route('home')
