@@ -87,7 +87,7 @@ class AccountController extends BaseController {
 			$user->code = '';
 			
 			if($user->save()){
-				return Redirect::route('home')
+				return Redirect::route('account-login')
 					->with('message', 'Activated! You can now sign in!');
 			}
 		}

@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
+		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 		<title>Sentis</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 		<link rel="stylesheet" href="{{asset('bootstrap.min.css')}}">
