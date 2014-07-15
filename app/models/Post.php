@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Database\Eloquent\Collection;
 class Post extends Eloquent {
 
 	protected $fillable = array('user_id', 
@@ -30,6 +30,33 @@ class Post extends Eloquent {
 					 .' GROUP BY st.tag_id')
 		);
 		return $publicTagsByPost;
+	}
+	
+	public static function getMostPopularPosts(){
+		$posts = 
+        DB::select(
+            DB::raw('SELECT p.id, 
+						    count(s.post_id) as qtd
+					 FROM posts p 
+					 LEFT JOIN sentis s ON p.id = s.post_id
+					 WHERE p.status = 1
+					 GROUP BY s.post_id
+					 ORDER BY qtd DESC')
+        );
+        
+        $postIds = [];
+        foreach ($posts as $post) {
+            array_push($postIds, $post->id);    
+        }
+        
+        $posts = Post::find($postIds);
+
+		$sorted = array_flip($postIds);
+					
+		foreach ($posts as $post) $sorted[$post->id] = $post;
+		$sorted = Collection::make(array_values($sorted));
+
+        return $sorted;
 	}
 
 	public function feelings() {
