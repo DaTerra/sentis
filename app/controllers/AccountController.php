@@ -110,7 +110,6 @@ class AccountController extends BaseController {
 				$user = $user->first();
 				
 				if((!isset($user->facebook_id) || trim($user->facebook_id)==='')) {
-					Debugbar::info('FBID null... Updating FBID');
 					$user->facebook_id = $userFB->id;
 					$user->active = 1;	
 					$user->code   = '';
@@ -118,8 +117,6 @@ class AccountController extends BaseController {
 						Debugbar::info('FBID updated... Authorizing user');
 					}
 				}	
-				
-				
 			} else { //not signed up
 				$email    = $userFB->email;
 				$facebook_id = $userFB->id;
@@ -142,7 +139,6 @@ class AccountController extends BaseController {
 			}
 			
 			Auth::login($user);
-			Debugbar::info('Done!');
 			return Redirect::intended('/');	
 		}
 	}
@@ -261,7 +257,7 @@ class AccountController extends BaseController {
 						$message->to($user->email, $user->username)->subject('Sentis - Account Recovery.');
 					});
 					return Redirect::route('home')
-						->with('message', 'We have sent you a new password by email.');
+						->with('message', 'We have sent you instruction to reset your password by email.');
 				}
 			}
 		}
@@ -356,6 +352,36 @@ class AccountController extends BaseController {
 			}
 		}	
 	}	
-	
-}
+	public function getSendActivationEmail() {
+		return View::make('account.send_activation_email');
+	}
 
+	public function postSendActivationEmail() {
+		$rules = array(
+			'email' => 'required|email'
+		);
+
+		$validator = Validator::make(Input::all() , $rules);		
+		
+		if($validator->fails()) {
+			return Redirect::route('account-send-activation-email')
+				->withErrors($validator)
+				->withInput();
+		} else {
+			$user = User::where('email', '=', Input::get('email'))
+						->where('signed_up_by_form', '=', 1)
+						->where('active', 0);
+			if($user->count()) {
+				$user = $user->first();
+				return Mail::send('emails.auth.activate', array('link' => URL::route('account-activate', $user->code), 'username' => $user->username), function($message) use ($user) {
+					$message->to($user->email, $user->username)->subject('Sentis - Activate your account');
+				});
+				return Redirect::route('home')
+					->with('message', 'We have sent you an email to activate your account.');
+			}		
+		}
+
+		return Redirect::route('account-send-activation-email')
+			->with('error', 'Could not send activation email. Please verify the email and try again.');
+	}
+}

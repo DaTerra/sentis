@@ -20,7 +20,9 @@
 			Remember me
 		</label>
 		<br><br>
-		{{link_to_route('account-forgot-password', 'Forgot Password')}} 
+		{{link_to_route('account-forgot-password', 'Forgot Password')}} | 
+		{{link_to_route('account-send-activation-email', 
+		"Account not active?")}} 
 	{{Form::close()}}
 	
 @stop

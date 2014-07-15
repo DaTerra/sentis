@@ -158,6 +158,14 @@ Route::group(array('before'=>'guest'), function(){
             'as' 	=> 'sentis-create-post',
             'uses' 	=> 'SentisController@postCreate'
         ));
+
+        /*
+		| Resend Activation Email (POST)
+		*/
+	    Route::post('/account/send-activation-email', array(
+	        'as' 	=> 'account-send-activation-email-post',
+	        'uses' 	=> 'AccountController@postSendActivationEmail'
+	    ));
 	});
 	
 	/* 
@@ -284,6 +292,14 @@ Route::group(array('before'=>'guest'), function(){
     Route::get('/search/', array(
         'as' 	=> 'search',
         'uses' 	=> 'SearchController@search'
+    ));
+
+    /*
+	| Resend activation Email (GET)
+	*/
+    Route::get('/account/send-activation-email', array(
+        'as' 	=> 'account-send-activation-email',
+        'uses' 	=> 'AccountController@getSendActivationEmail'
     ));
 });	
 
