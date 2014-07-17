@@ -3,11 +3,23 @@
 class TagController extends BaseController {
 
     public function getTagPage($id){
-
+        $order = Input::get('order');
         $tag = Tag::find($id);
         
+        if($order === 'activity'){
+            $posts = Post::getLastActivityPostsByTag($tag->id);
+        } else if ($order === 'newest') {
+            $posts = Post::getNewestPostsByTag($tag->id);
+        } else {
+            $posts = Post::getMostPopularPostsByTag($tag->id);
+            $order = 'popular';
+        }
+        
+        $tag->posts = $posts;
+        
         return View::make('tag.single')
-            ->with('tag', $tag);
+            ->with('tag', $tag)
+            ->with('order', $order);
     }
 
     public function getTags(){

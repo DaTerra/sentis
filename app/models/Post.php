@@ -33,46 +33,37 @@ class Post extends Eloquent {
 	}
 	
 	public static function getNewestPosts(){
-		$posts = 
-        DB::select(
-            DB::raw('SELECT p.id, 
-						    p.updated_at
-					 FROM posts p 
-					 WHERE p.status = 1
-					 ORDER BY updated_at DESC')
-        );
+		$query = 'SELECT p.id, 
+					     p.updated_at
+				  FROM posts p 
+				  WHERE p.status = 1
+				  ORDER BY updated_at DESC';
         
-        return Post::loadPostModelsByIds($posts);
+        return Post::loadPostModelsByIds($query);
 	}	
 
 	public static function getLastActivityPosts(){
-		$posts = 
-        DB::select(
-            DB::raw('SELECT p.id, 
-						    MAX(s.updated_at) as last_activity
-					 FROM posts p 
-					 LEFT JOIN sentis s ON p.id = s.post_id
-					 WHERE p.status = 1
-					 GROUP BY s.post_id
-					 ORDER BY last_activity DESC')
-        );
+		$query = 'SELECT p.id, 
+						 MAX(s.updated_at) as last_activity
+				  FROM posts p 
+				  LEFT JOIN sentis s ON p.id = s.post_id
+				  WHERE p.status = 1
+				  GROUP BY s.post_id
+				  ORDER BY last_activity DESC';
         
-        return Post::loadPostModelsByIds($posts);
+        return Post::loadPostModelsByIds($query);
 	}
 	
 	public static function getMostPopularPosts(){
-		$posts = 
-        DB::select(
-            DB::raw('SELECT p.id, 
-						    count(s.post_id) as qtd
-					 FROM posts p 
-					 LEFT JOIN sentis s ON p.id = s.post_id
-					 WHERE p.status = 1
-					 GROUP BY s.post_id
-					 ORDER BY qtd DESC')
-        );
+		$query = 'SELECT p.id, 
+					     count(s.post_id) as qtd
+				  FROM posts p 
+			      LEFT JOIN sentis s ON p.id = s.post_id
+				  WHERE p.status = 1
+				  GROUP BY s.post_id
+			  	  ORDER BY qtd DESC';
         
-        return Post::loadPostModelsByIds($posts);
+        return Post::loadPostModelsByIds($query);
 	}
 
 	public function feelings() {
@@ -93,59 +84,136 @@ class Post extends Eloquent {
 
 		return $feelingsByPost;
 	}
-
+	
+	/*
+	| POSTS BY FEELING
+	*/
 	public static function getLastActivityPostsByFeeling($feelingId){
-		$posts = 
-        DB::select(
-            DB::raw('SELECT p.id, 
-					 MAX(s.updated_at) as last_activity
-				FROM  posts p, sentis s, sentis_feelings sf
-				WHERE s.post_id = p.id
-				AND   s.id = sf.sentis_id
-				AND   p.status = 1
-				AND   sf.feeling_id =' .$feelingId .' 
-				GROUP BY s.post_id
-				ORDER BY last_activity DESC')
-        );
+		$query = 'SELECT p.id, 
+				        MAX(s.updated_at) as last_activity
+				 FROM  posts p, sentis s, sentis_feelings sf
+				 WHERE s.post_id = p.id
+				 AND   s.id = sf.sentis_id
+				 AND   p.status = 1
+				 AND   sf.feeling_id =' .$feelingId .' 
+				 GROUP BY s.post_id
+				 ORDER BY last_activity DESC';
         
-        return Post::loadPostModelsByIds($posts);
+        return Post::loadPostModelsByIds($query);
 	}
 	
 
 	public static function getMostPopularPostsByFeeling($feelingId){
-		$posts = 
-        DB::select(
-            DB::raw('SELECT p.id, 
-						    count(s.post_id) as qtd
-					 FROM  posts p, sentis s, sentis_feelings sf
-					 WHERE s.post_id = p.id
-					 AND   s.id = sf.sentis_id
-					 AND   p.status = 1
-					 AND   sf.feeling_id = ' .$feelingId .' 
-					 GROUP BY s.post_id
-					 ORDER BY qtd DESC')
-        );
+		$query = 'SELECT p.id, 
+					     count(s.post_id) as qtd
+				  FROM  posts p, sentis s, sentis_feelings sf
+				  WHERE s.post_id = p.id
+			 	  AND   s.id = sf.sentis_id
+			 	  AND   p.status = 1
+				  AND   sf.feeling_id = ' .$feelingId .' 
+			 	  GROUP BY s.post_id
+			 	  ORDER BY qtd DESC';
         
-        return Post::loadPostModelsByIds($posts);
+        return Post::loadPostModelsByIds($query);
 	}
 	
 	public static function getNewestPostsByFeeling($feelingId){
-		$posts = 
-        DB::select(
-            DB::raw('SELECT p.id, 
-						    p.updated_at
-					FROM  posts p, sentis s, sentis_feelings sf
-					WHERE p.id = s.post_id
-					AND   s.id = sf.sentis_id 
-					AND   p.status = 1
-					AND   sf.feeling_id =' .$feelingId .'
-					GROUP BY s.post_id
-					ORDER BY updated_at DESC')
-        );
+		$query = 'SELECT p.id, 
+					   	 p.updated_at
+				  FROM  posts p, sentis s, sentis_feelings sf
+				  WHERE p.id = s.post_id
+				  AND   s.id = sf.sentis_id 
+				  AND   p.status = 1
+				  AND   sf.feeling_id =' .$feelingId .'
+				  GROUP BY s.post_id
+				  ORDER BY updated_at DESC';
         
-        return Post::loadPostModelsByIds($posts);
+        return Post::loadPostModelsByIds($query);
 	}
 
+	/*
+	| POSTS BY TAG
+	*/
+
+	public static function getNewestPostsByTag($tagId){
+      //get the posts with tags on posts_tags and sentis_tags
+      $query = 'SELECT DISTINCT id FROM (
+					SELECT p.id, 
+						   p.updated_at as updated
+					FROM   posts p, posts_tags pt
+					WHERE  p.id = pt.post_id 
+					AND    p.status = 1
+					AND    pt.tag_id =' .$tagId 
+					.' 
+					UNION
+
+					SELECT s.post_id, p.updated_at as updated
+					FROM   posts p, sentis_tags st, sentis s
+					WHERE  st.sentis_id = s.id
+					AND    p.id = s.post_id
+					AND    p.status = 1
+					AND    st.tag_id =' .$tagId .'
+				) a 
+				ORDER BY updated DESC';
+        
+        return Post::loadPostModelsByIds($query);
+    }
+	
+	public static function getLastActivityPostsByTag($tagId){
+		$query = 'SELECT DISTINCT id FROM (
+						SELECT p.id, 
+							   MAX(s.updated_at) last_activity
+						FROM   posts p LEFT JOIN sentis s ON p.id = s.post_id, 
+							   posts_tags pt
+						WHERE  p.id = pt.post_id 
+						AND    p.status = 1
+						AND    pt.tag_id =' .$tagId .' 
+						GROUP BY s.post_id
+
+						UNION
+
+						SELECT s.post_id, 
+							   MAX(s.updated_at) as last_activity
+						FROM   posts p, 
+							   sentis_tags st, 
+							   sentis s
+						WHERE  st.sentis_id = s.id
+						AND    p.id = s.post_id
+						AND    p.status = 1
+						AND    st.tag_id =' .$tagId .' 
+						GROUP BY s.post_id
+					) a 
+					ORDER BY last_activity DESC';
+        
+        return Post::loadPostModelsByIds($query);
+	}
+	
+	public static function getMostPopularPostsByTag($tagId){
+		$query = 'SELECT DISTINCT id FROM (
+						SELECT p.id, 
+							   count(s.post_id) as qtd
+						FROM   posts p LEFT JOIN sentis s ON p.id = s.post_id, 
+							   posts_tags pt
+						WHERE  p.id = pt.post_id 
+						AND    p.status = 1
+						AND    pt.tag_id =' .$tagId .' 
+						GROUP BY s.post_id
+
+						UNION
+
+						SELECT s.post_id, 
+							   count(s.post_id) as qtd
+						FROM   posts p, sentis_tags st, sentis s
+						WHERE  st.sentis_id = s.id
+						AND    p.id = s.post_id
+						AND    p.status = 1
+						AND    st.tag_id =' .$tagId .' 
+						GROUP BY s.post_id
+					) a 
+					ORDER BY qtd DESC';
+        
+        return Post::loadPostModelsByIds($query);
+	}
 	public function tags()
     {
         return $this->belongsToMany('Tag', 'posts_tags');
@@ -168,7 +236,12 @@ class Post extends Eloquent {
         return $sorted;
 	}
 
-	private static function loadPostModelsByIds($posts) {
+	private static function loadPostModelsByIds($query) {
+		$posts = 
+        DB::select(
+            DB::raw($query)
+        );
+
 		$postIds = [];
         foreach ($posts as $post) {
             array_push($postIds, $post->id);    

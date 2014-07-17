@@ -14,7 +14,6 @@ class FeelingController extends BaseController {
         
         if($order === 'activity'){
             $posts = Post::getLastActivityPostsByFeeling($feeling->id);
-            Debugbar::info($posts);
         } else if ($order === 'newest') {
             $posts = Post::getNewestPostsByFeeling($feeling->id);
         } else {
