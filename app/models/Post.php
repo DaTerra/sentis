@@ -32,6 +32,34 @@ class Post extends Eloquent {
 		return $publicTagsByPost;
 	}
 	
+	public static function getNewestPosts(){
+		$posts = 
+        DB::select(
+            DB::raw('SELECT p.id, 
+						    p.updated_at
+					 FROM posts p 
+					 WHERE p.status = 1
+					 ORDER BY updated_at DESC')
+        );
+        
+        return Post::loadPostModelsByIds($posts);
+	}	
+
+	public static function getLastActivityPosts(){
+		$posts = 
+        DB::select(
+            DB::raw('SELECT p.id, 
+						    MAX(s.updated_at) as last_activity
+					 FROM posts p 
+					 LEFT JOIN sentis s ON p.id = s.post_id
+					 WHERE p.status = 1
+					 GROUP BY s.post_id
+					 ORDER BY last_activity DESC')
+        );
+        
+        return Post::loadPostModelsByIds($posts);
+	}
+	
 	public static function getMostPopularPosts(){
 		$posts = 
         DB::select(
@@ -44,19 +72,7 @@ class Post extends Eloquent {
 					 ORDER BY qtd DESC')
         );
         
-        $postIds = [];
-        foreach ($posts as $post) {
-            array_push($postIds, $post->id);    
-        }
-        
-        $posts = Post::find($postIds);
-
-		$sorted = array_flip($postIds);
-					
-		foreach ($posts as $post) $sorted[$post->id] = $post;
-		$sorted = Collection::make(array_values($sorted));
-
-        return $sorted;
+        return Post::loadPostModelsByIds($posts);
 	}
 
 	public function feelings() {
@@ -78,6 +94,58 @@ class Post extends Eloquent {
 		return $feelingsByPost;
 	}
 
+	public static function getLastActivityPostsByFeeling($feelingId){
+		$posts = 
+        DB::select(
+            DB::raw('SELECT p.id, 
+					 MAX(s.updated_at) as last_activity
+				FROM  posts p, sentis s, sentis_feelings sf
+				WHERE s.post_id = p.id
+				AND   s.id = sf.sentis_id
+				AND   p.status = 1
+				AND   sf.feeling_id =' .$feelingId .' 
+				GROUP BY s.post_id
+				ORDER BY last_activity DESC')
+        );
+        
+        return Post::loadPostModelsByIds($posts);
+	}
+	
+
+	public static function getMostPopularPostsByFeeling($feelingId){
+		$posts = 
+        DB::select(
+            DB::raw('SELECT p.id, 
+						    count(s.post_id) as qtd
+					 FROM  posts p, sentis s, sentis_feelings sf
+					 WHERE s.post_id = p.id
+					 AND   s.id = sf.sentis_id
+					 AND   p.status = 1
+					 AND   sf.feeling_id = ' .$feelingId .' 
+					 GROUP BY s.post_id
+					 ORDER BY qtd DESC')
+        );
+        
+        return Post::loadPostModelsByIds($posts);
+	}
+	
+	public static function getNewestPostsByFeeling($feelingId){
+		$posts = 
+        DB::select(
+            DB::raw('SELECT p.id, 
+						    p.updated_at
+					FROM  posts p, sentis s, sentis_feelings sf
+					WHERE p.id = s.post_id
+					AND   s.id = sf.sentis_id 
+					AND   p.status = 1
+					AND   sf.feeling_id =' .$feelingId .'
+					GROUP BY s.post_id
+					ORDER BY updated_at DESC')
+        );
+        
+        return Post::loadPostModelsByIds($posts);
+	}
+
 	public function tags()
     {
         return $this->belongsToMany('Tag', 'posts_tags');
@@ -89,5 +157,24 @@ class Post extends Eloquent {
 
 	public function sentis() {
 		return $this->hasMany('Sentis');
+	}
+
+	private static function orderPosts($posts, $postIds){
+		$sorted = array_flip($postIds);
+					
+		foreach ($posts as $post) $sorted[$post->id] = $post;
+		$sorted = Collection::make(array_values($sorted));
+
+        return $sorted;
+	}
+
+	private static function loadPostModelsByIds($posts) {
+		$postIds = [];
+        foreach ($posts as $post) {
+            array_push($postIds, $post->id);    
+        }
+        
+        $posts = Post::find($postIds);
+        return Post::orderPosts($posts, $postIds);
 	}
 }

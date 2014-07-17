@@ -9,12 +9,23 @@ class FeelingController extends BaseController {
     }
 
     public function getFeelingPage($id){
-
+        $order = Input::get('order');
         $feeling = Feeling::find($id);
-
-        return View::make('feeling.single')
-            ->with('feeling', $feeling);
         
+        if($order === 'activity'){
+            $posts = Post::getLastActivityPostsByFeeling($feeling->id);
+            Debugbar::info($posts);
+        } else if ($order === 'newest') {
+            $posts = Post::getNewestPostsByFeeling($feeling->id);
+        } else {
+            $posts = Post::getMostPopularPostsByFeeling($feeling->id);
+            $order = 'popular';
+        }
+        
+        $feeling->posts = $posts;
+        
+        return View::make('feeling.single')
+            ->with('feeling', $feeling)
+            ->with('order', $order);
     }
-
 }

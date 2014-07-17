@@ -4,8 +4,20 @@ class HomeController extends BaseController {
 
 	public function home()
 	{
+		$order = Input::get('order');
+		
+		if($order === 'activity'){
+			$posts = Post::getLastActivityPosts();
+		} else if ($order === 'newest') {
+			$posts = Post::getNewestPosts();
+		} else {
+			$posts = Post::getMostPopularPosts();
+			$order = 'popular';
+		}
+		
 		return View::make('home')
-			->with('posts', Post::getMostPopularPosts());
+			->with('posts', $posts)
+			->with('order', $order);
 	}
 
 }

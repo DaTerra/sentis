@@ -46,7 +46,7 @@
 				list-style: none;
 			}
 			#search_list {
-	{orderby}			padding-left: 0px;
+				padding-left: 0px;
 				max-height: 300px;
 				overflow-y: scroll;
 				width: 340px;
