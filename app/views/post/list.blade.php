@@ -5,16 +5,11 @@
         	<th>Title</th>
         	<th>Content</th>
         	<th>Source</th>
-			<th>Media Type</th>
-			<th>Media URL</th>
+			<th>Media</th>
 			<th>Tags</th>
 			<th>Public Tags</th>
         	<th>User</th>
         	<th>Last update</th>
-        	<th>Privacy</th>
-		    <th>Anonymous</th>
-		    <th>IP Address</th>
-            <th>Status</th>
         </tr>
     </thead>
     <tbody>
@@ -28,7 +23,6 @@
 	          	<td>{{{$post->postContent['title']}}}</td>
 	          	<td>{{{$post->postContent['content']}}}</td>
 	          	<td>{{{$post->postContent['source_url']}}}</td>
-	          	<td>{{{$post->postContent['media']['type']}}}</td>
 	          	<td>
 	          	<img style="width:30%;" src="{{{$post->postContent['media_url']}}}"/>
 	          	</td>
@@ -48,10 +42,6 @@
 	          	<td>
 	          		{{ date('d M Y H:i a',strtotime($post->updated_at)) }}
 	          	</td>
-	          	<td>{{{$post->privacy->name}}}</td>
-	          	<td>{{{$post->anonymous}}}</td>
-	          	<td>{{{$post->user_ip_address}}}</td>
-                <td>{{{$post->status}}}</td>
         	</tr>
         @endforeach
     </tbody>
