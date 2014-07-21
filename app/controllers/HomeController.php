@@ -15,9 +15,13 @@ class HomeController extends BaseController {
 			$order = 'popular';
 		}
 		
+
+
 		return View::make('home')
 			->with('posts', $posts)
-			->with('order', $order);
+			->with('order', $order)
+			->with('topFeelings', Feeling::top5Feelings())
+			->with('topTags', Tag::top5Tags());
 	}
 
 }

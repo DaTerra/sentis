@@ -1,6 +1,38 @@
 @extends('master')
 
 @section('content')
+<div class="row">
+	<div class="col-sm-4 col-md-3 sidebar">
+	    <div class="mini-submenu">
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	    </div>
+	    <div class="list-group">
+	        <span href="#" class="list-group-item active" style="background: rgb(231, 219, 220);">
+	            <b>Top Feelings</b>
+	            <span class="pull-right" id="slide-submenu">
+	                <i class="fa fa-times"></i>
+	            </span>
+	        </span>
+	        @foreach ($topFeelings as $feeling) 
+	        	<a href="{{url('feelings/'.$feeling->id.'/page')}}" class="list-group-item">
+	            	{{$feeling->name}}
+	        	</a>	
+	        @endforeach
+
+	        <span href="#" class="list-group-item" style="background: rgb(231, 219, 220);">
+	            <b>Top Tags</b>
+	        </span>
+	        @foreach ($topTags as $tag) 
+	        	<a href="{{url('tags/'.$tag->id.'/page')}}" class="list-group-item">
+	            	{{$tag->name}}
+	        	</a>	
+	        @endforeach
+	    </div>
+	</div>
+</div>
+
 <h2 style="float:left;">Posts</h2>
 @include('post.order_options')
 @if (count($posts) > 0)
