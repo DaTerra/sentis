@@ -3,6 +3,11 @@ use Illuminate\Database\Eloquent\Collection;
 class Feeling extends Eloquent {
 	protected $fillable = array('name', 'description', 'order', 'icon');
 	public $timestamps = false;
+
+	public function topics()
+  	{
+      return $this->belongsToMany('Topic', 'topics_feelings');
+  	}
 	
 	public function sentis(){
 		return $this->belongsToMany('Sentis', 'sentis_feelings','feeling_id', 'sentis_id')
@@ -10,37 +15,25 @@ class Feeling extends Eloquent {
 	}
 
 	public static function top5Feelings(){
-		$query = 'SELECT feeling_id, 
-			    	  	 count(*) as qtd 
-				  FROM sentis_feelings
-			 	  GROUP BY feeling_id
-			  	  ORDER BY qtd DESC
-			      LIMIT 0, 5';
+		$query = 'SELECT sf.feeling_id as id, 
+				  	     f.name,
+					     count(*) as qtd 
+				  FROM sentis_feelings sf, 
+				  	   feelings f, 
+				  	   sentis s, 
+				  	   posts p
+				  WHERE sf.feeling_id = f.id
+				  AND   sf.sentis_id = s.id
+			  	  AND   s.post_id = p.id
+				  AND   p.status = 1
+				  GROUP BY sf.feeling_id
+				  ORDER BY qtd DESC
+				  LIMIT 0, 5';
 		
 		return Feeling::loadFeelingModelsByIds($query);
 	}
 
 	private static function loadFeelingModelsByIds($query) {
-		$feelings = 
-        DB::select(
-            DB::raw($query)
-        );
-
-		$feelingIds = [];
-        foreach ($feelings as $feeling) {
-            array_push($feelingIds, $feeling->feeling_id);    
-        }
-        
-        $feelings = Feeling::find($feelingIds);
-        return Feeling::orderFeelings($feelings, $feelingIds);
-	}
-
-	private static function orderFeelings($feelings, $feelingIds){
-		$sorted = array_flip($feelingIds);
-					
-		foreach ($feelings as $feeling) $sorted[$feeling->id] = $feeling;
-		$sorted = Collection::make(array_values($sorted));
-
-        return $sorted;
+		return DB::select(DB::raw($query));
 	}
 }

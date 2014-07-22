@@ -17,7 +17,7 @@
 	        </span>
 	        @foreach ($topFeelings as $feeling) 
 	        	<a href="{{url('feelings/'.$feeling->id.'/page')}}" class="list-group-item">
-	            	{{$feeling->name}}
+	            	{{$feeling->name}} ({{$feeling->qtd}})
 	        	</a>	
 	        @endforeach
 
@@ -26,7 +26,7 @@
 	        </span>
 	        @foreach ($topTags as $tag) 
 	        	<a href="{{url('tags/'.$tag->id.'/page')}}" class="list-group-item">
-	            	{{$tag->name}}
+	            	{{$tag->name}} ({{$tag->qtd}})
 	        	</a>	
 	        @endforeach
 	    </div>
@@ -40,9 +40,8 @@
 @else
     <p>There are no posts created.</p>
 @endif
-<td>
-    {{ link_to_route('posts-create', 'Add a new Post', null, ['class' => 'btn btn-primary pull-right'] )}}
-</td>
+
+{{ link_to_route('posts-create', 'Add a new Post', null, ['class' => 'btn btn-primary pull-right'] )}}
 
 <script type="text/javascript">
 	$("#orderOpts").change(function() {

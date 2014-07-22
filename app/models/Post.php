@@ -218,6 +218,10 @@ class Post extends Eloquent {
     {
         return $this->belongsToMany('Tag', 'posts_tags');
     }
+	
+	public function topics(){
+    	return $this->belongsToMany('Topic', 'topics_posts');
+    }
 
 	public function postContent(){
 		return $this->hasOne('PostContent');

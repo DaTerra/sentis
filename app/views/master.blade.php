@@ -119,6 +119,9 @@
 			      <ul class="nav navbar-nav">
 			        <li>{{link_to_route('feelings', 'Feelings')}}</li>
                     <li>{{link_to_route('tags', 'Tags')}}</li>
+                    @if(Auth::user() && Auth::user()->hasRole('ADM'))
+						<li>{{link_to_route('topics', 'Topics')}}</li>
+					@endif
 			      </ul>
 			      <form  id="searchForm" style="width:30%" action="/search/" class="navbar-form navbar-left" role="search">
 			        <div class="input-group">
@@ -137,7 +140,7 @@
 			            
 			        </div>
 			      </form>
-			      <ul class="nav navbar-nav navbar-right">
+			      <ul class="nav navbar-nav navbar-right" style="width:20%;">
 			        @if(!Auth::check())
 						@if(Request::path() !== 'account/login')
 							<li>{{link_to_route('account-login', 'Sign In')}}</li>
@@ -146,12 +149,12 @@
 							<li>{{link_to_route('account-create', 'Sign Up')}}</li>
 						@endif
 					@else
-						<li style="text-align: right;">
+						<li style="text-align: right;width:50%;">
 							<a href="/user/{{Auth::user()->username}}">
-								<img style="width:4%;" src="{{{Auth::user()->avatar_url}}}">
+								<img style="width:35%;" src="{{{Auth::user()->avatar_url}}}">
 								<strong>{{{Auth::user()->username}}}</strong>
 							</a>
-						<li>{{link_to_route('account-logout', 'Sign out')}}</li>
+						<li style="text-align: right;">{{link_to_route('account-logout', 'Sign out')}}</li>
 					@endif
 			      </ul>
 			    </div><!-- /.navbar-collapse -->

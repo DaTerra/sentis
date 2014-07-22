@@ -15,8 +15,6 @@ class HomeController extends BaseController {
 			$order = 'popular';
 		}
 		
-
-
 		return View::make('home')
 			->with('posts', $posts)
 			->with('order', $order)

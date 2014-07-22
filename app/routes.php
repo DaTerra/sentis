@@ -108,6 +108,22 @@ Route::group(array('before'=>'auth'), function(){
 		'as'	=> 'posts-edit',
 		'uses'	=> 'PostController@getEdit'
 	));
+
+	/*
+	| Topics ADM List (GET)
+	*/
+	Route::get('/topics', array(
+		'as'	=> 'topics',
+		'uses'	=> 'TopicController@getTopics'
+	));
+
+	/*
+	| Topics ADM Create (GET)
+	*/
+	Route::get('/topics/create', array(
+		'as'	=> 'topics-create',
+		'uses'	=> 'TopicController@getCreate'
+	));
 });
 
 /*

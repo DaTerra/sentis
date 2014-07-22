@@ -13,7 +13,7 @@
 		@endif
 		
 		{{Form::label('content', 'Content')}}
-		{{ Form::textarea('content', null, ['placeholder'=>'Content', 'size' => '48x10', 'class' => 'input-block-level']) }}
+		{{ Form::textarea('content', null, ['placeholder'=>'Content', 'size' => '43x10', 'class' => 'input-block-level']) }}
 		@if($errors->has('content'))
 			<div class="alert alert-danger">{{$errors->first('content')}}</div>
 		@endif
