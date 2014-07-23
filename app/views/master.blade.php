@@ -119,9 +119,13 @@
 			      <ul class="nav navbar-nav">
 			        <li>{{link_to_route('feelings', 'Feelings')}}</li>
                     <li>{{link_to_route('tags', 'Tags')}}</li>
+                    {{--
                     @if(Auth::user() && Auth::user()->hasRole('ADM'))
+                    --}}
 						<li>{{link_to_route('topics', 'Topics')}}</li>
+					{{--
 					@endif
+					--}}
 			      </ul>
 			      <form  id="searchForm" style="width:30%" action="/search/" class="navbar-form navbar-left" role="search">
 			        <div class="input-group">

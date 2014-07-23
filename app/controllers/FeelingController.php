@@ -1,7 +1,11 @@
 <?php
 
 class FeelingController extends BaseController {
-
+    
+    public function getFeelingsByName(){
+        $name = Input::get('feelings');
+        return Feeling::where('name','like','%' .$name .'%')->get();
+    }
     public function getFeelings(){
         $feelings = Feeling::All();
         return View::make('feeling.index')

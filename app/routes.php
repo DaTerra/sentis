@@ -59,6 +59,14 @@ Route::group(array('before'=>'auth'), function(){
 			'as'	=> 'posts-edit',
 			'uses'	=> 'PostController@postEdit'
 		));
+
+		/*
+		| Topics ADM Create (POST)
+		*/
+		Route::post('/topics/create', array(
+			'as'	=> 'topics-create-post',
+			'uses'	=> 'TopicController@postCreate'
+		));
 	});
 
 	/* 
@@ -317,5 +325,13 @@ Route::group(array('before'=>'guest'), function(){
         'as' 	=> 'account-send-activation-email',
         'uses' 	=> 'AccountController@getSendActivationEmail'
     ));
+
+    /*
+	| Search Feeling By Name (GET)
+	*/
+	Route::get('/feelings/get-feelings-by-name/', array(
+		'as' 	=> 'feelings-by-name',
+		'uses' 	=> 'FeelingController@getFeelingsByName'
+	));
 });	
 

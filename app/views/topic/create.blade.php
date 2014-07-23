@@ -51,6 +51,7 @@
 		</br>
 		</br>
 		
+		{{--
 		{{Form::label('posts', 'Posts (selecting posts turns the results static)')}}
 		{{Form::hidden('posts', null, ['style'=>'width:300px;'])}}
 		{{Form::hidden('postsJSON', Session::get('postsJSON'), array('placeholder'=>'Source', 'class' => 'postsJSON'))}}
@@ -60,6 +61,7 @@
 
 		</br>
 		</br>
+		--}}
 
 		{{ Form::submit('Create', array('class' => 'btn btn-large btn-primary'))}}
 
@@ -90,14 +92,7 @@
 		          };
 				}
 			},
-			createSearchChoice:function(term, data) { 
-			    if ($(data).filter(function() { 
-			    	return this.text.localeCompare(term)===0; 
-			    }).length===0) {
-			    	return {id:term, text:term};
-			    }
-		   },
-		   initSelection : function (element, callback) {
+		    initSelection : function (element, callback) {
 		        var data = [];
 		        var tagsJSN = JSON.parse($('.tagsJSON').val());
 		        // tagsJSNArray = $.makeArray(tagsJSN);
@@ -133,14 +128,7 @@
 		          };
 				}
 			},
-			createSearchChoice:function(term, data) { 
-			    if ($(data).filter(function() { 
-			    	return this.text.localeCompare(term)===0; 
-			    }).length===0) {
-			    	return {id:term, text:term};
-			    }
-		   },
-		   initSelection : function (element, callback) {
+		    initSelection : function (element, callback) {
 		        var data = [];
 		        var feelingsJSN = JSON.parse($('.feelingsJSON').val());
 		        // tagsJSNArray = $.makeArray(tagsJSN);
@@ -172,49 +160,6 @@
 		        callback(data);
 		    }
 		});
-
-		$('#posts').select2({
-			minimumInputLength: 2,
-			tags : [],
-			placeholder: "Please enter posts",
-			ajax: {
-				url: '/posts/get-posts-by-title',
-				dataType: 'json',
-				type: 'GET',
-      			quietMillis: 50,
-      			data: function(term) {
-      				return { posts:term };
-      			},
-      			results: function (data) {
-		        	var results = [];
-		          	$.each(data, function(index, item){
-		            	results.push({
-		              		id: item.id,
-		              		text: item.name
-		            	});
-		          	});
-		          	return {
-		              results: results
-		          };
-				}
-			},
-			createSearchChoice:function(term, data) { 
-			    if ($(data).filter(function() { 
-			    	return this.text.localeCompare(term)===0; 
-			    }).length===0) {
-			    	return {id:term, text:term};
-			    }
-		   },
-		   initSelection : function (element, callback) {
-		        var data = [];
-		        var postsJSN = JSON.parse($('.postsJSON').val());
-		        // tagsJSNArray = $.makeArray(tagsJSN);
-		        $(postsJSN).each(function (index, element) {
-		           data.push({id: element.id, text: element.text});
-		        });
-		        callback(data);
-		    }
-		});
 	</script>	
 	<script type="text/javascript">
 		$('#tags').change(function() {
@@ -230,11 +175,6 @@
 		$('#keywords').change(function() {
 		    var selections = ( JSON.stringify($('#keywords').select2('data')) );
 		    $('.keywordsJSON').val(selections);
-		});
-
-		$('#posts').change(function() {
-		    var selections = ( JSON.stringify($('#posts').select2('data')));
-		    $('.postsJSON').val(selections);
 		});
 
 	</script>

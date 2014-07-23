@@ -29,7 +29,7 @@
 					{{link_to_route('profile-user',$topic->user->username,  $topic->user->username)}}
 	          	</td>
 	          	<td>
-	          		@foreach ($topic->topicKeywords as $keyword)
+	          		@foreach ($topic->keywords as $keyword)
                     	<p>{{$keyword->keyword}}</p>
 					@endforeach
 	          	</td>

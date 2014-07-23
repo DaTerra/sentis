@@ -7,9 +7,10 @@ class Topic extends Eloquent {
 		return $this->belongsTo('User');
 	}
 
-	public function topicKeywords() {
-		return $this->hasMany('TopicKeyword');
-	}
+	public function keywords()
+    {
+        return $this->hasMany('Keyword');
+    }
 
 	/*
 	| Many to Many relatioships
