@@ -24,7 +24,9 @@
 	          	<td>{{{$post->postContent['content']}}}</td>
 	          	<td>{{{$post->postContent['source_url']}}}</td>
 	          	<td>
-	          	<img style="width:30%;" src="{{{$post->postContent['media_url']}}}"/>
+	          	@if(isset($post->postContent['media_url']))
+	          		<img style="width:30%;" src="{{{$post->postContent['media_url']}}}"/>
+	          	@endif
 	          	</td>
 	          	<td>
 	          		@foreach ($post->tags as $tag)

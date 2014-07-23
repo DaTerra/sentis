@@ -15,7 +15,9 @@ class Topic extends Eloquent {
 	/*
 	| Many to Many relatioships
 	*/
-
+	public function postsByTopic() {
+		return Post::all();
+	}
 	public function posts(){
 		return $this->belongsToMany('Post', 'topics_posts');
 	}

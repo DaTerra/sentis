@@ -261,6 +261,14 @@ Route::group(array('before'=>'guest'), function(){
 		'as' 	=> 'posts-page',
 		'uses' 	=> 'PostController@getPostPage'
 	));
+	
+	/*
+	| Topic Page (GET)
+	*/
+	Route::get('/topic/{id}/page/', array(
+		'as' 	=> 'topics-page',
+		'uses' 	=> 'TopicController@getTopicPage'
+	));
 
 	/*
 	| Search Tag By Name (GET)

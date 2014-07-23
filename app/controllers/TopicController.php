@@ -96,4 +96,10 @@ class TopicController extends BaseController {
 			}
 		}
 	}
+
+	public function getTopicPage($id){
+		$topic = Topic::find($id);
+		return View::make('topic.single')
+			->with('topic', $topic);
+	}
 }
