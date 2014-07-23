@@ -118,14 +118,6 @@ Route::group(array('before'=>'auth'), function(){
 	));
 
 	/*
-	| Topics ADM List (GET)
-	*/
-	Route::get('/topics', array(
-		'as'	=> 'topics',
-		'uses'	=> 'TopicController@getTopics'
-	));
-
-	/*
 	| Topics ADM Create (GET)
 	*/
 	Route::get('/topics/create', array(
@@ -192,6 +184,14 @@ Route::group(array('before'=>'guest'), function(){
 	    ));
 	});
 	
+	/*
+	| Topics ADM List (GET)
+	*/
+	Route::get('/topics', array(
+		'as'	=> 'topics',
+		'uses'	=> 'TopicController@getTopics'
+	));
+
 	/* 
 	| Login (GET)
 	*/
