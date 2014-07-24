@@ -98,8 +98,17 @@ class TopicController extends BaseController {
 	}
 
 	public function getTopicPage($id){
+		
 		$topic = Topic::find($id);
+		if(count($topic->posts) > 0){
+			$posts = null;
+			//get static posts
+		} else {
+			//get dinamic posts
+			$posts = Post::getMostPopularPostsByTopic($topic);	
+		}
 		return View::make('topic.single')
-			->with('topic', $topic);
+			->with('topic', $topic)
+			->with('posts', $posts);
 	}
 }

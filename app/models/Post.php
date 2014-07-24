@@ -214,6 +214,100 @@ class Post extends Eloquent {
         
         return Post::loadPostModelsByIds($query);
 	}
+	
+	public static function getMostPopularPostsByTagsQuery($tagIds){
+		return '(SELECT p.id, 
+					   count(s.post_id) as qtd
+				FROM   posts p LEFT JOIN sentis s ON p.id = s.post_id, 
+					   posts_tags pt
+				WHERE  p.id = pt.post_id 
+				AND    p.status = 1
+				AND    pt.tag_id IN (' .$tagIds .') 
+				GROUP BY s.post_id)
+				
+				UNION
+
+				(SELECT s.post_id, 
+					   count(s.post_id) as qtd
+				FROM   posts p, sentis_tags st, sentis s
+				WHERE  st.sentis_id = s.id
+				AND    p.id = s.post_id
+				AND    p.status = 1
+				AND    st.tag_id IN (' .$tagIds .') 
+				GROUP BY s.post_id)';
+	}
+	
+	public static function getMostPopularPostsByFeelingsQuery($feelingIds){
+		return '(SELECT p.id, 
+				       count(s.post_id) as qtd
+				FROM  posts p, sentis s, sentis_feelings sf
+				WHERE s.post_id = p.id
+			 	AND   s.id = sf.sentis_id
+			 	AND   p.status = 1
+				AND   sf.feeling_id IN(' .$feelingIds .')
+			 	GROUP BY s.post_id
+			 	ORDER BY qtd DESC)';
+	}
+
+	public static function getMostPopularPostsByKeywordsQuery($keywords){
+		$finalQuery = '';
+		$i = 1;
+		$count = count($keywords);
+		foreach ($keywords as $keyword) {
+			$finalQuery = $finalQuery 
+				.'(SELECT p.id, 
+					     count(s.post_id) as qtd
+				  FROM posts p LEFT JOIN sentis s ON p.id = s.post_id, 
+				       post_contents pc
+				  WHERE p.id = pc.post_id
+				  AND   p.status = 1
+				  AND   (pc.title like "%' .$keyword->keyword .'%"'
+					    .' OR 
+					    pc.content like "%' .$keyword->keyword .'%")
+				  GROUP BY s.post_id
+			      ORDER BY qtd DESC)';
+			
+			if ($i !== $count){
+				$finalQuery = $finalQuery .' UNION ';
+			}
+			$i = $i +1;
+		}
+		return $finalQuery;			
+	}
+
+	public static function getMostPopularPostsByTopic($topic) {
+		$query = 'SELECT DISTINCT id FROM (';
+		
+		//check the tags and increase the query
+		if($topic->tags){
+			$tagIds = [];
+        	foreach ($topic->tags as $tag) {
+            	array_push($tagIds, $tag->id);
+            }
+            $query = $query . Post::getMostPopularPostsByTagsQuery(implode(',', $tagIds));
+        }
+		
+		//check the tags and increase the query
+		if($topic->feelings){
+			$query = $query .' UNION ';
+			$feelingIds = [];
+        	foreach ($topic->feelings as $feeling) {
+            	array_push($feelingIds, $feeling->id);
+            }
+            $query = $query . Post::getMostPopularPostsByFeelingsQuery(implode(',', $feelingIds));
+		}
+	
+		//check the keywords and increase the query
+		if($topic->keywords){
+			$query = $query .' UNION ';
+			$query = $query . Post::getMostPopularPostsByKeywordsQuery($topic->keywords);
+		}		
+
+		$query = $query .') a ORDER BY qtd DESC';
+		
+		return Post::loadPostModelsByIds($query);
+	}
+
 	public function tags()
     {
         return $this->belongsToMany('Tag', 'posts_tags');

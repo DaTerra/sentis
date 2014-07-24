@@ -63,8 +63,8 @@
   			    <p>{{$topic->updated_at}}</p>
       	</div>
 	</div>	
-	@if (count($topic->postsByTopic()) > 0)
-	    @include('post.list', array('posts'=>$topic->postsByTopic()))
+	@if (count($posts) > 0)
+	    @include('post.list', array('posts'=>$posts))
 	@else
 	    <p>There are no posts for this topic.</p>
 	@endif
