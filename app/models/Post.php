@@ -65,6 +65,25 @@ class Post extends Eloquent {
         
         return Post::loadPostModelsByIds($query);
 	}
+	
+	public static function feelingsByPosts($postIds) {
+		$feelingsByPosts = 
+	    DB::select(
+			DB::raw('SELECT f.id id,
+							f.name feeling, 
+							count(*) feelings_left, 
+				            avg(sf.value) feeling_avg, 
+				            sum(sf.value) feeling_total
+				     FROM sentis_feelings sf, feelings f, sentis s, posts p 
+				     WHERE p.id = s.post_id
+					 AND   s.id = sf.sentis_id
+					 AND   f.id = sf.feeling_id
+					 AND   p.id IN(' .implode(',', $postIds) .')'
+					 .' GROUP BY sf.feeling_id')
+		);
+
+		return $feelingsByPosts;
+	}
 
 	public function feelings() {
 		$feelingsByPost = 
@@ -277,9 +296,10 @@ class Post extends Eloquent {
 
 	public static function getMostPopularPostsByTopic($topic) {
 		$query = 'SELECT DISTINCT id FROM (';
-		
+		$filterUsed = false;
 		//check the tags and increase the query
-		if($topic->tags){
+		if(count($topic->tags) > 0){
+			$filterUsed = true;
 			$tagIds = [];
         	foreach ($topic->tags as $tag) {
             	array_push($tagIds, $tag->id);
@@ -288,8 +308,11 @@ class Post extends Eloquent {
         }
 		
 		//check the tags and increase the query
-		if($topic->feelings){
-			$query = $query .' UNION ';
+		if(count($topic->feelings) > 0){
+			if($filterUsed){
+				$query = $query .' UNION ';
+			}
+			$filterUsed = true;
 			$feelingIds = [];
         	foreach ($topic->feelings as $feeling) {
             	array_push($feelingIds, $feeling->id);
@@ -298,8 +321,11 @@ class Post extends Eloquent {
 		}
 	
 		//check the keywords and increase the query
-		if($topic->keywords){
-			$query = $query .' UNION ';
+		if(count($topic->keywords) > 0){
+			if($filterUsed){
+				$query = $query .' UNION ';
+			}
+			$filterUsed = true;
 			$query = $query . Post::getMostPopularPostsByKeywordsQuery($topic->keywords);
 		}		
 

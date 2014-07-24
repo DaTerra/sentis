@@ -1,7 +1,7 @@
 @extends('master')
 @section('content')
 	<div class="page-header">
-    	<a href="{{url('/')}}">Back to overview</a>
+    	<a href="{{url('/topics')}}">Back to overview</a>
 		@if (Auth::user() && Auth::user()->canEditTopic($topic))
 			<a href="{{url('topics/'.$topic->id.'/edit')}}">
 			<span class="glyphicon glyphicon-edit"></span> Edit
@@ -11,10 +11,9 @@
 			</a>
 		@endif
 	</div>
-
-	<div class="form-signin">
-    	
-		@if($topic->title)
+	<div class="form-signin" style="float:left;width:49%;max-width:680px;min-height: 413px;">
+    	<h1>Topic</h1>
+    	@if($topic->title)
 	    	<div>
 	    		<label>Title:</label>
 	    		{{{$topic->title}}}
@@ -37,41 +36,56 @@
 	  		<label>User:</label>
 	  		{{{$topic->user->username}}}
   		</div>
-		
-		<div>
-      		<label>Keywords:</label>
-  			@foreach ($topic->keywords as $keyword)
-                <p>{{$keyword->keyword}}</p>
-			@endforeach
-      	</div>
 
-      	<div>
-      		<label>Tags:</label>
-  			@foreach ($topic->tags as $tag)
-                <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
-			@endforeach
-      	</div>
-		
-		<div>
-      		<label>Feelings:</label>
-  			@foreach ($topic->feelings as $feeling)
-                <p>{{link_to_route('feelings-page', $feeling->name,  $feeling->id)}}</p>
-			@endforeach
-      	</div>
       	<div>
       		<label>Updated At:</label>
   			    <p>{{$topic->updated_at}}</p>
       	</div>
+      	<table class="table table-striped">
+			<thead>
+    			<tr align="center">
+		        	<th>Keywords</th>
+		        	<th>Tags</th>
+		        	<th>Feelings</th>
+        		</tr>
+    		</thead>
+    		<tbody>
+	        	<tr>
+	        		<td>
+		        		@if(count($topic->Keywords) > 0)
+			        		@foreach ($topic->keywords as $keyword)
+				                <p>{{$keyword->keyword}}</p>
+							@endforeach
+						@else
+							<p>-</p>
+						@endif	
+		        	</td>	
+		        	<td>
+		        		@if(count($topic->tags) > 0)
+			        		@foreach ($topic->tags as $tag)
+				                <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
+							@endforeach
+						@else
+							<p>-</p>
+						@endif
+		        	</td>	
+		        	<td>
+		        		@if(count($topic->feelings) > 0)
+		        			@foreach ($topic->feelings as $feeling)
+			                	<p>{{link_to_route('feelings-page', $feeling->name,  $feeling->id)}}</p>
+							@endforeach
+						@else
+							<p>-</p>
+						@endif	
+					</td>
+		        </tr>
+	    	</tbody> 
+	    </table>
 	</div>	
-	@if (count($posts) > 0)
-	    @include('post.list', array('posts'=>$posts))
-	@else
-	    <p>There are no posts for this topic.</p>
-	@endif
-	{{--
-	<div class="form-signin">
+	
+	<div class="form-signin" style="float:right;width:49%;max-width:680px;min-height: 413px;">
 		<h1>Sentis Report:</h1>
-		@if (count($post->feelings()) > 0)
+		@if (count($feelingsByPosts) > 0)
 			<table class="table table-striped">
 				<thead>
 			    	<tr>
@@ -82,7 +96,7 @@
 			        </tr>
 			    </thead>
 			    <tbody>
-			        @foreach($post->feelings() as $feeling)
+			        @foreach($feelingsByPosts as $feeling)
 				        <tr>
 				        	<td>
 				        	{{ link_to_route('feelings-page', $feeling->feeling, $feeling->id)}}</td>
@@ -94,8 +108,16 @@
 			    </tbody>
 			</table>
 		@else 
-			<p>There are no sentis on this post.</p>
+			<p>There are no sentis on this topic.</p>
 		@endif
 	</div>
-	--}}
+	<div class="form-signin" style="float:left;width:100%;max-width:1200px;">
+		<h1>Posts</h1>
+		@if (count($posts) > 0)
+			@include('post.list', array('posts'=>$posts))
+	    
+		@else
+	    	<p>There are no posts for this topic.</p>
+		@endif
+	</div>	
 @stop

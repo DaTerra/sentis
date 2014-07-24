@@ -55,18 +55,22 @@ class TopicController extends BaseController {
 				if($topic->save()){
 					
 					$topic_tags_ids = [];
-					foreach ($tagsAsArray as $tag) {
-						if(Tag::find($tag['id'])){
-							array_push($topic_tags_ids, $tag['id']);
+					if($tagsAsArray){
+						foreach ($tagsAsArray as $tag) {
+							if(Tag::find($tag['id'])){
+								array_push($topic_tags_ids, $tag['id']);
+							}
 						}
 					}
 					//saving topic tags
 					$topic->tags()->sync($topic_tags_ids);	
 
 					$topic_feelings_ids = [];				
-					foreach ($feelingsAsArray as $feeling) {
-						if(Feeling::find($feeling['id'])){
-							array_push($topic_feelings_ids, $feeling['id']);
+					if($feelingsAsArray){
+						foreach ($feelingsAsArray as $feeling) {
+							if(Feeling::find($feeling['id'])){
+								array_push($topic_feelings_ids, $feeling['id']);
+							}
 						}
 					}
 					//saving topic feelings
@@ -74,11 +78,13 @@ class TopicController extends BaseController {
 
 					//saving topic keywords
 					$topic_keywords = [];				
-					foreach ($keywordsAsArray as $keyword) {
-						$newKeyword = new Keyword;
-						$newKeyword->keyword = $keyword['text'];
-						$newKeyword->topic_id = $topic->id;
-						$newKeyword->save();
+					if($keywordsAsArray){
+						foreach ($keywordsAsArray as $keyword) {
+							$newKeyword = new Keyword;
+							$newKeyword->keyword = $keyword['text'];
+							$newKeyword->topic_id = $topic->id;
+							$newKeyword->save();
+						}
 					}
 
 					return Redirect::route('topics')
@@ -98,17 +104,26 @@ class TopicController extends BaseController {
 	}
 
 	public function getTopicPage($id){
-		
+		$feelingsByPosts = null;
 		$topic = Topic::find($id);
+		
 		if(count($topic->posts) > 0){
 			$posts = null;
+			Debugbar::info('Buscando os posts selecionados estaticamente');
 			//get static posts
 		} else {
+			Debugbar::info('Buscando os posts de forma dinamica');
 			//get dinamic posts
-			$posts = Post::getMostPopularPostsByTopic($topic);	
+			$posts = Post::getMostPopularPostsByTopic($topic);
+			if($posts->count()){
+				$postIds = [];
+        		foreach ($posts as $post) array_push($postIds, $post->id);    
+        		$feelingsByPosts = Post::feelingsByPosts($postIds);	
+			}
 		}
 		return View::make('topic.single')
 			->with('topic', $topic)
-			->with('posts', $posts);
+			->with('posts', $posts)
+			->with('feelingsByPosts', $feelingsByPosts);
 	}
 }
