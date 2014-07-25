@@ -67,6 +67,14 @@ Route::group(array('before'=>'auth'), function(){
 			'as'	=> 'topics-create-post',
 			'uses'	=> 'TopicController@postCreate'
 		));
+
+		/*
+		| Topic Delete
+		*/
+		Route::delete('topics/{id}/delete', array(
+			'as' 	=> 'topics-delete',
+			'uses' 	=> 'TopicController@postDelete'
+		));
 	});
 
 	/* 
@@ -123,6 +131,14 @@ Route::group(array('before'=>'auth'), function(){
 	Route::get('/topics/create', array(
 		'as'	=> 'topics-create',
 		'uses'	=> 'TopicController@getCreate'
+	));
+
+	/* 
+	| Delete Topic (GET)
+	*/
+	Route::get('/topics/{id}/delete', array(
+		'as'  	=> 'topics-delete',
+		'uses'	=> 'TopicController@getDelete'
 	));
 });
 

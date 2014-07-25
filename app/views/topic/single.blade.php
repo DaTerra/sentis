@@ -52,7 +52,7 @@
     		<tbody>
 	        	<tr>
 	        		<td>
-		        		@if(count($topic->Keywords) > 0)
+		        		@if(count($topic->keywords) > 0)
 			        		@foreach ($topic->keywords as $keyword)
 				                <p>{{$keyword->keyword}}</p>
 							@endforeach

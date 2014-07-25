@@ -126,4 +126,27 @@ class TopicController extends BaseController {
 			->with('posts', $posts)
 			->with('feelingsByPosts', $feelingsByPosts);
 	}
+
+	public function getDelete($id) {
+		$topic = Topic::find($id);
+		if(Auth::user()->canEditTopic($topic)){
+			return View::make('topic.delete')
+				->with('topic', $topic);
+		} else {
+			return Redirect::to('/')
+				->with('error', "Unauthorized operation");
+		}
+	}
+
+	public function postDelete($id){
+		$topic = Topic::find($id);
+		$topic->status = 0;
+		if($topic->save()){
+			return Redirect::to('/topics')
+				->with('message', 'Successfully deleted topic!');	
+		} else{
+			return Redirect::to('/')
+				->with('message', 'We could not delete your topic. Please try again later.');	
+		}
+	}
 }
