@@ -9,6 +9,15 @@
 			<a href="{{url('topics/'.$topic->id.'/delete')}}">
 				<span class="glyphicon glyphicon-trash"></span> Delete
 			</a>
+			@if($topic->status == 1)
+				<a href="{{url('topics/'.$topic->id.'/status/0')}}">
+					<span class="glyphicon glyphicon-remove"></span> Desactivate
+				</a>
+			@else
+				<a href="{{url('topics/'.$topic->id.'/status/1')}}">
+					<span class="glyphicon glyphicon-ok"></span> Activate
+				</a>
+			@endif
 		@endif
 	</div>
 	<div class="form-signin" style="float:left;width:49%;max-width:680px;min-height: 413px;">

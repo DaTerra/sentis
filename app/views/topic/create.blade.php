@@ -64,6 +64,8 @@
 		--}}
 
 		{{ Form::submit('Create', array('class' => 'btn btn-large btn-primary'))}}
+		<input type="checkbox" name="status", id="status" value="1" />
+		{{Form::label('status', 'Activate Topic?')}}
 
 	{{Form::close()}}
 	<script type="text/javascript">

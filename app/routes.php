@@ -140,6 +140,15 @@ Route::group(array('before'=>'auth'), function(){
 		'as'  	=> 'topics-delete',
 		'uses'	=> 'TopicController@getDelete'
 	));
+
+	/* 
+	| Activate / Desactivate Topic (GET)
+	*/
+	Route::get('topics/{id}/status/{statusCode}', array(
+		'as'    => 'topics-status',
+		'uses'  => 'TopicController@changeStatus'
+	));
+
 });
 
 /*

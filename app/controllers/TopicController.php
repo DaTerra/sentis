@@ -42,7 +42,7 @@ class TopicController extends BaseController {
 			$user 			 = Auth::user();
 			$title 	 		 = Input::get('title');
 			$content 		 = Input::get('content');
-			
+			$status 		 = Input::get('status', 0);
 			//AT LEAST ONE FIELD MUST BE FILLED
 			$custom_validator = !((empty($feelingsAsArray)) && (empty($tagsAsArray)) && (empty($keywordsAsArray)));
 	
@@ -51,9 +51,9 @@ class TopicController extends BaseController {
 				$topic->user_id = $user->id;
 				$topic->title 	= $title;
 				$topic->content	= $content;
-
+				$topic->status  = $status;
+				
 				if($topic->save()){
-					
 					$topic_tags_ids = [];
 					if($tagsAsArray){
 						foreach ($tagsAsArray as $tag) {
@@ -148,5 +148,13 @@ class TopicController extends BaseController {
 			return Redirect::to('/')
 				->with('message', 'We could not delete your topic. Please try again later.');	
 		}
+	}
+
+	public function changeStatus($topicId, $statusCode){
+		$topic = Topic::find($topicId);
+		$topic->status = $statusCode;
+		$topic->save();
+		return Redirect::route('topics-page', $topicId)
+			->with('message', 'Status successfully changed!');
 	}
 }
