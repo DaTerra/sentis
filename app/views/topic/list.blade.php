@@ -17,6 +17,14 @@
 	        <tr>
 	        	<td>
                     {{ link_to_route('topics-page', $topic->id, $topic->id)}}
+                    @if (Auth::user() && Auth::user()->canEditTopic($topic))
+						<a href="{{url('topics/'.$topic->id.'/edit')}}" title="Edit Topic">
+						<span class="glyphicon glyphicon-edit"></span>
+						</a>
+						<a href="{{url('topics/'.$topic->id.'/delete')}}" title="Delete Topic">
+							<span class="glyphicon glyphicon-trash"></span>
+						</a>
+					@endif
                 </td>
 	          	<td>{{{$topic->title}}}</td>
 	          	<td>{{{$topic->content}}}</td>

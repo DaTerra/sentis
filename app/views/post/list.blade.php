@@ -17,15 +17,24 @@
 	        <tr>
 	        	<td>
                     {{ link_to_route('posts-page', $post->id, $post->id)}}
-                    <a href="{{url('sentis/'.$post->id.'/create')}}">
-                        <span class="glyphicon glyphicon-heart"></span></a>
+                    @if (Auth::user() && Auth::user()->canEdit($post))
+						<a href="{{url('posts/'.$post->id.'/edit')}}" title="Edit Post">
+						<span class="glyphicon glyphicon-edit"></span>
+						</a>
+						<a href="{{url('posts/'.$post->id.'/delete')}}" title="Delete Post">
+							<span class="glyphicon glyphicon-trash"></span>
+						</a>
+					@endif
+				    <a href="{{url('sentis/'.$post->id.'/create')}}" title="Leave you feelings">
+				        <span class="glyphicon glyphicon-heart"></span> 
+				    </a>
                 </td>
 	          	<td>{{{$post->postContent['title']}}}</td>
 	          	<td>{{{$post->postContent['content']}}}</td>
 	          	<td>{{{$post->postContent['source_url']}}}</td>
 	          	<td>
 	          	@if(isset($post->postContent['media_url']))
-	          		<img style="width:30%;" src="{{{$post->postContent['media_url']}}}"/>
+	          		<img class="thumbnail" style="width:30%; margin-bottom: 0px;" src="{{{$post->postContent['media_url']}}}"/>
 	          	@endif
 	          	</td>
 	          	<td>

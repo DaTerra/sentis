@@ -61,6 +61,14 @@ Route::group(array('before'=>'auth'), function(){
 		));
 
 		/*
+		| Topic Update
+		*/
+		Route::put('Topics/{id}/edit', array(
+			'as'	=> 'topics-edit',
+			'uses'	=> 'TopicsController@postEdit'
+		));
+
+		/*
 		| Topics ADM Create (POST)
 		*/
 		Route::post('/topics/create', array(
@@ -123,6 +131,14 @@ Route::group(array('before'=>'auth'), function(){
 	Route::get('/posts/{id}/edit', array(
 		'as'	=> 'posts-edit',
 		'uses'	=> 'PostController@getEdit'
+	));
+	
+	/*
+	| Edit Post (GET)
+	*/
+	Route::get('/topics/{id}/edit', array(
+		'as'	=> 'topics-edit',
+		'uses'	=> 'TopicController@getEdit'
 	));
 
 	/*

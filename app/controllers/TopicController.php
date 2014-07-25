@@ -157,4 +157,16 @@ class TopicController extends BaseController {
 		return Redirect::route('topics-page', $topicId)
 			->with('message', 'Status successfully changed!');
 	}
+
+	public function getEdit($id) {
+		$topic = Topic::find($id);
+
+        if(Auth::user()->canEditTopic($topic)){
+			return View::make('topic.edit')
+				->with('topic', $topic);
+		} else {
+			return Redirect::to('/')
+				->with('error', "Unauthorized operation");
+		}
+	}
 }

@@ -1,7 +1,10 @@
 @extends('master')
 @section('content')
 	<div class="page-header">
-    	<a href="{{url('/topics')}}">Back to overview</a>
+    	<a href="{{url('/topics')}}">
+    		<span class="glyphicon glyphicon-arrow-left"></span> 
+    		Back to overview
+    	</a>
 		@if (Auth::user() && Auth::user()->canEditTopic($topic))
 			<a href="{{url('topics/'.$topic->id.'/edit')}}">
 			<span class="glyphicon glyphicon-edit"></span> Edit

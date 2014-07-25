@@ -2,7 +2,10 @@
 
 @section('content')
 	<div class="page-header">
-    	<a href="{{url('/')}}">Back to overview</a>
+    	<a href="{{url('/')}}">
+    		<span class="glyphicon glyphicon-arrow-left"></span> 
+    		Back to overview
+    	</a>
 		@if (Auth::user() && Auth::user()->canEdit($post))
 			<a href="{{url('posts/'.$post->id.'/edit')}}">
 			<span class="glyphicon glyphicon-edit"></span> Edit
@@ -35,7 +38,7 @@
 	    @if($post->postContent['media_url'])
 	      	<div>
 	      		<label>Media:</label>
-	      		<img style="width:80%" src="{{{$post->postContent['media_url']}}}"/>
+	      		<img class="thumbnail" style="width:80%;margin-bottom: 0px;" src="{{{$post->postContent['media_url']}}}"/>
 	      	</div>
 	    @endif
 	     	
