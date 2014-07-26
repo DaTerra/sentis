@@ -63,9 +63,9 @@ Route::group(array('before'=>'auth'), function(){
 		/*
 		| Topic Update
 		*/
-		Route::put('Topics/{id}/edit', array(
+		Route::put('topics/{id}/edit', array(
 			'as'	=> 'topics-edit',
-			'uses'	=> 'TopicsController@postEdit'
+			'uses'	=> 'TopicController@postEdit'
 		));
 
 		/*

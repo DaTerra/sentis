@@ -19,7 +19,7 @@
 	    </a>
 	</div>
 
-	<div class="form-signin">
+	<div class="form-signin" style="float:left;width:49%;max-width:1200px;">
     	
 		@if($post->postContent['title'])
 	    	<div>
@@ -38,7 +38,7 @@
 	    @if($post->postContent['media_url'])
 	      	<div>
 	      		<label>Media:</label>
-	      		<img class="thumbnail" style="width:80%;margin-bottom: 0px;" src="{{{$post->postContent['media_url']}}}"/>
+	      		<img style="width:80%;margin-bottom: 0px;" src="{{{$post->postContent['media_url']}}}"/>
 	      	</div>
 	    @endif
 	     	
@@ -87,7 +87,7 @@
       		{{{$post->user_ip_address}}}
       	</div>
 	</div>	
-	<div class="form-signin">
+	<div class="form-signin" style="float:right;width:49%;max-width:1200px;">
 		<h1>Sentis Report:</h1>
 		@if (count($post->feelings()) > 0)
 			<table class="table table-striped">

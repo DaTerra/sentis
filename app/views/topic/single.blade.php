@@ -14,11 +14,11 @@
 			</a>
 			@if($topic->status == 1)
 				<a href="{{url('topics/'.$topic->id.'/status/0')}}">
-					<span class="glyphicon glyphicon-remove"></span> Desactivate
+					<span class="glyphicon glyphicon-remove"></span> Unpublish
 				</a>
 			@else
 				<a href="{{url('topics/'.$topic->id.'/status/1')}}">
-					<span class="glyphicon glyphicon-ok"></span> Activate
+					<span class="glyphicon glyphicon-ok"></span> Publish
 				</a>
 			@endif
 		@endif
@@ -56,23 +56,14 @@
       	<table class="table table-striped">
 			<thead>
     			<tr align="center">
-		        	<th>Keywords</th>
 		        	<th>Tags</th>
 		        	<th>Feelings</th>
+		        	<th>Keywords</th>
         		</tr>
     		</thead>
     		<tbody>
 	        	<tr>
 	        		<td>
-		        		@if(count($topic->keywords) > 0)
-			        		@foreach ($topic->keywords as $keyword)
-				                <p>{{$keyword->keyword}}</p>
-							@endforeach
-						@else
-							<p>-</p>
-						@endif	
-		        	</td>	
-		        	<td>
 		        		@if(count($topic->tags) > 0)
 			        		@foreach ($topic->tags as $tag)
 				                <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
@@ -90,6 +81,15 @@
 							<p>-</p>
 						@endif	
 					</td>
+					<td>
+		        		@if(count($topic->keywords) > 0)
+			        		@foreach ($topic->keywords as $keyword)
+				                <p>{{$keyword->keyword}}</p>
+							@endforeach
+						@else
+							<p>-</p>
+						@endif	
+		        	</td>
 		        </tr>
 	    	</tbody> 
 	    </table>

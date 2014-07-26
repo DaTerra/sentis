@@ -6,9 +6,9 @@
         	<th>Content</th>
         	<th>Status</th>
         	<th>User</th>
-			<th>Keywords</th>
 			<th>Tags</th>
 			<th>Feelings</th>
+			<th>Keywords</th>
         	<th>Updated At</th>
         </tr>
     </thead>
@@ -33,11 +33,6 @@
 					{{link_to_route('profile-user',$topic->user->username,  $topic->user->username)}}
 	          	</td>
 	          	<td>
-	          		@foreach ($topic->keywords as $keyword)
-                    	<p>{{$keyword->keyword}}</p>
-					@endforeach
-	          	</td>
-	          	<td>
 	          		@foreach ($topic->tags as $tag)
                     <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
 					@endforeach
@@ -47,7 +42,11 @@
                     	<p>{{link_to_route('feelings-page', $feeling->name,  $feeling->id)}}</p>
 					@endforeach
 	          	</td>
-	          	
+	          	<td>
+	          		@foreach ($topic->keywords as $keyword)
+                    	<p>{{$keyword->keyword}}</p>
+					@endforeach
+	          	</td>
 	          	<td>
 	          		{{ date('d M Y H:i a',strtotime($topic->updated_at)) }}
 	          	</td>

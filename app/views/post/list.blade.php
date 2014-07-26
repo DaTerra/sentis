@@ -34,7 +34,7 @@
 	          	<td>{{{$post->postContent['source_url']}}}</td>
 	          	<td>
 	          	@if(isset($post->postContent['media_url']))
-	          		<img class="thumbnail" style="width:30%; margin-bottom: 0px;" src="{{{$post->postContent['media_url']}}}"/>
+	          		<img style="width:30%; margin-bottom: 0px;" src="{{{$post->postContent['media_url']}}}"/>
 	          	@endif
 	          	</td>
 	          	<td>

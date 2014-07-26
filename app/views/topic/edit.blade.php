@@ -52,12 +52,9 @@
 		
 		{{ Form::submit('Save', array('class' => 'btn btn-large btn-primary'))}}
 		<input type="checkbox" name="status", id="status" value="1" 
-            @if($topic->status == 1)checked @endif />
-        @if($topic->status == 1)
-            {{Form::label('status', 'Activate Topic?')}}
-        @else
-            {{Form::label('status', 'Desactivate Topic?')}}
-        @endif
+        @if($topic->status == 1)checked @endif />
+        {{Form::label('status', 'Publish Topic?')}}
+        
 
 	{{Form::close()}}
 
@@ -88,14 +85,6 @@
                     };
                 }
             },
-            createSearchChoice:function(term, data) {
-                if ($(data).filter(function() {
-                    return this.text.localeCompare(term)===0;
-                }).length===0) {
-                    return {id:term, text:term};
-                }
-            },
-
             initSelection : function (element, callback) {
                 var data = [];
                 var tagsJSN = JSON.parse($('.tagsJSON').val());
@@ -132,14 +121,6 @@
                     };
                 }
             },
-            createSearchChoice:function(term, data) {
-                if ($(data).filter(function() {
-                    return this.text.localeCompare(term)===0;
-                }).length===0) {
-                    return {id:term, text:term};
-                }
-            },
-
             initSelection : function (element, callback) {
                 var data = [];
                 var feelingsJSN = JSON.parse($('.feelingsJSON').val());
@@ -165,7 +146,7 @@
                 var data = [];
                 var keywordsJSN = JSON.parse($('.keywordsJSON').val());
                 $(keywordsJSN).each(function (index, element) {
-                   data.push({id: element.id, text: element.text});
+                   data.push({id: element.keyword, text: element.keyword});
                 });
                 callback(data);
             }
@@ -184,7 +165,12 @@
 
         $('#keywords').change(function() {
             var selections = ( JSON.stringify($('#keywords').select2('data')) );
-            $('.keywords').val(selections);
+            $('.keywordsJSON').val(selections);
+        });
+
+        $( document ).ready(function() {
+            var selections = ( JSON.stringify($('#keywords').select2('data')) );
+            $('.keywordsJSON').val(selections);
         });
     </script>
 @stop
