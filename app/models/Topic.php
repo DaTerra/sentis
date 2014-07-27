@@ -26,4 +26,8 @@ class Topic extends Eloquent {
 	public function feelings(){
 		return $this->belongsToMany('Feeling', 'topics_feelings');
 	}
+
+	public static function getLast5Topics(){
+		return Topic::orderBy('updated_at', 'DESC')->take(5)->get();
+	}
 }

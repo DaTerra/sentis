@@ -19,7 +19,8 @@ class HomeController extends BaseController {
 			->with('posts', $posts)
 			->with('order', $order)
 			->with('topFeelings', Feeling::top5Feelings())
-			->with('topTags', Tag::top5Tags());
+			->with('topTags', Tag::top5Tags())
+			->with('lastTopics', Topic::getLast5Topics());
 	}
 
 }
