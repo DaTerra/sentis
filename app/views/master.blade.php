@@ -134,7 +134,7 @@
 			        	@else
 							<input type="hidden" name="order" id="order"/>
 						@endif
-			        	
+			        	<input type="hidden" name="topicPosts" id="topicPosts"/>
 			            
 						{{Form::text('search', isset($search) ? $search : null,  ['placeholder'=>'Search', 'class' => 'form-control'])}}
 						

@@ -165,6 +165,13 @@ Route::group(array('before'=>'auth'), function(){
 		'uses'  => 'TopicController@changeStatus'
 	));
 
+	/*
+	| Topic Static Posts
+	*/
+	Route::get('topics/{id}/static-posts', array(
+		'as'    => 'topics-static-posts',
+		'uses'  => 'TopicController@selectStaticPosts'
+	));
 });
 
 /*

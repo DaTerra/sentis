@@ -273,4 +273,10 @@ class TopicController extends BaseController {
 				->with('error', "Unauthorized operation");	
 		}
 	}
+
+	public function selectStaticPosts($id){
+		return Input::get('topicPosts');
+		$topic = Topic::find($id);
+
+	}
 }

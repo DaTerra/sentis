@@ -46,7 +46,7 @@
 	    
 	    <div>
 	  		<label>User:</label>
-	  		{{{$topic->user->username}}}
+	  		{{link_to_route('profile-user',$topic->user->username,  $topic->user->username)}}
   		</div>
 
       	<div>
@@ -125,11 +125,29 @@
 	</div>
 	<div class="form-signin" style="float:left;width:100%;max-width:1200px;">
 		<h1>Posts</h1>
+		<input type="hidden" value="/topics/{{$topic->id}}/static-posts/" id="topicPostsAction"/>
+		
+		@if (Auth::user() && Auth::user()->canEditTopic($topic))
+			<a href="#" id="staticPosts">Select static posts</a>
+		@endif	
+		
 		@if (count($posts) > 0)
-			@include('post.list', array('posts'=>$posts))
+			@include('post.list', array('posts'=>$posts, 'topicList'=> true))
 	    
 		@else
 	    	<p>There are no posts for this topic.</p>
 		@endif
 	</div>	
+<script type="text/javascript">
+    $("#staticPosts").click(function() {
+        var selectedPosts = $("#topicPostsIds:checked").map(function() {
+		    return this.value;
+		}).get();
+        var action = $('#topicPostsAction').val();
+        $('#topicPosts').val(selectedPosts);
+        $('#searchForm').attr('action', action);
+        $('#searchForm').submit();
+    });
+</script>
 @stop
+

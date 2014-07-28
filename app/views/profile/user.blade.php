@@ -27,6 +27,13 @@
 		<p>There are no posts created from this user.</p>
 	@endif
 
+	<h2>User Topics:</h2>
+	@if (count($user->topics) > 0)
+		@include('topic.list', array('topics'=>$user->topics))
+	@else 
+		<p>There are no posts created from this user.</p>
+	@endif
+
 	@if (Auth::user() && Auth::user()->canChangePassword($user))
 		@if(Auth::user()->signed_up_by_form == 1)
 			{{link_to_route('account-change-password', 'Change Password')}} | 
