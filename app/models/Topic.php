@@ -28,6 +28,6 @@ class Topic extends Eloquent {
 	}
 
 	public static function getLast5Topics(){
-		return Topic::orderBy('updated_at', 'DESC')->take(5)->get();
+		return Topic::orderBy('updated_at', 'DESC')->where('status','=', 1)->take(5)->get();
 	}
 }

@@ -4,7 +4,8 @@ class TopicController extends BaseController {
 
 	public function getTopics(){
 		return View::make('topic.index')
-			->with('topics', Topic::orderBy('updated_at', 'DESC')->get());
+			->with('topics', Topic::orderBy('updated_at', 'DESC')
+								  ->where('status','=',1)->get());
 	}
 
 	public function getCreate() {
@@ -20,20 +21,20 @@ class TopicController extends BaseController {
 		$feelingsByPosts = null;
 		$topic = Topic::find($id);
 		
-		if(count($topic->posts) > 0){
-			$posts = null;
-			Debugbar::info('Buscando os posts selecionados estaticamente');
-			//get static posts
-		} else {
-			Debugbar::info('Buscando os posts de forma dinamica');
-			//get dinamic posts
-			$posts = Post::getMostPopularPostsByTopic($topic);
-			if($posts->count()){
-				$postIds = [];
-        		foreach ($posts as $post) array_push($postIds, $post->id);    
-        		$feelingsByPosts = Post::feelingsByPosts($postIds);	
-			}
+		//get dinamic posts
+		$posts = Post::getMostPopularPostsByTopic($topic);
+
+		//if static posts are selected
+		if($topic->posts->count()){
+			$postIds = [];
+    		foreach ($topic->posts as $post) array_push($postIds, $post->id);
+    		$feelingsByPosts = Post::feelingsByPosts($postIds);	
+		} else if($posts->count()){
+			$postIds = [];
+    		foreach ($posts as $post) array_push($postIds, $post->id);
+    		$feelingsByPosts = Post::feelingsByPosts($postIds);	
 		}
+		
 		return View::make('topic.single')
 			->with('topic', $topic)
 			->with('posts', $posts)
@@ -275,8 +276,19 @@ class TopicController extends BaseController {
 	}
 
 	public function selectStaticPosts($id){
-		return Input::get('topicPosts');
 		$topic = Topic::find($id);
-
+		$topicPosts = Input::get('topicPosts');
+		if($topicPosts){
+			$topicPosts =  explode(',', Input::get('topicPosts'));
+		
+			//saving topic posts
+			$topic->posts()->sync($topicPosts);
+			return Redirect::route('topics-page', $topic->id)
+							->with('message', 'Your posts were successfully selected!');
+		} else {
+			return Redirect::route('topics-page', $topic->id)
+        				->with('error', 'At least one post must be selected.')
+        				->withInput();
+		}
 	}
 }

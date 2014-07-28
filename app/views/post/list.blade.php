@@ -13,12 +13,19 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($posts as $post)
+    	@foreach($posts as $post)
 	        <tr>
 	        	<td>
                     {{ link_to_route('posts-page', $post->id, $post->id)}}
                     @if((isset($topicList)) && (Auth::user()) && (Auth::user()->canEditTopic($topic)))
-						<input type="checkbox" name="topicPostsIds" value="{{$post->id}}" id="topicPostsIds"/>
+						<input type="checkbox" name="topicPostsIds" value="{{$post->id}}" id="topicPostsIds"
+						@foreach($topic->posts as $topicPost)
+							@if($post->id === $topicPost->id)
+								checked
+							@endif	
+						@endforeach
+
+						/>
 					@endif
                     @if (Auth::user() && Auth::user()->canEdit($post))
 						<a href="{{url('posts/'.$post->id.'/edit')}}" title="Edit Post">

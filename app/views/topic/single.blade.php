@@ -125,15 +125,28 @@
 	</div>
 	<div class="form-signin" style="float:left;width:100%;max-width:1200px;">
 		<h1>Posts</h1>
+		@if (Auth::user() && Auth::user()->canEditTopic($topic))	
+			<h3>Saving Static Posts means the topic will allways show the 	selected posts</h3>
+		@endif
+
 		<input type="hidden" value="/topics/{{$topic->id}}/static-posts/" id="topicPostsAction"/>
 		
 		@if (Auth::user() && Auth::user()->canEditTopic($topic))
-			<a href="#" id="staticPosts">Select static posts</a>
-		@endif	
-		
-		@if (count($posts) > 0)
-			@include('post.list', array('posts'=>$posts, 'topicList'=> true))
-	    
+			<input type="button" class="btn btn-large btn-primary" id="staticPosts" value="Save static Posts">
+		@endif
+
+		{{-- 
+			se sou dono do post e tiver posts estatico, quero
+		    ver os posts dinamicos e os estaticos selecionados
+		--}}
+		@if(count($topic->posts) > 0)
+			@if(Auth::user() && Auth::user()->canEditTopic($topic))
+				@include('post.list', array('posts'=>$posts, 'topicList'=> 	true))
+			@else
+				@include('post.list', array('posts'=>$topic->posts, 'topicList'=> 	true))		
+			@endif
+		@elseif (count($posts) > 0)
+				@include('post.list', array('posts'=>$posts, 'topicList'=> 	true))	
 		@else
 	    	<p>There are no posts for this topic.</p>
 		@endif
