@@ -31,9 +31,6 @@
 	        @endforeach
 	        <span href="#" class="list-group-item active" style="background: rgb(231, 219, 220);">
 	            <b>Last Topics</b>
-	            <span class="pull-right" id="slide-submenu">
-	                <i class="fa fa-times"></i>
-	            </span>
 	        </span>
 	        @foreach ($lastTopics as $topic) 
 	        	<a href="{{url('topic/'.$topic->id.'/page')}}" class="list-group-item">

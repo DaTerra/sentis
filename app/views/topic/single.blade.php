@@ -136,7 +136,7 @@
 		@endif
 
 		{{-- 
-			se sou dono do post e tiver posts estatico, quero
+			se sou dono do post e tiver posts estaticos, quero
 		    ver os posts dinamicos e os estaticos selecionados
 		--}}
 		@if(count($topic->posts) > 0)

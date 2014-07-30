@@ -48,7 +48,7 @@ class Post extends Eloquent {
 				  FROM posts p 
 				  LEFT JOIN sentis s ON p.id = s.post_id
 				  WHERE p.status = 1
-				  GROUP BY s.post_id
+				  GROUP BY p.id
 				  ORDER BY last_activity DESC';
         
         return Post::loadPostModelsByIds($query);
@@ -60,7 +60,7 @@ class Post extends Eloquent {
 				  FROM posts p 
 			      LEFT JOIN sentis s ON p.id = s.post_id
 				  WHERE p.status = 1
-				  GROUP BY s.post_id
+				  GROUP BY p.id
 			  	  ORDER BY qtd DESC';
         
         return Post::loadPostModelsByIds($query);
@@ -187,7 +187,7 @@ class Post extends Eloquent {
 						WHERE  p.id = pt.post_id 
 						AND    p.status = 1
 						AND    pt.tag_id =' .$tagId .' 
-						GROUP BY s.post_id
+						GROUP BY p.id
 
 						UNION
 
@@ -200,7 +200,7 @@ class Post extends Eloquent {
 						AND    p.id = s.post_id
 						AND    p.status = 1
 						AND    st.tag_id =' .$tagId .' 
-						GROUP BY s.post_id
+						GROUP BY p.id
 					) a 
 					ORDER BY last_activity DESC';
         
@@ -216,7 +216,7 @@ class Post extends Eloquent {
 						WHERE  p.id = pt.post_id 
 						AND    p.status = 1
 						AND    pt.tag_id =' .$tagId .' 
-						GROUP BY s.post_id
+						GROUP BY p.id
 
 						UNION
 
@@ -227,7 +227,7 @@ class Post extends Eloquent {
 						AND    p.id = s.post_id
 						AND    p.status = 1
 						AND    st.tag_id =' .$tagId .' 
-						GROUP BY s.post_id
+						GROUP BY p.id
 					) a 
 					ORDER BY qtd DESC';
         
@@ -242,7 +242,7 @@ class Post extends Eloquent {
 				WHERE  p.id = pt.post_id 
 				AND    p.status = 1
 				AND    pt.tag_id IN (' .$tagIds .') 
-				GROUP BY s.post_id)
+				GROUP BY p.id)
 				
 				UNION
 
@@ -253,7 +253,7 @@ class Post extends Eloquent {
 				AND    p.id = s.post_id
 				AND    p.status = 1
 				AND    st.tag_id IN (' .$tagIds .') 
-				GROUP BY s.post_id)';
+				GROUP BY p.id)';
 	}
 	
 	public static function getMostPopularPostsByFeelingsQuery($feelingIds){
@@ -283,7 +283,7 @@ class Post extends Eloquent {
 				  AND   (pc.title like "%' .$keyword->keyword .'%"'
 					    .' OR 
 					    pc.content like "%' .$keyword->keyword .'%")
-				  GROUP BY s.post_id
+				  GROUP BY p.id
 			      ORDER BY qtd DESC)';
 			
 			if ($i !== $count){
