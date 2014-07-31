@@ -172,6 +172,24 @@ Route::group(array('before'=>'auth'), function(){
 		'as'    => 'topics-static-posts',
 		'uses'  => 'TopicController@selectStaticPosts'
 	));
+
+	/*
+	| Topic Static Posts
+	*/
+	Route::get('topics/{id}/static-posts', array(
+		'as'    => 'topics-static-posts',
+		'uses'  => 'TopicController@selectStaticPosts'
+	));
+
+	Route::get('/user/{username}/follow', array(
+		'as'  	=> 'follow-user',
+		'uses' 	=> 'ProfileController@follow'
+	));
+
+	Route::get('/user/{username}/unfollow', array(
+		'as'  	=> 'unfollow-user',
+		'uses' 	=> 'ProfileController@unfollow'
+	));
 });
 
 /*
@@ -390,4 +408,3 @@ Route::group(array('before'=>'guest'), function(){
 		'uses' 	=> 'FeelingController@getFeelingsByName'
 	));
 });	
-

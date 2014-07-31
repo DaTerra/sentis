@@ -184,7 +184,8 @@ class AccountController extends BaseController {
 
 	public function getLogout() {
 		Auth::logout();
-		return Redirect::route('account-login');
+		return Redirect::route('home')
+			->with('message', 'You were successfully signed out');
 	}
 
 	public function getChangePassword() {

@@ -122,11 +122,42 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->belongsToMany('Role', 'users_roles');
     }
 
+    /**
+	 * User following relationship
+	 */
+	public function follow()
+	{
+	  return $this->belongsToMany('User', 'user_follows', 'user_id', 'follow_id');
+	}
+	
+	public function canFollow($user) {
+		$diferentUser = Auth::user() && Auth::user()->id !== $user->id;
+		$followingList = Auth::user()->follow;
+		$alreadyFollowing = false;
+		if($followingList){
+			foreach ($followingList as $following) {
+				if($user->id === $following->id){
+					$alreadyFollowing = true;
+				}	
+			}
+		}
+		
+		return $diferentUser && !$alreadyFollowing;
+	}
+
+	/**
+	 * User followers relationship
+	 */
+	public function followers()
+	{
+	  return $this->belongsToMany('User', 'user_follows', 'follow_id', 'user_id');
+	}
+
     public function hasRole($check)
     {
         return in_array($check, array_fetch($this->roles->toArray(), 'name'));
     }
-
+	
     /**
      * Add roles to user depending on each system
      */

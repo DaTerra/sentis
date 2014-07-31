@@ -66,7 +66,7 @@ class SearchController extends BaseController {
 						 		 .' OR
 						 		 t.name like "%' .$term .'%"'
 						 	     .')
-						  GROUP BY s.post_id
+						  GROUP BY p.id
 
 						  UNION  
 
@@ -110,7 +110,7 @@ class SearchController extends BaseController {
 						  WHERE p.user_id = u.id
 						  AND   p.status = 1
 						  AND   u.username like "%' .$term .'%"
-						  GROUP BY s.post_id';
+						  GROUP BY p.id';
 				
 				if ($term !== end($terms)){
 					$finalQuery = $finalQuery .' UNION ';

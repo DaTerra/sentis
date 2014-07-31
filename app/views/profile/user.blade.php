@@ -11,14 +11,17 @@
 			@if(Auth::user()->signed_up_by_form == 1)
 				{{link_to_route('account-change-password', 'Change Password')}} | 
 			@endif
-			{{link_to_route('account-upload-avatar', 'Upload Avatar')}}
+			{{link_to_route('account-upload-avatar', 'Upload Avatar')}} | 
+		@endif
+		@if (Auth::user() && $user->id !== Auth::user()->id)
+			@if(Auth::user()->canFollow($user))
+				{{link_to_route('follow-user', 'Follow', $user->username)}}
+			@else
+				{{link_to_route('unfollow-user', 'Unfollow', $user->username)}}
+			@endif
+			
 		@endif
 	</div>	
-	
-	<h2>User Roles:</h2>
-	@foreach ($user->roles as $role)
-	    <p>{{ $role->name }}</p>
-	@endforeach
 	
 	<h2>User Posts:</h2>
 	@if (count($user->posts) > 0)
@@ -33,11 +36,22 @@
 	@else 
 		<p>There are no posts created from this user.</p>
 	@endif
-
-	@if (Auth::user() && Auth::user()->canChangePassword($user))
-		@if(Auth::user()->signed_up_by_form == 1)
-			{{link_to_route('account-change-password', 'Change Password')}} | 
-		@endif
-		{{link_to_route('account-upload-avatar', 'Upload Avatar')}}
+	
+	<h2>Following</h2>
+	@if(count($user->follow) > 0)
+		@foreach ($user->follow as $following)
+			{{link_to_route('profile-user',$following->username,  $following->username)}}
+		@endforeach
+	@else
+		The user are not following anyone.
 	@endif
+	<h2>Followers</h2>
+	@if(count($user->followers) > 0)
+		@foreach ($user->followers as $follower)
+			{{link_to_route('profile-user',$follower->username,  $follower->username)}}	
+		@endforeach
+	@else
+		The user has no followers.
+	@endif
+	
 @stop
