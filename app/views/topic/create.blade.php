@@ -50,19 +50,11 @@
 		
 		</br>
 		</br>
-		
-		{{--
-		{{Form::label('posts', 'Posts (selecting posts turns the results static)')}}
-		{{Form::hidden('posts', null, ['style'=>'width:300px;'])}}
-		{{Form::hidden('postsJSON', Session::get('postsJSON'), array('placeholder'=>'Source', 'class' => 'postsJSON'))}}
-		@if($errors->has('posts'))
-			<div class="alert alert-danger">{{$errors->first('posts')}}</div>
-		@endif
-
+		{{Form::label('filterType', 'Filter Type')}}
+		{{ Form::radio('filterType', 'i', true) }}Inclusive
+		{{ Form::radio('filterType', 'e') }}Exclusive
 		</br>
 		</br>
-		--}}
-
 		{{ Form::submit('Create', array('class' => 'btn btn-large btn-primary'))}}
 		<input type="checkbox" name="status", id="status" value="1" />
 		{{Form::label('status', 'Publish Topic?')}}

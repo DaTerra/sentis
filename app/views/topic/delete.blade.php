@@ -33,6 +33,14 @@
 	      		<label>Updated At:</label>
 	  			    <p>{{$topic->updated_at}}</p>
 	      	</div>
+	      	<div>
+	      		<label>Filter Type:</label>
+			    @if($topic->filter_type === 'i')
+			    	<p>Inclusive</p>
+			    @else
+			    	<p>Exclusive</p>
+			    @endif
+	      	</div>
 	      	<table class="table table-striped">
 				<thead>
 	    			<tr align="center">

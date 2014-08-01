@@ -48,6 +48,20 @@
         
         </br>
         </br>
+        {{Form::label('filterType', 'Filter Type')}}
+        @if($topic->filter_type == 'i') 
+            {{ Form::radio('filterType', 'i', true) }} 
+        @else
+            {{ Form::radio('filterType', 'i') }} 
+        @endif
+        Inclusive
+        @if($topic->filter_type == 'e') 
+            {{ Form::radio('filterType', 'e', true) }}
+        @else 
+            {{ Form::radio('filterType', 'e') }}
+        @endif 
+        Exclusive
+        </br>
         </br>
 		
 		{{ Form::submit('Save', array('class' => 'btn btn-large btn-primary'))}}

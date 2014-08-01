@@ -5,7 +5,7 @@ class TopicController extends BaseController {
 	public function getTopics(){
 		return View::make('topic.index')
 			->with('topics', Topic::orderBy('updated_at', 'DESC')
-								  ->where('status','=',1)->get());
+								  ->get());
 	}
 
 	public function getCreate() {
@@ -111,15 +111,18 @@ class TopicController extends BaseController {
 			$title 	 		 = Input::get('title');
 			$content 		 = Input::get('content');
 			$status 		 = Input::get('status', 0);
+			$filter_type      = Input::get('filterType', 'i');
+			
 			//AT LEAST ONE FIELD MUST BE FILLED
 			$custom_validator = !((empty($feelingsAsArray)) && (empty($tagsAsArray)) && (empty($keywordsAsArray)));
 	
 			if($custom_validator) {
-				$topic 			= new Topic;
-				$topic->user_id = $user->id;
-				$topic->title 	= $title;
-				$topic->content	= $content;
-				$topic->status  = $status;
+				$topic 				= new Topic;
+				$topic->user_id 	= $user->id;
+				$topic->title 		= $title;
+				$topic->content		= $content;
+				$topic->status  	= $status;
+				$topic->filter_type = $filter_type;
 				
 				if($topic->save()){
 					$topic_tags_ids = [];
@@ -194,16 +197,18 @@ class TopicController extends BaseController {
 				$title 	 		 = Input::get('title');
 				$content 		 = Input::get('content');
 				$status 		 = Input::get('status', 0);
+				$filter_type     = Input::get('filterType', 'i');
 				
 				//AT LEAST ONE FIELD MUST BE FILLED
 				$custom_validator = !((empty($feelingsAsArray)) && (empty($tagsAsArray)) && (empty($keywordsAsArray)));
 
 				if($custom_validator) {
 				
-					$topic->title 	= $title;
-					$topic->content	= $content;
-					$topic->status  = $status;
-				
+					$topic->title 		= $title;
+					$topic->content		= $content;
+					$topic->status  	= $status;
+					$topic->filter_type	= $filter_type;
+					
 					if($topic->save()){
 						$topic_tags_ids = [];
 						if($tagsAsArray){

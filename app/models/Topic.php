@@ -1,7 +1,7 @@
 <?php
 
 class Topic extends Eloquent {
-	protected $fillable = array('title', 'content', 'status', 'user_id');
+	protected $fillable = array('title', 'content', 'status', 'user_id', 'filter_type');
 	
 	public function user() {
 		return $this->belongsTo('User');
