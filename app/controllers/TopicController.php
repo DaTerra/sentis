@@ -22,7 +22,11 @@ class TopicController extends BaseController {
 		$topic = Topic::find($id);
 		
 		//get dinamic posts
-		$posts = Post::getMostPopularPostsByTopic($topic);
+		if($topic->filter_type == 'i'){
+			$posts = Post::getMostPopularPostsByTopic($topic);	
+		} else {
+			$posts = Post::getMostPopularPostsByTopicExclusively($topic);	
+		}
 
 		//if static posts are selected
 		if($topic->posts->count()){
@@ -257,9 +261,12 @@ class TopicController extends BaseController {
 								array_push($keywordsArrayAsString, $keyword['text']);
 							}
 							Keyword::where('topic_id', $topic->id)->whereNotIn('keyword', $keywordsArrayAsString)->delete();
+						} else {
+							//delete all keywords because there are no keyword filled
+							Keyword::where('topic_id', $topic->id)->delete();
 						}
 
-						return Redirect::route('topics')
+						return Redirect::route('topics-page', $topic->id)
 							->with('message', 'Your topic was successfully updated!');
 					
 					} else {

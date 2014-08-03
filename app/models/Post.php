@@ -334,6 +334,99 @@ class Post extends Eloquent {
 		return Post::loadPostModelsByIds($query);
 	}
 
+	public static function getMostPopularPostsByTopicExclusively($topic) {
+		$query = 'SELECT DISTINCT id FROM (
+					(SELECT p.id, 
+						   count(s.post_id) as qtd
+					 FROM   posts p LEFT JOIN sentis s ON p.id = s.post_id, 
+						    posts_tags pt,
+						    sentis_feelings sf,
+						    post_contents pc
+					 WHERE  p.id = pt.post_id 
+					 AND    s.id = sf.sentis_id
+					 AND    p.id = pc.post_id
+					 AND    p.status = 1';
+		
+		//check the tags and increase the query
+		if(count($topic->tags) > 0){
+			$tagIds = [];
+        	foreach ($topic->tags as $tag) {
+            	array_push($tagIds, $tag->id);
+            }
+            $query = $query . ' AND    pt.tag_id IN (' .implode(',', $tagIds) .')';
+        }
+		
+		//check the feelings and increase the query
+		if(count($topic->feelings) > 0){
+			$feelingIds = [];
+        	foreach ($topic->feelings as $feeling) {
+            	array_push($feelingIds, $feeling->id);
+            }
+            $query = $query . ' AND    sf.feeling_id IN (' .implode(',', $feelingIds) .')';
+		}
+	
+		//check the keywords and increase the query
+		if(count($topic->keywords) > 0){
+			
+			foreach ($topic->keywords as $keyword) {
+				$query = 
+					$query . ' AND (pc.title like "%'   .$keyword->keyword .'%" '
+						   . ' OR '
+						   . ' pc.content like "%' .$keyword->keyword .'%")';
+			}
+		}
+		$query = $query .' GROUP BY p.id) ';
+
+		//fazer union com sentis tags
+		
+		$query = $query .'UNION 
+					  	  ( SELECT s.post_id, 
+								   count(s.post_id) as qtd
+							FROM   posts p, 
+								   sentis_tags st, 
+								   sentis s,
+								   posts_tags pt,
+								   sentis_feelings sf,
+								   post_contents pc
+							WHERE  st.sentis_id = s.id
+							AND    p.id = s.post_id
+							AND    s.id = sf.sentis_id
+							AND    p.id = pc.post_id
+							AND    p.status = 1';
+
+		//check the tags and increase the query
+		if(count($topic->tags) > 0){
+			$tagIds = [];
+        	foreach ($topic->tags as $tag) {
+            	array_push($tagIds, $tag->id);
+            }
+            $query = $query . ' AND    st.tag_id IN (' .implode(',', $tagIds) .')';
+        }
+		
+		//check the feelings and increase the query
+		if(count($topic->feelings) > 0){
+			$feelingIds = [];
+        	foreach ($topic->feelings as $feeling) {
+            	array_push($feelingIds, $feeling->id);
+            }
+            $query = $query . ' AND    sf.feeling_id IN (' .implode(',', $feelingIds) .')';
+		}
+	
+		//check the keywords and increase the query
+		if(count($topic->keywords) > 0){
+			
+			foreach ($topic->keywords as $keyword) {
+				$query = 
+					$query . ' AND (pc.title like "%'   .$keyword->keyword .'%" '
+						   . ' OR '
+						   . ' pc.content like "%' .$keyword->keyword .'%")';
+			}
+		}
+		$query = $query .' GROUP BY p.id) ';
+
+		$query = $query .') a ORDER BY qtd DESC';
+		return Post::loadPostModelsByIds($query);
+	}
 	public function tags()
     {
         return $this->belongsToMany('Tag', 'posts_tags');
