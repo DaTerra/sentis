@@ -134,13 +134,15 @@
 	<div class="form-signin" style="float:left;width:100%;max-width:1200px;">
 		<h1>Posts</h1>
 		@if (Auth::user() && Auth::user()->canEditTopic($topic))	
-			<h3>Saving Static Posts means the topic will allways show the 	selected posts</h3>
+			<h5 style="color:red;">Saving Static Posts means the topic will allways show the 	selected posts</h5>
 		@endif
 
 		<input type="hidden" value="/topics/{{$topic->id}}/static-posts/" id="topicPostsAction"/>
+		<input type="hidden" value="/topics/{{$topic->id}}/dinamic-posts/" id="topicDinamicPostsAction"/>
 		
 		@if (Auth::user() && Auth::user()->canEditTopic($topic))
 			<input type="button" class="btn btn-large btn-primary" id="staticPosts" value="Save static Posts">
+			<input type="button" class="btn btn-large btn-primary" id="dinamicPosts" value="Save dinamic Posts">
 		@endif
 
 		{{-- 
@@ -166,6 +168,12 @@
 		}).get();
         var action = $('#topicPostsAction').val();
         $('#topicPosts').val(selectedPosts);
+        $('#searchForm').attr('action', action);
+        $('#searchForm').submit();
+    });
+
+    $("#dinamicPosts").click(function() {
+        var action = $('#topicDinamicPostsAction').val();
         $('#searchForm').attr('action', action);
         $('#searchForm').submit();
     });

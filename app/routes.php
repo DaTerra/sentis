@@ -176,6 +176,14 @@ Route::group(array('before'=>'auth'), function(){
 	/*
 	| Topic Static Posts
 	*/
+	Route::get('topics/{id}/dinamic-posts', array(
+		'as'    => 'topics-dinamic-posts',
+		'uses'  => 'TopicController@selectDinamicPosts'
+	));
+
+	/*
+	| Topic Static Posts
+	*/
 	Route::get('topics/{id}/static-posts', array(
 		'as'    => 'topics-static-posts',
 		'uses'  => 'TopicController@selectStaticPosts'

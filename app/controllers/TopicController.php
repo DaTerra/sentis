@@ -296,4 +296,14 @@ class TopicController extends BaseController {
         				->withInput();
 		}
 	}
+
+	public function selectDinamicPosts($id){
+		$topic = Topic::find($id);
+		$topicPosts = [];
+	
+		//saving topic posts with no posts
+		$topic->posts()->sync($topicPosts);
+		return Redirect::route('topics-page', $topic->id)
+						->with('message', 'Your posts are now dinamic!');	
+	}
 }
