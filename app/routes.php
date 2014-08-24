@@ -69,11 +69,35 @@ Route::group(array('before'=>'auth'), function(){
 		));
 
 		/*
-		| Topics ADM Create (POST)
+		| Channel Update
+		*/
+		Route::put('channels/{id}/edit', array(
+			'as'	=> 'channels-edit',
+			'uses'	=> 'ChannelController@postEdit'
+		));
+
+		/*
+		| Topics Create (POST)
 		*/
 		Route::post('/topics/create', array(
 			'as'	=> 'topics-create-post',
 			'uses'	=> 'TopicController@postCreate'
+		));
+
+		/*
+		| Channels Create (POST)
+		*/
+		Route::post('/channels/create', array(
+			'as'	=> 'channels-create-post',
+			'uses'	=> 'ChannelController@postCreate'
+		));
+		
+		/*
+		| Channel Delete
+		*/
+		Route::delete('channels/{id}/delete', array(
+			'as' 	=> 'channels-delete',
+			'uses' 	=> 'ChannelController@postDelete'
 		));
 
 		/*
@@ -142,11 +166,35 @@ Route::group(array('before'=>'auth'), function(){
 	));
 
 	/*
-	| Topics ADM Create (GET)
+	| Edit Channel (GET)
+	*/
+	Route::get('/channels/{id}/edit', array(
+		'as'	=> 'channels-edit',
+		'uses'	=> 'ChannelController@getEdit'
+	));
+
+	/*
+	| Topics Create (GET)
 	*/
 	Route::get('/topics/create', array(
 		'as'	=> 'topics-create',
 		'uses'	=> 'TopicController@getCreate'
+	));
+
+	/*
+	| Channels Create (GET)
+	*/
+	Route::get('/channels/create', array(
+		'as'	=> 'channels-create',
+		'uses'	=> 'ChannelController@getCreate'
+	));
+	
+	/* 
+	| Delete Channel (GET)
+	*/
+	Route::get('/channels/{id}/delete', array(
+		'as'  	=> 'channels-delete',
+		'uses'	=> 'ChannelController@getDelete'
 	));
 
 	/* 
@@ -259,11 +307,19 @@ Route::group(array('before'=>'guest'), function(){
 	});
 	
 	/*
-	| Topics ADM List (GET)
+	| Topics List (GET)
 	*/
 	Route::get('/topics', array(
 		'as'	=> 'topics',
 		'uses'	=> 'TopicController@getTopics'
+	));
+
+	/*
+	| Channels (GET)
+	*/
+	Route::get('/channels', array(
+		'as'	=> 'channels',
+		'uses'	=> 'ChannelController@getChannels'
 	));
 
 	/* 
@@ -272,6 +328,11 @@ Route::group(array('before'=>'guest'), function(){
 	Route::get('/account/login', array(
 		'as'   	=> 'account-login',
 		'uses' 	=> 'AccountController@getLogin'
+	));
+	
+	Route::get('/posts/getLessPopularPosts', array(
+		'as' 	=> 'getLessPopularPosts',
+		'uses' 	=> 'PostController@getLessPopularPosts'
 	));
 
 	/*
@@ -319,6 +380,11 @@ Route::group(array('before'=>'guest'), function(){
 		'as'  	=> 'profile-user',
 		'uses' 	=> 'ProfileController@user'
 	));
+	
+	Route::get('/users/getLessPopularPosts', array(
+		'as' 	=> 'getLessPopularPosts',
+		'uses' 	=> 'AccountController@getLessPopularPosts'
+	));
 
 	/*
 	| HOME (GET)
@@ -342,6 +408,15 @@ Route::group(array('before'=>'guest'), function(){
 	Route::get('/topic/{id}/page/', array(
 		'as' 	=> 'topics-page',
 		'uses' 	=> 'TopicController@getTopicPage'
+	));
+	
+
+	/*
+	| Channel Page (GET)
+	*/
+	Route::get('/channel/{id}/page/', array(
+		'as' 	=> 'channels-page',
+		'uses' 	=> 'ChannelController@getChannelPage'
 	));
 
 	/*
@@ -368,6 +443,11 @@ Route::group(array('before'=>'guest'), function(){
         'uses' 	=> 'TagController@getTags'
     ));
 	
+	Route::get('/tags/getLessPopularPosts/', array(
+        'as' 	=> 'tags-popular',
+        'uses' 	=> 'TagController@getLessPopularPosts'
+    ));
+
 	/*
 	| Single Feeling Page (GET)
 	*/
@@ -415,4 +495,5 @@ Route::group(array('before'=>'guest'), function(){
 		'as' 	=> 'feelings-by-name',
 		'uses' 	=> 'FeelingController@getFeelingsByName'
 	));
+
 });	

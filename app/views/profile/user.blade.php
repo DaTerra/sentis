@@ -36,6 +36,13 @@
 	@else 
 		<p>There are no posts created from this user.</p>
 	@endif
+
+	<h2>User Channels:</h2>
+	@if (count($user->channels) > 0)
+		@include('channel.list', array('channels'=>$user->channels))
+	@else 
+		<p>There are no channels created from this user.</p>
+	@endif
 	
 	<h2>Following</h2>
 	@if(count($user->follow) > 0)

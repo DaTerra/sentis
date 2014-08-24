@@ -189,7 +189,6 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 		'Debugbar' 		  => 'Barryvdh\Debugbar\Facade',
 		'Social' 		  => 'Codesleeve\Social\Social',
-
 	),
 
 );

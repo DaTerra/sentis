@@ -126,6 +126,7 @@
 					{{--
 					@endif
 					--}}
+						<li>{{link_to_route('channels', 'Channels')}}</li>
 			      </ul>
 			      <form  id="searchForm" style="width:30%" action="/search/" class="navbar-form navbar-left" role="search">
 			        <div class="input-group">

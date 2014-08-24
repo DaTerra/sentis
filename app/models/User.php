@@ -93,10 +93,19 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->hasMany('Topic');
 	}
 
+	public function channels()
+	{
+	  return $this->hasMany('Channel');
+	}
+
 	public function sentis(){
 		return $this->hasMany('Sentis');
 	}
 	
+	public function ownsChannel(Channel $channel){
+		return $this->id == $channel->user_id;
+	}
+
 	public function ownsTopic(Topic $topic){
 		return $this->id == $topic->user_id;
 	}
@@ -111,6 +120,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	
 	public function canEditTopic(Topic $topic){
 		return $this->ownsTopic($topic);
+	}
+
+	public function canEditChannel(Channel $channel){
+		return $this->ownsChannel($channel);
 	}
 
 	public function canChangePassword(User $user){

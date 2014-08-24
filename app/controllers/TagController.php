@@ -21,6 +21,11 @@ class TagController extends BaseController {
             ->with('tag', $tag)
             ->with('order', $order);
     }
+    
+    public function getLessPopularPosts(){
+        Post::getLessPopularPosts();
+        return "ok";
+    }
 
     public function getTags(){
         $tags = Tag::All();

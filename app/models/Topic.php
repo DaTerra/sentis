@@ -19,6 +19,10 @@ class Topic extends Eloquent {
 		return $this->belongsToMany('Post', 'topics_posts');
 	}
 	
+	public function channels(){
+		return $this->belongsToMany('Channel', 'channels_topics');
+	}
+
 	public function tags(){
 		return $this->belongsToMany('Tag', 'topics_tags');
 	}
