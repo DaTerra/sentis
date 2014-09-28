@@ -22,11 +22,6 @@ class TagController extends BaseController {
             ->with('order', $order);
     }
     
-    public function getLessPopularPosts(){
-        Post::getLessPopularPosts();
-        return "ok";
-    }
-
     public function getTags(){
         $tags = Tag::All();
         return View::make('tag.index')

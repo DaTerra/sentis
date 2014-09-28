@@ -96,11 +96,6 @@ class AccountController extends BaseController {
 			->with('error', 'We could not activate your account. Try again later.');
 	}
 	
-	public function getLessPopularPosts(){
-		Post::getLessPopularPosts();
-		return "ok";
-	}
-		
 	public function getLoginFB(){
 		$userFB = Social::facebook('user');
 		$user = null;

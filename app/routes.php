@@ -330,11 +330,6 @@ Route::group(array('before'=>'guest'), function(){
 		'uses' 	=> 'AccountController@getLogin'
 	));
 	
-	Route::get('/posts/getLessPopularPosts', array(
-		'as' 	=> 'getLessPopularPosts',
-		'uses' 	=> 'PostController@getLessPopularPosts'
-	));
-
 	/*
 	| Facebook Login (GET)
 	*/
@@ -381,11 +376,7 @@ Route::group(array('before'=>'guest'), function(){
 		'uses' 	=> 'ProfileController@user'
 	));
 	
-	Route::get('/users/getLessPopularPosts', array(
-		'as' 	=> 'getLessPopularPosts',
-		'uses' 	=> 'AccountController@getLessPopularPosts'
-	));
-
+	
 	/*
 	| HOME (GET)
 	*/
@@ -442,12 +433,7 @@ Route::group(array('before'=>'guest'), function(){
         'as' 	=> 'tags',
         'uses' 	=> 'TagController@getTags'
     ));
-	
-	Route::get('/tags/getLessPopularPosts/', array(
-        'as' 	=> 'tags-popular',
-        'uses' 	=> 'TagController@getLessPopularPosts'
-    ));
-
+    
 	/*
 	| Single Feeling Page (GET)
 	*/

@@ -143,10 +143,7 @@ class PostController extends BaseController {
 				->with('error', "Unauthorized operation");
 		}
 	}
-	public function getLessPopularPosts(){
-		Post::getLessPopularPosts();
-		return "ok";
-	}
+	
 	public function postDelete($id){
 		$post = Post::find($id);
 		$post->status = 0;

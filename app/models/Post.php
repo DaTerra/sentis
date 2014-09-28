@@ -53,32 +53,7 @@ class Post extends Eloquent {
         
         return Post::loadPostModelsByIds($query);
 	}
-	public static function getLessPopularPosts(){
-		Schema::dropIfExists('channels_topics');
-		Schema::dropIfExists('channels');
-		Schema::dropIfExists('keywords');
-		Schema::dropIfExists('post_contents');
-		Schema::dropIfExists('medias');
-		Schema::dropIfExists('posts_tags');
-
-		Schema::dropIfExists('sentis_feelings');
-		Schema::dropIfExists('sentis_tags');
-		Schema::dropIfExists('topics_feelings');
-		Schema::dropIfExists('topics_tags');
-		Schema::dropIfExists('topics_posts');
-		Schema::dropIfExists('topics');
-		Schema::dropIfExists('tags');
-		Schema::dropIfExists('users_roles');
-		Schema::dropIfExists('roles');
-		Schema::dropIfExists('user_follows');
-		DB::table('sentis')->delete();
-		DB::table('posts')->delete();
-		DB::table('privacies')->delete();
-		DB::table('users')->delete();
-		DB::table('feelings')->delete();
-		
-		return;
-	}
+	
 	public static function getMostPopularPosts(){
 		$query = 'SELECT p.id, 
 					     count(s.post_id) as qtd
