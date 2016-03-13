@@ -1,0 +1,79 @@
+/*
+///////////////
+/// POST BOX //
+///////////////
+*/
+
+%post-box {
+    @include size(30rem auto);
+    margin: 10px;
+    padding: 1rem;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+
+
+    > td {
+        
+        // Post Id & Buttons
+        &:nth-of-type(1) {
+            position: relative;
+            padding: 10px;
+            margin-top: 10px;
+            > h3 {
+                @extend %text-1;
+            }
+            //Buttons
+            > a {
+                display: inline-block;
+                &.sentis-btn{
+                    padding: 10px;
+                    float:right;
+                    @include size(2rem);
+                    background-image: url("http://sentis.systems/wp-content/uploads/2016/01/cropped-icon512.png");
+                    color: transparent;
+                    background-size: contain;};
+                &.edit-btn {}
+                &.delete-btn{}
+                > span {
+                    color: red;
+                    > i {
+                        &.glyphicon-heart {
+                            //font-family: $ff-2;
+                            // @extend %glyphicons;
+                        }
+                    }
+                }
+            }
+        }
+        // Title
+        &:nth-of-type(2) {}
+        // Comment
+        &:nth-of-type(3) {}
+        // Source
+        &:nth-of-type(4) {}
+        // Image
+        &:nth-of-type(5) {
+            order: -1;
+            img {
+                width: 100%;
+            }
+        }
+        &:nth-of-type(6) {
+            order: 7;
+        }
+        &:nth-of-type(7) {}
+        &:nth-of-type(8) {
+            order: 0;
+        }
+    }
+}

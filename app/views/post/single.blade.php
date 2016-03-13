@@ -1,27 +1,31 @@
 @extends('master')
 
 @section('content')
+<style>
+ 	body{background:url("{{{$post->postContent['media_url']}}}");
+ 	background-size: cover;}
+</style>
 	<div class="page-header">
     	<a href="{{url('/')}}">
     		<span class="glyphicon glyphicon-arrow-left"></span> 
     		Back to overview
     	</a>
 		@if (Auth::user() && Auth::user()->canEdit($post))
-			<a href="{{url('posts/'.$post->id.'/edit')}}">
-			<span class="glyphicon glyphicon-edit"></span> Edit
+			<a class="edit-btn" href="{{url('posts/'.$post->id.'/edit')}}">
+				<span class="glyphicon glyphicon-edit"></span> Edit
 			</a>
-			<a href="{{url('posts/'.$post->id.'/delete')}}">
+			<a class="delete-btn" href="{{url('posts/'.$post->id.'/delete')}}">
 				<span class="glyphicon glyphicon-trash"></span> Delete
 			</a>
 		@endif
-	    <a href="{{url('sentis/'.$post->id.'/create')}}">
+	    <a class="sentis-btn"  href="{{url('sentis/'.$post->id.'/create')}}">
 	        <span class="glyphicon glyphicon-heart"></span> Sentis
 	    </a>
 	</div>
 
 	<div class="form-signin" style="float:left;width:49%;max-width:1200px;">
     	
-		@if($post->postContent['title'])
+		<!-- @if($post->postContent['title'])
 	    	<div>
 	    		<label>Title:</label>
 	    		{{{$post->postContent['title']}}}
@@ -33,15 +37,15 @@
 				<label>Content:</label>
 	      		{{{$post->postContent['content']}}}
 	      	</div>
-	    @endif
+	    @endif -->
 
 	    @if($post->postContent['media_url'])
 	      	<div>
-	      		<label>Media:</label>
-	      		<img style="width:80%;margin-bottom: 0px;" src="{{{$post->postContent['media_url']}}}"/>
+	      		<label></label>
+	      		<img style="width:100%;margin-bottom: 0px;" src="{{{$post->postContent['media_url']}}}"/>
 	      	</div>
 	    @endif
-	     	
+	  <!--    	
 		@if($post->postContent['media']['type'])
 			<div>
 	      		<label>Media Type:</label>
@@ -85,12 +89,14 @@
       	<div>
       		<label>IP Address:</label>
       		{{{$post->user_ip_address}}}
-      	</div>
+      	</div> -->
+      	
 	</div>	
 	<div class="form-signin" style="float:right;width:49%;max-width:1200px;">
 		<h1>Sentis Report:</h1>
+	</br>
 		@if (count($post->feelings()) > 0)
-			<table class="table table-striped">
+			<table class="table sentis-stats">
 				<thead>
 			    	<tr>
 			        	<th>Feeling</th>

@@ -1,0 +1,14 @@
+a.addpost {
+	position: fixed;
+    right: 30px;
+    bottom: 30px;
+    border-radius: 5%;
+    
+    order: 2;
+    border: .1rem solid;
+    display: block;
+    line-height: 50px;
+    @include size(80px 50px);
+    text-align: center;
+    text-decoration: none;
+}

@@ -1,0 +1,41 @@
+div.container > div.ticker {
+    padding: 20px;
+    background: rgb(230, 230, 230);
+    display: flex;
+    > div {
+
+        //display: flex;
+        &:nth-of-type(1),
+        &:nth-of-type(2),
+        &:nth-of-type(3) {
+            margin-right: 2rem;
+            > h3 {
+                display: inline-block;
+                @extend %text-0;
+                text-transform: uppercase;
+                margin-right: 5px;
+                margin-left: 5px;
+            }
+            > ul {
+                display: inline-block;
+                > li {
+                    display: inline-block;
+                    > a {
+                        text-decoration: none;
+                        text-transform: uppercase;
+                        @extend %text-0;
+                    }
+                }
+            }
+        }
+        &:nth-of-type(1) {}
+        &:nth-of-type(2) {}
+        &:nth-of-type(3) {}
+        &.sortby {
+            @extend %text-0;
+            > select {
+                > option {}
+            }
+        }
+    }
+}

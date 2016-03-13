@@ -1,0 +1,42 @@
+
+	        <div>
+	        	<header>
+	            	<p>Top Feelings</p>
+	 	       </header>
+	    	   <ul>
+			        @foreach ($topFeelings as $feeling) 
+			        	<li>
+				        	<a href="{{url('feelings/'.$feeling->id.'/page')}}" class="list-group-item">
+				            	{{$feeling->name}} ({{$feeling->qtd}})
+				        	</a>
+			        	</li>	
+			        @endforeach
+				</ul>
+			</div>
+
+			<div>
+	        <header>
+	            <p>Top Tags</p>
+	        </header>
+	        <ul>
+		        @foreach ($topTags as $tag) 
+		        	<li>
+			        	<a href="{{url('tags/'.$tag->id.'/page')}}" class="list-group-item">
+			            	{{$tag->name}} ({{$tag->qtd}})
+			        	</a>
+		        	</li>	
+		        @endforeach
+	        </ul>
+	        </div>
+	        <div>
+	        	<header>
+	            	<p>Last Topics</p>
+	        	</header>
+				<main>
+		        	@foreach ($lastTopics as $topic) 
+			        	<a href="{{url('topic/'.$topic->id.'/page')}}" class="list-group-item">
+			            	{{$topic->title}}
+			        	</a>	
+		      		 @endforeach
+	      		</main>
+	    	</div>

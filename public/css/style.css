@@ -1,0 +1,322 @@
+/*
+///////////////
+/// STYLES ////
+///////////////
+*/
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,300italic,400italic,600italic,700,700italic,800,800italic|Open+Sans+Condensed:300,300italic,700);
+html {
+  box-sizing: border-box; }
+
+*, *::after, *::before {
+  box-sizing: inherit; }
+
+/*
+///////////////
+///RESET///////
+///////////////
+*/
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+@font-face {
+  font-family: "Glyphicons Halflings";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("../fonts/glyphicons-halflings-regular.svg#Glyphicons Halflings") format("svg"); }
+html {
+  font-family: "Open Sans", sans-serif; }
+
+div.container > div.ticker > div:nth-of-type(1) > h3, div.container > div.ticker > div:nth-of-type(2) > h3, div.container > div.ticker > div:nth-of-type(3) > h3, div.container > div.ticker > div:nth-of-type(1) > ul > li > a, div.container > div.ticker > div:nth-of-type(2) > ul > li > a, div.container > div.ticker > div:nth-of-type(3) > ul > li > a, div.container > div.ticker > div.sortby {
+  font-size: 0.6rem;
+  font-weight: 200;
+  font-family: "Open Sans", sans-serif; }
+
+nav.navbar > div.container-fluid > div.navbar-collapse, nav.navbar > div.container-fluid > div.navbar-collapse > ul.navbar-nav, nav.navbar > div.container-fluid > div.navbar-collapse > ul.navbar-nav:nth-of-type(1) > li a, table.sentis-stats thead, table.sentis-stats tbody, .posts-list > tbody > tr > td:nth-of-type(1) > h3 {
+  font-size: 0.8rem;
+  font-weight: 200;
+  font-family: "Open Sans", sans-serif; }
+
+/*
+///////////////
+/// COMMONS////
+///////////////
+*/
+body {
+  padding-bottom: 40px; }
+
+.sortby {
+  display: inline-block; }
+
+.posts-list tbody {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap; }
+
+.posts-list > thead {
+  display: none; }
+
+.form-signin {
+  max-width: 520px;
+  padding: 30px 29px 29px 29px;
+  margin: 0 auto 20px;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px; }
+
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+  font-size: 16px;
+  height: auto;
+  width: 310px;
+  margin-bottom: 15px;
+  padding: 7px 9px; }
+
+.checkbox {
+  font-weight: normal; }
+
+#search_list li {
+  list-style: none; }
+
+#search_list {
+  padding-left: 0px;
+  max-height: 400px;
+  overflow-y: scroll;
+  width: 340px; }
+
+.mini-submenu {
+  display: none;
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.9);
+  border-radius: 4px;
+  padding: 9px;
+  /*position: relative;*/
+  width: 42px; }
+
+.mini-submenu:hover {
+  cursor: pointer; }
+
+.mini-submenu .icon-bar {
+  border-radius: 1px;
+  display: block;
+  height: 2px;
+  width: 22px;
+  margin-top: 3px; }
+
+.mini-submenu .icon-bar {
+  background-color: #000; }
+
+#slide-submenu {
+  background: rgba(0, 0, 0, 0.45);
+  display: inline-block;
+  padding: 0 8px;
+  border-radius: 4px;
+  cursor: pointer; }
+
+.container {
+  display: flex;
+  flex-direction: column; }
+  .container > nav.navbar {
+    order: 0; }
+  .container > div.ticker {
+    order: 1; }
+  .container > div.sortby {
+    order: 3; }
+  .container > table {
+    order: 4; }
+
+a.addpost {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  border-radius: 5%;
+  order: 2;
+  border: .1rem solid;
+  display: block;
+  line-height: 50px;
+  height: 50px;
+  width: 80px;
+  text-align: center;
+  text-decoration: none; }
+
+/*
+///////////////
+/// HEADER ////
+///////////////
+*/
+nav.navbar {
+  background-color: rgba(0, 0, 0, 0.1); }
+  nav.navbar > div.container-fluid {
+    display: flex;
+    padding: 20px;
+    width: 100%; }
+    nav.navbar > div.container-fluid > div.navbar-header {
+      display: flex;
+      justify-content: center;
+      display: inline-box; }
+      nav.navbar > div.container-fluid > div.navbar-header > a {
+        width: 6.2rem;
+        height: 2rem;
+        display: block;
+        color: transparent;
+        background: url("http://sentis.systems/wp-content/uploads/2016/02/Sentis_Logo_Final160-1.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain; }
+    nav.navbar > div.container-fluid > div.navbar-collapse {
+      display: flex;
+      justify-content: space-between;
+      flex-grow: 2; }
+      nav.navbar > div.container-fluid > div.navbar-collapse > ul.navbar-nav {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px; }
+        nav.navbar > div.container-fluid > div.navbar-collapse > ul.navbar-nav:nth-of-type(1) {
+          order: 0; }
+          nav.navbar > div.container-fluid > div.navbar-collapse > ul.navbar-nav:nth-of-type(1) > li {
+            list-style: none; }
+            nav.navbar > div.container-fluid > div.navbar-collapse > ul.navbar-nav:nth-of-type(1) > li:nth-of-type(2) {
+              display: none; }
+            nav.navbar > div.container-fluid > div.navbar-collapse > ul.navbar-nav:nth-of-type(1) > li a {
+              color: grey;
+              text-decoration: none;
+              padding: 30px;
+              margin-right: 10px; }
+        nav.navbar > div.container-fluid > div.navbar-collapse > ul.navbar-nav:nth-of-type(2) {
+          order: 0;
+          width: 10%; }
+      nav.navbar > div.container-fluid > div.navbar-collapse > form {
+        order: 0; }
+        nav.navbar > div.container-fluid > div.navbar-collapse > form > div.input-group {
+          display: flex; }
+
+div.container > div.ticker {
+  padding: 20px;
+  background: #e6e6e6;
+  display: flex; }
+  div.container > div.ticker > div:nth-of-type(1), div.container > div.ticker > div:nth-of-type(2), div.container > div.ticker > div:nth-of-type(3) {
+    margin-right: 2rem; }
+    div.container > div.ticker > div:nth-of-type(1) > h3, div.container > div.ticker > div:nth-of-type(2) > h3, div.container > div.ticker > div:nth-of-type(3) > h3 {
+      display: inline-block;
+      text-transform: uppercase;
+      margin-right: 5px;
+      margin-left: 5px; }
+    div.container > div.ticker > div:nth-of-type(1) > ul, div.container > div.ticker > div:nth-of-type(2) > ul, div.container > div.ticker > div:nth-of-type(3) > ul {
+      display: inline-block; }
+      div.container > div.ticker > div:nth-of-type(1) > ul > li, div.container > div.ticker > div:nth-of-type(2) > ul > li, div.container > div.ticker > div:nth-of-type(3) > ul > li {
+        display: inline-block; }
+        div.container > div.ticker > div:nth-of-type(1) > ul > li > a, div.container > div.ticker > div:nth-of-type(2) > ul > li > a, div.container > div.ticker > div:nth-of-type(3) > ul > li > a {
+          text-decoration: none;
+          text-transform: uppercase; }
+
+table.sentis-stats {
+  width: 100%; }
+  table.sentis-stats thead {
+    line-height: 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid;
+    margin-bottom: 1 rem; }
+  table.sentis-stats tbody {
+    line-height: 1.5rem;
+    margin-top: 1 rem; }
+
+/*
+///////////////
+/// POST BOX //
+///////////////
+*/
+.posts-list > tbody > tr {
+  height: auto;
+  width: 30rem;
+  margin: 10px;
+  padding: 1rem;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }
+  .posts-list > tbody > tr > td:nth-of-type(1) {
+    position: relative;
+    padding: 10px;
+    margin-top: 10px; }
+    .posts-list > tbody > tr > td:nth-of-type(1) > a {
+      display: inline-block; }
+      .posts-list > tbody > tr > td:nth-of-type(1) > a.sentis-btn {
+        padding: 10px;
+        float: right;
+        height: 2rem;
+        width: 2rem;
+        background-image: url("http://sentis.systems/wp-content/uploads/2016/01/cropped-icon512.png");
+        color: transparent;
+        background-size: contain; }
+      .posts-list > tbody > tr > td:nth-of-type(1) > a > span {
+        color: red; }
+  .posts-list > tbody > tr > td:nth-of-type(5) {
+    order: -1; }
+    .posts-list > tbody > tr > td:nth-of-type(5) img {
+      width: 100%; }
+  .posts-list > tbody > tr > td:nth-of-type(6) {
+    order: 7; }
+  .posts-list > tbody > tr > td:nth-of-type(8) {
+    order: 0; }
+
+/*# sourceMappingURL=style.css.map */

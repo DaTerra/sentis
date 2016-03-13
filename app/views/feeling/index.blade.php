@@ -1,12 +1,14 @@
 @extends('master')
 
 @section('content')
+
+
 <script type="text/javascript" src="{{ URL::asset('fastLiveFilter/jquery.fastLiveFilter.js') }}"></script>
 <div class="page-header">
-    <h2>
+    <h3>
         Feelings
         {{Form::text('search_input', null, ['id' => 'search_input', 'placeholder'=>'Type to filter', 'class' => 'input-block-level']) }}
-    </h2>
+    </h3>
 </div>
 @if (count($feelings) > 0)
     

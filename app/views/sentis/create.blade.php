@@ -1,12 +1,13 @@
 @extends('master')
 
 @section('content')
+
     <script type="text/javascript" src="{{ URL::asset('fastLiveFilter/jquery.fastLiveFilter.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('select2/select2.js') }}"></script>
     <link rel="stylesheet" href="{{ URL::asset('select2/select2.css') }}">
-    
+    </br>
     {{Form::open(array('class'=>'form-signin', 'enctype' => 'multipart/form-data'))}}
-        <h2 class="form-signin-heading">Leave you Sentis</h2>
+        <h2 class="form-signin-heading">How do you really feel about this?</h2>
         {{Form::text('search_input', null, ['id' => 'search_input', 'placeholder'=>'Type to filter', 'class' => 'input-block-level']) }}
         <ul id="search_list">
             @foreach ($feelings as $feeling)
@@ -32,7 +33,7 @@
         </br>
 
         {{Form::hidden('feelingsJSON', null, array('class' => 'feelingsJSON'))}}
-        {{ Form::submit('Create', array('class' => 'btn btn-large btn-primary'))}}
+        {{ Form::submit('Sentis', array('class' => 'btn btn-large btn-primary'))}}
 
     {{Form::close()}}
 

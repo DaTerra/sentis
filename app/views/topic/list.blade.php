@@ -1,5 +1,5 @@
-<table class="table table-striped">
-	<thead>
+<table class="table posts-list">
+	<!-- <thead>
     	<tr>
         	<th>#</th>
         	<th>Title</th>
@@ -12,7 +12,7 @@
 			<th>Keywords</th>
         	<th>Updated At</th>
         </tr>
-    </thead>
+    </thead> -->
     <tbody>
         @foreach($topics as $topic)
 	        @if( ($topic->status == 1) || (Auth::user() && Auth::user()->canEditTopic($topic)))

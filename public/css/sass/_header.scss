@@ -1,0 +1,173 @@
+/*
+///////////////
+/// HEADER ////
+///////////////
+*/
+
+nav.navbar {
+    background-color: $components-bg-1;
+    @include media($mobile) {}
+    @include media($tablet) {}
+    @include media($laptop) {}
+    @include media($desktop) {}
+    > div.container-fluid {
+        
+        display:flex;
+        padding: 20px;
+        @include fill-parent();
+        @include media($mobile) {}
+        @include media($tablet) {}
+        @include media($laptop) {}
+        @include media($desktop) {}
+        > div.navbar-header {
+            
+            display: flex;
+            justify-content: center;
+            display: inline-box;
+            // position: absolute;
+            // left: 50%;
+            // transform: translateRight(-50%);
+            @include media($mobile) {}
+            @include media($tablet) {}
+            @include media($laptop) {}
+            @include media($desktop) {}
+            > a {
+            	
+                $logo-ratio: 2;
+                width: $logo-ratio * 3.1rem;
+                height: $logo-ratio * 1rem;
+                display: block;
+                color: transparent;
+                background: url("http://sentis.systems/wp-content/uploads/2016/02/Sentis_Logo_Final160-1.png");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+               
+            }
+        }
+        > div.navbar-collapse {
+            
+            display: flex;
+            justify-content: space-between;
+            flex-grow:2;
+           @extend %text-1;
+
+
+
+            @include media($mobile) {}
+            @include media($tablet) {}
+            @include media($laptop) {}
+            @include media($desktop) {}
+            > ul.navbar-nav {
+                display: flex;
+                @extend %text-1;
+                justify-content: space-between;
+                padding: 10px;
+
+           
+                @include media($mobile) {}
+                @include media($tablet) {}
+                @include media($laptop) {}
+                @include media($desktop) {}
+                &:nth-of-type(1) {
+                    order: 0;
+                    //flex-grow: 2;
+                    
+                    @include media($mobile) {}
+                    @include media($tablet) {}
+                    @include media($laptop) {}
+                    @include media($desktop) {}
+                    > li {
+                        
+                        list-style: none;
+                        @include media($mobile) {}
+                        @include media($tablet) {}
+                        @include media($laptop) {}
+                        @include media($desktop) {}
+                        &:nth-of-type(2){
+                        //&:nth-of-type(4){
+                            display:none;
+                        }
+                        a {
+                        	@extend %text-1;
+                            color: $color-1;
+                            text-decoration: none;
+                            padding: 30px;
+                            margin-right: 10px;
+                            @include media($mobile) {}
+                            @include media($tablet) {}
+                            @include media($laptop) {}
+                            @include media($desktop) {}
+                        }
+                    }
+                }
+                &:nth-of-type(2) {
+                    order: 0;
+                    width: 10%;
+                    
+                    @include media($mobile) {}
+                    @include media($tablet) {}
+                    @include media($laptop) {}
+                    @include media($desktop) {}
+                }
+            }
+            > form {
+                order: 0;
+
+                @include media($mobile) {}
+                @include media($tablet) {}
+                @include media($laptop) {}
+                @include media($desktop) {}
+                > div.input-group {
+                    display: flex;
+                    @include media($mobile) {}
+                    @include media($tablet) {}
+                    @include media($laptop) {}
+                    @include media($desktop) {}
+                    > input {
+                        @include media($mobile) {}
+                        @include media($tablet) {}
+                        @include media($laptop) {}
+                        @include media($desktop) {}
+                        &:nth-of-type(1)#order {
+                            @include media($mobile) {}
+                            @include media($tablet) {}
+                            @include media($laptop) {}
+                            @include media($desktop) {}
+                        }
+                        &:nth-of-type(2)#topicPosts {
+                            @include media($mobile) {}
+                            @include media($tablet) {}
+                            @include media($laptop) {}
+                            @include media($desktop) {}
+                        }
+                        &:nth-of-type(3)#form-control {
+                            @include media($mobile) {}
+                            @include media($tablet) {}
+                            @include media($laptop) {}
+                            @include media($desktop) {}
+                        }
+                    }
+                    > div.input-group-btn {
+                        @include media($mobile) {}
+                        @include media($tablet) {}
+                        @include media($laptop) {}
+                        @include media($desktop) {}
+                        > button {
+                            @include media($mobile) {}
+                            @include media($tablet) {}
+                            @include media($laptop) {}
+                            @include media($desktop) {}
+                            > i {
+                                @include media($mobile) {}
+                                @include media($tablet) {}
+                                @include media($laptop) {}
+                                @include media($desktop) {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

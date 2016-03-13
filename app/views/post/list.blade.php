@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table class="table posts-list">
 	<thead>
     	<tr>
         	<th>#</th>
@@ -16,7 +16,8 @@
     	@foreach($posts as $post)
 	        <tr>
 	        	<td>
-                    {{ link_to_route('posts-page', $post->id, $post->id)}}
+	        		{{ link_to_route('posts-page', "Stats", $post->id)}}
+                    
                     @if((isset($topicList)) && (Auth::user()) && (Auth::user()->canEditTopic($topic)))
 						<input type="checkbox" name="topicPostsIds" value="{{$post->id}}" id="topicPostsIds"
 						@foreach($topic->posts as $topicPost)
@@ -28,40 +29,43 @@
 						/>
 					@endif
                     @if (Auth::user() && Auth::user()->canEdit($post))
-						<a href="{{url('posts/'.$post->id.'/edit')}}" title="Edit Post">
+						<a class="edit-btn" href="{{url('posts/'.$post->id.'/edit')}}" title="Edit Post">
+							Edit
 						<span class="glyphicon glyphicon-edit"></span>
 						</a>
-						<a href="{{url('posts/'.$post->id.'/delete')}}" title="Delete Post">
+						<a class="delete-btn" href="{{url('posts/'.$post->id.'/delete')}}" title="Delete Post">
+							Delete
 							<span class="glyphicon glyphicon-trash"></span>
 						</a>
 					@endif
-				    <a href="{{url('sentis/'.$post->id.'/create')}}" title="Leave you feelings">
+				    <a class="sentis-btn" href="{{url('sentis/'.$post->id.'/create')}}" title="Sentis this">
+				    	Sentis
 				        <span class="glyphicon glyphicon-heart"></span> 
 				    </a>
                 </td>
-	          	<td>{{{$post->postContent['title']}}}</td>
-	          	<td>{{{$post->postContent['content']}}}</td>
-	          	<td>{{{$post->postContent['source_url']}}}</td>
+	          	<td><!-- {{{$post->postContent['title']}}} --></td>
+	          	<td><!-- {{{$post->postContent['content']}}} --></td>
+	          	<td><!-- {{{$post->postContent['source_url']}}} --></td>
 	          	<td>
 	          	@if(isset($post->postContent['media_url']))
-	          		<img style="width:30%; margin-bottom: 0px;" src="{{{$post->postContent['media_url']}}}"/>
+	          		<img src="{{{$post->postContent['media_url']}}}"/>
 	          	@endif
 	          	</td>
 	          	<td>
-	          		@foreach ($post->tags as $tag)
-                    <p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
-					@endforeach
+	          		<!-- @foreach ($post->tags as $tag)
+                    	<p>{{link_to_route('tags-page', $tag->name,  $tag->id)}}</p>
+					@endforeach -->
 	          	</td>
 	          	<td>
-	          		@foreach ($post->publicTags() as $tag)
+	          		<!-- @foreach ($post->publicTags() as $tag)
                     	<p>{{link_to_route('tags-page', $tag->name .' (' .$tag->qtd .') ',  $tag->id)}}</p>
-					@endforeach
+					@endforeach -->
 	          	</td>
 	          	<td>
-					{{link_to_route('profile-user',$post->user->username,  $post->user->username)}}
+					<!-- {{link_to_route('profile-user',$post->user->username,  $post->user->username)}} -->
 	          	</td>
 	          	<td>
-	          		{{ date('d M Y H:i a',strtotime($post->updated_at)) }}
+	          		<!-- {{ date('d M Y H:i a',strtotime($post->updated_at)) }} -->
 	          	</td>
         	</tr>
         @endforeach

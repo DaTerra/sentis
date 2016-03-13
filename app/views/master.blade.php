@@ -5,105 +5,27 @@
 		<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 		<title>Sentis</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 		<script>
-			$( document ).ready(function() {
-			  $('.mini-submenu').fadeIn();
-			  $('.mini-submenu').next('.list-group').hide();
-			});
-			$(function(){
-				$('#slide-submenu').on('click',function() {			   
-			        $(this).closest('.list-group').fadeOut('slide',function(){
-			        	$('.mini-submenu').fadeIn();	
-			        });
-			      });
-				$('.mini-submenu').on('click',function(){		
-			        $(this).next('.list-group').toggle('slide');
-			        $('.mini-submenu').hide();
-				})
-			})
+			// $( document ).ready(function() {
+			//   $('.mini-submenu').fadeIn();
+			//   $('.mini-submenu').next('.list-group').hide();
+			// });
+			// $(function(){
+			// 	$('#slide-submenu').on('click',function() {			   
+			//         $(this).closest('.list-group').fadeOut('slide',function(){
+			//         	$('.mini-submenu').fadeIn();	
+			//         });
+			//       });
+			// 	$('.mini-submenu').on('click',function(){		
+			//         $(this).next('.list-group').toggle('slide');
+			//         $('.mini-submenu').hide();
+			// 	})
+			// })
 
 		</script>
-		<link rel="stylesheet" href="{{asset('bootstrap.min.css')}}">
-		<style type="text/css">
-      		body {
-		        padding-bottom: 40px;
-		    }
-
-	      	.form-signin {
-		        max-width: 370px;
-		        padding: 19px 29px 29px;
-		        margin: 0 auto 20px;
-		        background-color: #fff;
-		        border: 1px solid #e5e5e5;
-		        -webkit-border-radius: 5px;
-		           -moz-border-radius: 5px;
-		                border-radius: 5px;
-		        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-		           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-		                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-	      	}
-	      
-	      	.form-signin .form-signin-heading,
-	      	.form-signin .checkbox {
-	        	margin-bottom: 10px;
-	      	}
-		    
-		    .form-signin input[type="text"],
-		    .form-signin input[type="password"] {
-		    	font-size: 16px;
-		     	height: auto;
-		     	width: 310px;
-		     	margin-bottom: 15px;
-		     	padding: 7px 9px;
-      		}
-
-      		.checkbox {
-	  			font-weight: normal;
-			}
-			#search_list li{
-				list-style: none;
-			}
-			#search_list {
-				padding-left: 0px;
-				max-height: 300px;
-				overflow-y: scroll;
-				width: 340px;
-			}
-			.mini-submenu{
-			  display:none;  
-			  background-color: rgba(0, 0, 0, 0);  
-			  border: 1px solid rgba(0, 0, 0, 0.9);
-			  border-radius: 4px;
-			  padding: 9px;  
-			  /*position: relative;*/
-			  width: 42px;
-
-			}
-
-			.mini-submenu:hover{
-			  cursor: pointer;
-			}
-
-			.mini-submenu .icon-bar {
-			  border-radius: 1px;
-			  display: block;
-			  height: 2px;
-			  width: 22px;
-			  margin-top: 3px;
-			}
-
-			.mini-submenu .icon-bar {
-			  background-color: #000;
-			}
-
-			#slide-submenu{
-			  background: rgba(0, 0, 0, 0.45);
-			  display: inline-block;
-			  padding: 0 8px;
-			  border-radius: 4px;
-			  cursor: pointer;
-			}
-    	</style>
+		<link rel="stylesheet" href="{{asset('/css/style.css')}}">
+		
 	</head>
 	<body>
 		<div class="container">
@@ -155,8 +77,8 @@
 						@endif
 					@else
 						<li style="text-align: right;width:50%;">
-							<a href="/user/{{Auth::user()->username}}">
-								<img style="width:35%;" src="{{{Auth::user()->avatar_url}}}">
+
+							<a href="/user/{{Auth::user()->username}}"> <img style="width:10%;" src="{{{Auth::user()->avatar_url}}}">
 								<strong>{{{Auth::user()->username}}}</strong>
 							</a>
 						<li style="text-align: right;">{{link_to_route('account-logout', 'Sign out')}}</li>

@@ -1,0 +1,1 @@
+sass -w /Users/sergiomello/Projects/sentis/www/sentis/public/css/sass:/Users/sergiomello/Projects/sentis/www/sentis/public/css

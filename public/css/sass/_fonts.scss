@@ -1,0 +1,69 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,300italic,400italic,600italic,700,700italic,800,800italic|Open+Sans+Condensed:300,300italic,700);
+
+
+@include font-face("Glyphicons Halflings","../fonts/glyphicons-halflings-regular", $file-formats: svg#glyphicons_halflingsregular eot woff woff2 ttf truetype svg);
+
+// @font-face {
+//     font-family: 'Glyphicons Halflings';
+//     src: url(../fonts/glyphicons-halflings-regular.eot);
+//     src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), 
+// url(../fonts/glyphicons-halflings-regular.woff) format('woff'), 
+// url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'), 
+// url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+// }
+
+//Font-size
+$fs-0: .6rem;
+$fs-1: .8rem;
+$fs-2: .2 * $fs-1;
+$fs-3: .2 * $fs-2;
+
+//Font-weight
+$fw-1: 200;
+$fw-2: 300;
+$fw-3: 400;
+
+//Font Family
+$ff-1: 'Open Sans', sans-serif;
+$ff-1-condensed: 'Open Sans Condensed', sans-serif;
+
+$ff-2: 'Glyphicons Halflings';
+
+
+html{
+	font-family: $ff-1;
+}
+
+//@extend %text-0;
+%text-0{
+	font-size: $fs-0;
+	font-weight: $fw-1;
+	font-family: $ff-1;
+
+}
+
+//@extend %text-1;
+%text-1{
+	font-size: $fs-1;
+	font-weight: $fw-1;
+	font-family: $ff-1;
+
+}
+
+
+//@extend %text-2;
+%text-2{
+	font-size: $fs-2;
+	font-weight: $fw-2;
+}
+
+
+//@extend %text-1;
+%text-3{
+	font-size: $fs-3;
+	font-weight: $fw-3;
+}
+
+%glyphicons{
+	font-family: $ff-2;
+}

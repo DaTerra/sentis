@@ -1,4 +1,4 @@
-<p style="float:right;">Order by
+<div class="sortby">Sort by
 	{{ Form::select('orderOpts', 
 					['newest' => 'Newest',
 				     'activity' => 'Activity',
@@ -6,4 +6,4 @@
 				    ], 
 				    isset($order) ? $order : null, 
 				    ['id' => 'orderOpts']) }}
-</p>
+</div>

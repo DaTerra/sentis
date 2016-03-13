@@ -1,0 +1,147 @@
+body {
+    padding-bottom: 40px;
+}
+
+.form-signin {
+    max-width: 370px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+    font-size: 16px;
+    height: auto;
+    width: 310px;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+}
+
+.checkbox {
+    font-weight: normal;
+}
+
+#search_list li {
+    list-style: none;
+}
+
+#search_list {
+    padding-left: 0px;
+    max-height: 300px;
+    overflow-y: scroll;
+    width: 340px;
+}
+
+.mini-submenu {
+    display: none;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, 0.9);
+    border-radius: 4px;
+    padding: 9px;
+    /*position: relative;*/
+    width: 42px;
+}
+
+.mini-submenu:hover {
+    cursor: pointer;
+}
+
+.mini-submenu .icon-bar {
+    border-radius: 1px;
+    display: block;
+    height: 2px;
+    width: 22px;
+    margin-top: 3px;
+}
+
+.mini-submenu .icon-bar {
+    background-color: #000;
+}
+
+#slide-submenu {
+    background: rgba(0, 0, 0, 0.45);
+    display: inline-block;
+    padding: 0 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.table-striped {
+    background: ;
+}
+
+.table-striped thead {}
+
+.table-striped tbody {
+    background: orange;
+    display: flex;
+    flex-wrap: wrap;
+}
+.table-striped tbody > tr {
+    width: 30rem;
+    //padding: 1rem;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.table-striped tbody > tr > td {
+    border: 1px solid green;
+}
+
+.table-striped tbody > tr > td:nth-of-type(1) {
+    background: cyan;
+}
+
+.table-striped tbody > tr > td:nth-of-type(1) > a > span.glyphicon-heart {
+    color: red;
+}
+
+.table-striped tbody > tr > td:nth-of-type(2) {
+    background: yellow;
+}
+
+.table-striped tbody > tr > td:nth-of-type(3) {
+    background: light;
+}
+
+.table-striped tbody > tr > td:nth-of-type(4) {}
+
+.table-striped tbody > tr > td:nth-of-type(5) {
+    order: -1;
+}
+
+.table-striped tbody > tr > td:nth-of-type(5) img {
+    width: 100%;
+}
+
+.table-striped tbody > tr > td:nth-of-type(6) {
+    order: 7;
+}
+
+.table-striped tbody > tr > td:nth-of-type(7) {}
+
+.table-striped tbody > tr > td:nth-of-type(8) {
+    order: 0;
+}
+
+.container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #333;
+}

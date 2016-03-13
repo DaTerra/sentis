@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    > nav.navbar {
+        order: 0;
+    }
+    > div.ticker {
+        order: 1;
+    }
+    > div.sortby {
+        order: 3;
+    }
+    > table {
+        order: 4;
+    }
+    > a.addpost {}
+}
+
+
