@@ -43,7 +43,7 @@
 				        <span class="glyphicon glyphicon-heart"></span> 
 				    </a>
                 </td>
-	          	<td><!-- {{{$post->postContent['title']}}} --></td>
+	          	<td>{{{$post->postContent['title']}}}</td>
 	          	<td><!-- {{{$post->postContent['content']}}} --></td>
 	          	<td><!-- {{{$post->postContent['source_url']}}} --></td>
 	          	<td>

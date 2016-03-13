@@ -6,6 +6,7 @@
 
 %post-box {
     @include size(30rem auto);
+   
     margin: 10px;
     padding: 1rem;
     border: 1px solid white;
@@ -23,7 +24,7 @@
 
 
     > td {
-        
+         
         // Post Id & Buttons
         &:nth-of-type(1) {
             position: relative;
